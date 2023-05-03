@@ -1,0 +1,170 @@
+@import 'src/assets/styles/core';
+
+.#{$moq__ns} {
+  &header {
+    background: $header__background;
+    display: flex;
+    height: $header__size;
+    justify-content: center;
+    margin-bottom: rem(40);
+    position: fixed;
+    width: 100%;
+    z-index: 1000;
+
+    #{$moq__ns}main-nav {
+      flex: 1;
+      margin: auto rem(8);
+
+      @media screen and (max-width: $moq__container-width--large) {
+        display: none;
+      }
+
+      @include screen-medium {
+        display: none;
+      }
+    }
+
+    #{$moq__ns}language-selector {
+      @media screen and (max-width: $moq__container-width--large) {
+        display: none;
+      }
+
+      @include screen-medium {
+        display: none;
+      }
+    }
+  }
+  &logo {
+    align-items: center;
+    color: $header__link-color;
+    display: flex;
+    height: $moq__header-logo__height;
+    text-decoration: none;
+    text-transform: none;
+
+    span {
+      margin-left: rem(24);
+      padding-top: 2px;
+      font-size: rem(34);
+    }
+
+    &--alt {
+      @media screen and (max-width: $moq__container-width--large) {
+        display: none;
+      }
+
+      @include screen-medium {
+        display: none;
+      }
+    }
+  }
+  &wrapper {
+    align-items: center;
+    flex-direction: row;
+    justify-content: space-between;
+  }
+  &hamburger {
+    display: none;
+    color: $header__link-color;
+
+    @media screen and (max-width: $moq__container-width--large) {
+      display: block;
+    }
+
+    @include screen-medium {
+      display: block;
+    }
+  }
+
+  @media screen and (max-width: $moq__container-width--large) {
+    &header {
+      height: $header__size--md;
+    }
+
+    &logo {
+      img {
+        margin-left: rem(6);
+        height: rem(40);
+      }
+
+      span {
+        margin-left: rem(16);
+      }
+    }
+  }
+
+  @include screen-medium {
+    &header {
+      height: $header__size--md;
+    }
+
+    &logo {
+      img {
+        margin-left: rem(6);
+        height: rem(40);
+      }
+
+      span {
+        margin-left: rem(16);
+      }
+    }
+  }
+
+  &header--ratel {
+    flex-direction: column;
+    align-items: center;
+
+    & > .#{$moq__ns}wrapper {
+      width: 100%;
+      &:first-of-type {
+        .#{$moq__ns}logo:last-of-type {
+          justify-content: flex-end;
+          height: rem(120);
+        }
+      }
+      &--sub {
+        flex-basis: rem(40);
+        background-color: $color__primary;
+        max-width: none;
+        justify-content: center;
+
+        & > .#{$moq__ns}wrapper {
+          height: rem(40);
+          flex: none;
+          justify-content: center;
+
+          #{$moq__ns}main-nav {
+            flex: none;
+            margin: 0;
+          }
+        }
+
+        @media screen and (max-width: $moq__container-width--large) {
+          display: none;
+        }
+
+        @include screen-medium {
+          display: none;
+        }
+      }
+    }
+
+    @media screen and (max-width: $moq__container-width--large) {
+      .#{$moq__ns}logo {
+        flex: none;
+      }
+      .#{$moq__ns}hamburger {
+        color: black;
+      }
+    }
+
+    @include screen-medium {
+      .#{$moq__ns}logo {
+        flex: none;
+      }
+      .#{$moq__ns}hamburger {
+        color: black;
+      }
+    }
+  }
+}

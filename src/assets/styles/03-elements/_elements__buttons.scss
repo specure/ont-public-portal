@@ -1,0 +1,97 @@
+.#{$moq__ns}btn {
+  cursor: pointer;
+  border: none;
+  border-radius: 0;
+  font-size: rem(14);
+  font-weight: 500;
+  line-height: rem(20);
+  padding: rem(10);
+  text-decoration: none;
+  transition: all ease 0.3s;
+
+  &:hover,
+  &:focus,
+  &:active {
+    outline: none;
+    text-decoration: none;
+  }
+
+  * {
+    font-weight: 500;
+  }
+
+  i {
+    font-size: 20px;
+    vertical-align: top;
+  }
+
+  &--bold * {
+    font-weight: 600;
+  }
+
+  &--primary {
+    background: color(green1);
+
+    &:hover,
+    &:focus,
+    &:active {
+      background: darken(color(green1), 10%);
+    }
+  }
+
+  &--red {
+    background: color(red);
+
+    &:hover,
+    &:focus,
+    &:active {
+      background: darken(color(red), 10%);
+    }
+  }
+
+  &--gray {
+    background: color(gray4);
+
+    &:hover,
+    &:focus,
+    &:active {
+      background: darken(color(gray4), 10%);
+    }
+  }
+}
+
+.#{$moq__ns}btn-group {
+  .#{$moq__ns}btn {
+    margin: 0 rem(8);
+
+    &:first-child {
+      margin-left: 0;
+    }
+
+    &:last-child {
+      margin-right: 0;
+    }
+  }
+}
+.mat-flat-button,
+.mat-button-wrapper {
+  span {
+    font-family: $moq__font--default;
+  }
+}
+
+.#{$moq__ns}test-invite--ont {
+  .mat-button-wrapper {
+    font-weight: bold;
+    position: relative;
+  }
+}
+
+.#{$moq__ns}run-test-btn.mat-flat-button.mat-button-base {
+  align-items: center;
+  border-radius: rem(30);
+  display: inline-flex;
+  font-size: rem(16);
+  height: rem(48);
+  min-width: rem(120);
+}

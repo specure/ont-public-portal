@@ -1,0 +1,61 @@
+<nt-general-card *ngIf="articles$ | async as articles" appearance="widget">
+  <div
+    class="nt-container"
+    style="background: none; width: 100%"
+    *transloco="let t"
+  >
+    <div *ngIf="articles.length" class="nt-container nt-container--articles">
+      <ng-container
+        *ngFor="let article of articles; let i = index; trackBy: useArticleId"
+      >
+        <article [ngClass]="getArticleClasses(i)">
+          <div class="nt-cover">
+            <img [src]="getArticlePicture(article)" [alt]="article.title" />
+          </div>
+          <h2 class="nt-title">
+            <a [routerLink]="article.slug">{{ article.title }}</a>
+          </h2>
+          <p class="nt-description">
+            <ng-container *ngIf="article.description">{{
+              article.description
+            }}</ng-container
+            >&nbsp;
+            <a [routerLink]="article.slug">{{ t('articles.read_more') }}</a>
+          </p>
+        </article>
+        <div
+          *ngIf="i === 2"
+          style="
+            flex-basis: 100%;
+            font-size: 12px;
+            font-weight: bold;
+            padding: 0 24px;
+          "
+        >
+          {{ t('articles.you_might_be_interested') }}
+        </div>
+      </ng-container>
+      <footer class="nt-footer">
+        <button
+          type="button"
+          mat-flat-button
+          color="primary"
+          class="nt-btn"
+          (click)="loadMore()"
+          *ngIf="totalArticles > articles.length + (paginator?.page ?? 0)"
+        >
+          {{ t('articles.load_more') }}
+        </button>
+      </footer>
+    </div>
+    <div
+      *ngIf="!articles.length"
+      class="nt-container nt-container--articles nt-container--articles-empty"
+    >
+      <h1 class="nt-title">{{ t('articles.no_articles') }}</h1>
+      <a mat-flat-button color="primary" class="nt-btn" routerLink="/">
+        {{ t('articles.back_home') }}
+      </a>
+    </div>
+  </div>
+</nt-general-card>

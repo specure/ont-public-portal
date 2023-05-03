@@ -1,0 +1,20 @@
+.#{$moq__ns}form {
+  padding: rem(18) 0 0;
+
+  &__fieldset {
+    margin-top: rem(5);
+  }
+
+  &__legend {
+    text-transform: capitalize;
+    font-size: rem(11);
+    color: color(gray2);
+    margin-bottom: rem(15);
+  }
+
+  .mat-checkbox-label {
+    font-size: rem(13);
+    margin-left: rem(5);
+    color: color(black);
+  }
+}

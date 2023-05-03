@@ -1,0 +1,109 @@
+<div *ngIf="page$ | async as page" class="nt-container">
+  <article class="nt-article nt-container__col nt-container__col--text">
+    <pre [innerHTML]="page | mainSafeHtml"></pre>
+  </article>
+  <div *ngIf="form" class="nt-container__col nt-container__col--form">
+    <form [formGroup]="form" (ngSubmit)="submit()" *transloco="let t">
+      <mat-form-field floatLabel="always" class="nt-form-field">
+        <mat-label>{{ t('contact.form.full_name') }}</mat-label>
+        <input
+          matInput
+          type="text"
+          [placeholder]="t('contact.form.full_name')"
+          formControlName="fullName"
+          name="fullName"
+          required
+        />
+        <mat-error> {{ t('contact.form.full_name_invalid') }} </mat-error>
+      </mat-form-field>
+
+      <mat-form-field floatLabel="always" class="nt-form-field">
+        <mat-label>{{ t('contact.form.email') }}</mat-label>
+        <input
+          matInput
+          type="email"
+          [placeholder]="t('contact.form.email')"
+          formControlName="email"
+          name="email"
+          required
+        />
+        <mat-error> {{ t('contact.form.email_invalid') }}</mat-error>
+      </mat-form-field>
+
+      <mat-form-field
+        *ngIf="countries$ | async"
+        floatLabel="always"
+        class="nt-form-field"
+      >
+        <mat-label>{{ t('contact.form.country') }}</mat-label>
+        <mat-select
+          [placeholder]="t('contact.form.country')"
+          formControlName="country"
+          name="country"
+          required
+        >
+          <mat-option>
+            <ngx-mat-select-search
+              [formControl]="countriesFilterCtrl"
+              [placeholderLabel]="t('contact.form.country_search')"
+            ></ngx-mat-select-search>
+          </mat-option>
+          <mat-option
+            *ngFor="let country of filteredCountries$ | async"
+            [value]="country?.name.common"
+          >
+            {{ country.flag }} {{ country.name?.common }}
+          </mat-option>
+        </mat-select>
+        <mat-error>{{ t('contact.form.country_invalid') }}</mat-error>
+      </mat-form-field>
+
+      <mat-form-field floatLabel="always" class="nt-form-field">
+        <mat-label>{{ t('contact.form.message') }}</mat-label>
+        <textarea
+          matInput
+          type="message"
+          [placeholder]="t('contact.form.message')"
+          formControlName="message"
+          name="message"
+          rows="5"
+          required
+        ></textarea>
+        <mat-error> {{ t('contact.form.message_invalid') }} </mat-error>
+      </mat-form-field>
+
+      <div class="nt-form-field" style="margin-bottom: 16px">
+        <mat-checkbox formControlName="sendCopyToUser" name="sendCopyToUser">{{
+          t('contact.form.send_me_copy')
+        }}</mat-checkbox>
+      </div>
+
+      <div class="nt-form-field nt-form-field--checkbox">
+        <mat-checkbox
+          formControlName="privacyPolicyAccepted"
+          name="privacyPolicyAccepted"
+          required
+          ><span
+            style="white-space: normal"
+            [innerHTML]="t('contact.form.privacy_policy') + '*'"
+          ></span
+        ></mat-checkbox>
+      </div>
+
+      <div
+        class="nt-small-print"
+        [innerHTML]="t('contact.form.recaptcha_privacy_policy')"
+      ></div>
+
+      <button
+        mat-flat-button
+        color="primary"
+        type="submit"
+        style="padding-left: 24px; padding-right: 24px"
+        [disabled]="form.invalid"
+      >
+        {{ t('contact.form.submit') }}
+      </button>
+    </form>
+  </div>
+</div>

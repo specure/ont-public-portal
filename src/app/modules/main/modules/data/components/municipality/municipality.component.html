@@ -1,0 +1,134 @@
+<ng-container *ngIf="municiaplity$ | async as munc">
+  <ng-container *transloco="let t">
+    <div class="nt-banner__wrapper">
+      <div
+        class="nt-banner"
+        [ngStyle]="{ backgroundImage: 'url(' + images.banner + ')' }"
+      ></div>
+    </div>
+    <div id="info" class="nt-container__row">
+      <section class="nt-container__col">
+        <nt-general-card>
+          <div class="nt-container nt-container--padded">
+            <header>
+              <div class="nt-bc">
+                <a class="nt-bc__link" [routerLink]="statisticsLink">
+                  <mat-icon>arrow_back</mat-icon>
+                  <span>{{ t('statistics.back') }}</span>
+                </a>
+              </div>
+              <h1 class="nt-title">{{ munc | translate : 'name' }}</h1>
+            </header>
+            <div class="nt-container__row">
+              <dl
+                class="nt-container__col"
+                *ngIf="munc.website || munc.county?.website"
+              >
+                <ng-container *ngIf="munc.website">
+                  <dt class="nt-dt">{{ t('statistics.municipality') }}</dt>
+                  <dd class="nt-dd">
+                    <a [href]="munc.website" target="_blank">
+                      {{ munc | translate : 'name' }}
+                      {{ t('statistics.website') }}
+                    </a>
+                  </dd>
+                </ng-container>
+                <ng-container *ngIf="munc.county?.website">
+                  <dt class="nt-dt">{{ t('statistics.county') }}</dt>
+                  <dd class="nt-dd">
+                    <a [href]="munc.county?.website" target="_blank">
+                      {{ munc.county | translate : 'name' }}
+                      {{ t('statistics.website') }}
+                    </a>
+                  </dd>
+                </ng-container>
+              </dl>
+              <section class="nt-container__col nt-container__col--coat">
+                <img
+                  *ngIf="munc.coat_of_arms"
+                  [src]="images.coat_of_arms"
+                  [alt]="
+                    munc.coat_of_arms.alternativeText || munc.coat_of_arms.name
+                  "
+                />
+              </section>
+            </div>
+          </div>
+        </nt-general-card>
+      </section>
+      <section class="nt-container__col">
+        <nt-general-card>
+          <div class="nt-container nt-container--padded">
+            <div
+              class="nt-container__row"
+              [class.nt-container__row--vertical]="mapLayout === 'vertical'"
+            >
+              <section
+                class="nt-container__col nt-container__col--map-link"
+                [ngStyle]="
+                  munc.map_view
+                    ? {}
+                    : { alignItems: 'center', justifyContent: 'center' }
+                "
+              >
+                <a [routerLink]="mapLink" (click)="setMapMunicipality(munc)">{{
+                  t('statistics.go_to_map')
+                }}</a>
+              </section>
+              <section
+                *ngIf="munc.map_view"
+                class="nt-container__col nt-container__col--map"
+              >
+                <img
+                  [src]="images.map_view"
+                  [alt]="munc.map_view.alternativeText || munc.map_view.name"
+                />
+              </section>
+            </div>
+          </div>
+        </nt-general-card>
+      </section>
+    </div>
+    <div class="nt-stats__row">
+      <nt-general-card appearance="full-width">
+        <div class="nt-stats">
+          <section
+            *ngIf="project?.enable_stats_mno_isp_switch"
+            class="nt-stats__filter"
+          >
+            <form [formGroup]="form">
+              <mat-radio-group formControlName="providerType">
+                <mat-radio-button
+                  *ngFor="let providerType of providerTypes"
+                  [value]="providerType.value"
+                >
+                  {{ t(providerType.label) }}
+                </mat-radio-button>
+              </mat-radio-group>
+            </form>
+          </section>
+          <ng-container *ngIf="nationalTable$ | async as nat; else noData">
+            <nt-table
+              class="nt-stats__table"
+              [action]="action"
+              [columns]="columns"
+              [data]="{ content: nat.statsByProvider }"
+              [sort]="sort"
+              [subHeaderColumns]="subHeaderColumns"
+            >
+            </nt-table>
+            <footer class="nt-stats__footer">
+              {{ t('statistics.table.disclaimer') }}
+            </footer>
+          </ng-container>
+        </div>
+      </nt-general-card>
+    </div>
+  </ng-container>
+</ng-container>
+
+<ng-template #noData>
+  <div class="nt-container--no-data" *transloco="let t">
+    {{ t('statistics.municipality.nodata') }}
+  </div>
+</ng-template>

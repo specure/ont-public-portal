@@ -1,0 +1,164 @@
+@import 'src/assets/styles/core';
+
+.#{$moq__ns}article {
+  overflow: hidden;
+  padding-left: rem(23);
+  padding-right: rem(23);
+  padding-top: rem(65);
+
+  @include screen-small {
+    padding-top: rem(23);
+  }
+
+  .#{$moq__ns}title {
+    font-size: rem(36);
+    margin-top: rem(72);
+
+    * {
+      font-size: inherit;
+    }
+
+    @include screen-small {
+      margin-top: rem(36);
+    }
+  }
+
+  &--primary {
+    .#{$moq__ns}title {
+      * {
+        color: inherit;
+      }
+    }
+  }
+
+  .#{$moq__ns}cover {
+    align-items: center;
+    display: flex;
+    height: rem(480);
+    justify-content: center;
+    object-fit: cover;
+    overflow: hidden;
+    width: 100%;
+
+    img {
+      height: 100%;
+      max-width: none;
+
+      @include screen-small {
+        height: auto;
+        max-width: 100%;
+      }
+    }
+  }
+
+  .#{$moq__ns}description {
+    font-size: rem(16);
+    line-height: 1.5;
+    margin-top: rem(32);
+
+    * {
+      font-size: inherit;
+    }
+  }
+
+  @include screen-small {
+    .#{$moq__ns}cover {
+      height: rem(144);
+    }
+  }
+
+  &--secondary {
+    flex-basis: 50%;
+    padding-top: rem(34);
+
+    .#{$moq__ns}title {
+      font-size: rem(28);
+      margin-top: rem(32);
+      margin-bottom: rem(18);
+
+      * {
+        color: inherit;
+      }
+    }
+
+    .#{$moq__ns}cover {
+      height: rem(230);
+    }
+
+    .#{$moq__ns}description {
+      font-size: rem(16);
+      margin-top: rem(18);
+    }
+
+    @include screen-small {
+      flex-basis: 100%;
+
+      .#{$moq__ns}cover {
+        height: rem(144);
+      }
+    }
+  }
+
+  &--tertiary {
+    flex-basis: 33.3333%;
+    padding-top: rem(24);
+
+    .#{$moq__ns}title {
+      font-size: rem(16);
+      margin-top: rem(18);
+      margin-bottom: rem(8);
+
+      * {
+        color: $color__link;
+      }
+    }
+
+    .#{$moq__ns}cover {
+      height: rem(144);
+    }
+
+    .#{$moq__ns}description {
+      font-size: rem(14);
+      margin-top: rem(8);
+    }
+
+    @include screen-small {
+      flex-basis: 100%;
+    }
+  }
+}
+.#{$moq__ns}container {
+  &--articles {
+    border-radius: rem(8);
+    display: flex;
+    flex-wrap: wrap;
+    padding-left: rem(23);
+    padding-right: rem(23);
+
+    @include screen-small {
+      padding-left: 0;
+      padding-right: 0;
+    }
+
+    &-empty {
+      align-items: center;
+      flex-direction: column;
+      height: calc(100vh - 326px);
+      justify-content: center;
+      min-height: rem(200);
+
+      .#{$moq__ns}title {
+        font-size: rem(28);
+        margin-bottom: rem(23);
+      }
+    }
+  }
+}
+.#{$moq__ns}footer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-basis: 100%;
+  padding-bottom: rem(80);
+  padding-top: rem(30);
+}

@@ -1,0 +1,42 @@
+<ng-container *ngIf="reports$ | async as reports">
+    <div class="nt-container">
+        <div *ngIf="(limitReached$ | async) === true" class="nt-container__row">
+            <section class="nt-container__col">
+                <mat-icon class="nt-icon nt-icon--warning">warning</mat-icon>
+            </section>
+            <section class="nt-container__col">
+                <p>{{ 'export-snackbar.limit' | transloco }}</p>
+                <p>{{ 'export-snackbar.clear-queue' | transloco }}</p>
+            </section>
+            <section class="nt-container__col">
+                <button (click)="close(null, reports.length)" mat-icon-button>
+                    <mat-icon>close</mat-icon>
+                </button>
+            </section>
+        </div>
+        <div *ngFor="let report of reports" class="nt-container__row">
+            <section class="nt-container__col">
+                <mat-spinner class="nt-icon nt-icon--preparing nt-spinner" *ngIf="preparing(report)" diameter="18"></mat-spinner>
+                <mat-icon class="nt-icon nt-icon--ready" *ngIf="ready(report)">check_circle</mat-icon>
+                <mat-icon class="nt-icon nt-icon--warning" *ngIf="error(report)">warning</mat-icon>
+            </section>
+            <section class="nt-container__col">
+                <p *ngIf="preparing(report)">{{ getSnackbarStatus(report.exportStatus) | async }}</p>
+                <p *ngIf="ready(report)">{{ getSnackbarStatus(report.exportStatus) | async }}</p>
+                <p *ngIf="error(report)">{{ getSnackbarStatus(report.exportStatus) | async }}</p>
+                <p>{{ report.name }}</p>
+            </section>
+            <section class="nt-container__col">
+                <button *ngIf="!downloadedReports.includes(report.id)" mat-button class="nt-btn" (click)="download(report, reports.length)" [disabled]="!ready(report)">
+                    {{ 'export-snackbar.download' | transloco }}
+                </button>
+                <mat-spinner *ngIf="downloadedReports.includes(report.id)" class="nt-spinner" diameter="18"></mat-spinner>
+            </section>
+            <section class="nt-container__col">
+                <button (click)="close(report, reports.length)" mat-icon-button>
+                    <mat-icon>close</mat-icon>
+                </button>
+            </section>
+        </div>
+    </div>
+</ng-container>

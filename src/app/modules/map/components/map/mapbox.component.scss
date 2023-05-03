@@ -1,0 +1,35 @@
+@import '../../../../../assets/styles/core';
+
+$map-height: 100vh;
+
+.#{$moq__ns}map {
+  height: $map-height;
+  width: 100vw;
+
+  &__container {
+    left: 0;
+    position: absolute;
+  }
+
+  &__legend {
+    @include ios-scroll-fix;
+    bottom: rem(24);
+    left: 50%;
+    position: absolute;
+    transform: translateX(-50%);
+    z-index: 2;
+    -webkit-transform: translate3d(-50%,0,0);
+
+    @include screen-small-portrait {
+      bottom: rem(8);
+    }
+
+    @include screen-xs {
+      bottom: rem(6);
+    }
+  }
+
+  &__wrapper {
+    height: $map-height;
+  }
+}

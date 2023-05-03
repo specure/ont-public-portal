@@ -1,0 +1,115 @@
+// __<<ngThemingMigrationEscapedComment0>>__
+
+//  Copy font files into assets/fonts/
+
+@font-face {
+  font-display: swap;
+  font-family: 'Material Icons';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Material Icons'), local('MaterialIcons-Regular'),
+    url($moq__base-path-font + 'MaterialIcons-Regular.woff2') format('woff2'),
+    url($moq__base-path-font + 'MaterialIcons-Regular.woff') format('woff'),
+    url($moq__base-path-font + 'MaterialIcons-Regular.ttf') format('truetype');
+}
+
+@font-face {
+  font-display: swap;
+  font-family: 'New Atten';
+  font-style: normal;
+  font-weight: 400;
+  src: local('New Atten'), local('NewAtten-Regular'),
+    url($moq__base-path-font + 'NewAtten-Regular.woff2') format('woff2'),
+    url($moq__base-path-font + 'NewAtten-Regular.woff') format('woff'),
+    url($moq__base-path-font + 'NewAtten-Regular.ttf') format('truetype');
+}
+
+@font-face {
+  font-display: swap;
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 300;
+  src: local('Roboto-Light'),
+    url($moq__base-path-font + 'Roboto-Light.ttf') format('truetype');
+}
+
+@font-face {
+  font-display: swap;
+  font-family: 'Roboto';
+  font-style: italic;
+  font-weight: 300;
+  src: local('Roboto-LightItalic'),
+    url($moq__base-path-font + 'Roboto-LightItalic.ttf') format('truetype');
+}
+
+@font-face {
+  font-display: swap;
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Roboto-Regular'),
+    url($moq__base-path-font + 'Roboto-Regular.ttf') format('truetype');
+}
+
+@font-face {
+  font-display: swap;
+  font-family: 'Roboto';
+  font-style: italic;
+  font-weight: 400;
+  src: local('Roboto-Italic'),
+    url($moq__base-path-font + 'Roboto-Italic.ttf') format('truetype');
+}
+
+@font-face {
+  font-display: swap;
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 500;
+  src: local('Roboto-Medium'),
+    url($moq__base-path-font + 'Roboto-Medium.ttf') format('truetype');
+}
+
+@font-face {
+  font-display: swap;
+  font-family: 'Roboto';
+  font-style: italic;
+  font-weight: 500;
+  src: local('Roboto-MediumItalic'),
+    url($moq__base-path-font + 'Roboto-MediumItalic.ttf') format('truetype');
+}
+
+@font-face {
+  font-display: swap;
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 700;
+  src: local('Roboto-Bold'),
+    url($moq__base-path-font + 'Roboto-Bold.ttf') format('truetype');
+}
+
+@font-face {
+  font-display: swap;
+  font-family: 'Roboto';
+  font-style: italic;
+  font-weight: 700;
+  src: local('Roboto-BoldItalic'),
+    url($moq__base-path-font + 'Roboto-BoldItalic.ttf') format('truetype');
+}
+
+@font-face {
+  font-display: swap;
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 900;
+  src: local('Roboto-Black'),
+    url($moq__base-path-font + 'Roboto-Black.ttf') format('truetype');
+}
+
+@font-face {
+  font-display: swap;
+  font-family: 'Roboto';
+  font-style: italic;
+  font-weight: 900;
+  src: local('Roboto-BlackItalic'),
+    url($moq__base-path-font + 'Roboto-BlackItalic.ttf') format('truetype');
+}

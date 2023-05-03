@@ -1,0 +1,47 @@
+/*----------------------------------------------------------------
+     # ELEMENT HEADINGS
+ ------------------------------------------------------------------*/
+
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    margin: 0;
+    font-family: $moq__font--default;
+    font-weight: normal;
+    color: color($moq__base-color);
+    line-height: $moq__base-line-height;
+}
+
+h1, %h1 {
+    font-size: rem($moq__h1);
+    font-weight: 300;
+}
+
+h2, %h2 {
+    font-size: rem($moq__h2);
+    font-weight: 300;
+}
+
+h3, %h3 {
+    font-size: rem($moq__h3)
+}
+
+h4, %h4 {
+    font-size: rem($moq__h4)
+}
+
+h5, %h5 {
+    font-size: rem($moq__h5)
+}
+
+h6, %h6 {
+    font-size: rem($moq__h6)
+}
+
+/*----------------------------------------------------------------
+    # END ELEMENT HEADINGS
+------------------------------------------------------------------*/

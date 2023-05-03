@@ -1,0 +1,28 @@
+<mat-sidenav-container hasBackdrop="false">
+  <mat-sidenav
+    #sidenav
+    *ngIf="isMobile$ | async"
+    class="nt-drawer"
+    mode="over"
+    position="end"
+    [autoFocus]="false"
+    [fixedInViewport]="true"
+  >
+    <nt-sidenav [sidenav]="sidenav"></nt-sidenav>
+  </mat-sidenav>
+  <mat-sidenav-content>
+    <mat-progress-bar
+      *ngIf="loading$ | async"
+      mode="indeterminate"
+      style="position: fixed; left: 0; top: 0; z-index: 1001"
+      [color]="progressIndicatorColor"
+    ></mat-progress-bar>
+    <nt-main-header [sidenav]="sidenav"></nt-main-header>
+    <main class="nt-layout">
+      <div class="nt-wrapper">
+        <router-outlet></router-outlet>
+      </div>
+    </main>
+  </mat-sidenav-content>
+</mat-sidenav-container>
+<nt-main-footer class="nt-footer"></nt-main-footer>

@@ -1,0 +1,13 @@
+pre {
+  font-family: inherit;
+  font-size: inherit;
+  line-height: $moq__base-line-height;
+  white-space: pre-wrap;
+}
+
+code {
+  display: block;
+  background-color: rgba(0, 0, 0, 0.05);
+  font-size: 12px;
+  padding: 1em;
+}

@@ -1,0 +1,8 @@
+<nt-menu-bar #menuBar (openMenu)="sideNavigation.open()"></nt-menu-bar>
+<nt-map-layer-filter></nt-map-layer-filter>
+<nt-side-navigation #sideNavigation></nt-side-navigation>
+<nt-mapbox (afterMapInit)="menuBar.setMap($event)"></nt-mapbox>
+<ng-container *ngIf="page$ | async">
+    <nt-timeline *ngIf="isDesktop" [steps]="steps"></nt-timeline>
+    <nt-mobile-timeline *ngIf="!isDesktop" [steps]="steps"></nt-mobile-timeline>
+</ng-container>

@@ -1,0 +1,116 @@
+<form [formGroup]="form">
+  <ng-container *transloco="let t">
+    <div class="nt-stats__row">
+      <nt-general-card appearance="full-width">
+        <div class="nt-stats">
+          <header class="nt-stats__header">
+            <h2 class="nt-stats__title">{{ t('statistics.table.title') }}</h2>
+            <div class="nt-stats__lead">{{ t('statistics.table.lead') }}</div>
+          </header>
+          <section class="nt-stats__filter">
+            <mat-radio-group
+              *ngIf="project?.enable_stats_mno_isp_switch"
+              formControlName="providerType"
+            >
+              <mat-radio-button
+                *ngFor="let providerType of providerTypes"
+                [value]="providerType.value"
+              >
+                {{ t(providerType.label) }}
+              </mat-radio-button>
+            </mat-radio-group>
+            <mat-form-field>
+              <mat-select
+                formControlName="tech"
+                name="tech"
+                (selectionChange)="loadNationalTable($event.value)"
+              >
+                <mat-option
+                  *ngFor="let tech of techOptions"
+                  [value]="tech.value"
+                  >{{ getTechLabel(tech, t) }}</mat-option
+                >
+              </mat-select>
+            </mat-form-field>
+          </section>
+          <ng-container *ngIf="nationalTable$ | async as nat">
+            <section class="nt-stats__chart">
+              <nt-statistics-chart [data]="nat"></nt-statistics-chart>
+            </section>
+            <footer class="nt-stats__footer">
+              {{ t('statistics.table.disclaimer') }}
+            </footer>
+          </ng-container>
+          <section
+            *ngIf="isNullOrUndefined(nationalTable$ | async)"
+            class="nt-stats__chart"
+            style="padding-bottom: 20px"
+          >
+            {{ t('statistics.table.nodata') }}
+          </section>
+        </div>
+      </nt-general-card>
+    </div>
+    <div *ngIf="nationalTable$ | async as nat" class="nt-stats__row">
+      <nt-general-card appearance="full-width">
+        <div class="nt-stats">
+          <nt-table
+            class="nt-stats__table"
+            [action]="action"
+            [columns]="columns"
+            [data]="{ content: nat.statsByProvider }"
+            [sort]="sort"
+            [subHeaderColumns]="subHeaderColumns"
+          >
+          </nt-table>
+          <footer class="nt-stats__footer">
+            {{ t('statistics.table.disclaimer') }}
+          </footer>
+        </div>
+      </nt-general-card>
+    </div>
+    <div *ngIf="municipalities?.length" class="nt-stats__row">
+      <nt-general-card appearance="full-width">
+        <div class="nt-stats nt-stats--municipalities">
+          <header class="nt-stats__header nt-stats__header--no-border">
+            <h2 class="nt-stats__title">
+              {{ t('statistics.municipalities.all') }}
+            </h2>
+            <mat-form-field
+              *ngIf="municipalities?.length > 1"
+              class="nt-stats__search"
+            >
+              <mat-icon matPrefix>search</mat-icon>
+              <input
+                matInput
+                type="text"
+                [placeholder]="t('statistics.municipalities.search')"
+                (keyup)="searchMunicipality($event)"
+              />
+            </mat-form-field>
+          </header>
+          <ul
+            class="nt-stats__list nt-stats__list--cols4"
+            *ngIf="filteredMunicipalities$ | async as municipalities"
+          >
+            <li *ngFor="let muncList of municipalities" class="nt-stats__li">
+              <dl class="nt-stats__dl">
+                <dt class="nt-stats__dt">
+                  {{ muncList.county | translate : 'name' }}
+                </dt>
+                <dd class="nt-stats__dd">
+                  <a
+                    class="nt-stats__link"
+                    *ngFor="let munc of muncList.municipalities"
+                    [routerLink]="munc.name"
+                    >{{ munc | translate : 'name' }}</a
+                  >
+                </dd>
+              </dl>
+            </li>
+          </ul>
+        </div>
+      </nt-general-card>
+    </div>
+  </ng-container>
+</form>

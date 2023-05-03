@@ -1,0 +1,11 @@
+//__<<ngThemingMigrationEscapedComment0>>__
+
+
+@function z-index($name, $schema:$moq__z-index-map) {
+    @if map-has-key($schema, $name) {
+        @return map-get($schema, $name);
+    } @else {
+        @warn "The value #{$name} is not in the map '$z-index--map'";
+        @return null;
+    }
+}

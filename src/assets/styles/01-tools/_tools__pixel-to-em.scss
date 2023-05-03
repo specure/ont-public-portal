@@ -1,0 +1,6 @@
+//__<<ngThemingMigrationEscapedComment0>>__
+
+@function em($pixels, $context: $moq__base-font-size) {
+  // prettier-ignore
+  @return #{calc($pixels/$context)}em;
+}

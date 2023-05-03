@@ -1,0 +1,124 @@
+@import 'src/assets/styles/core';
+
+.#{$moq__ns} {
+  &container {
+    background: none;
+    text-align: right;
+
+    :not(:first-child) {
+      margin-top: rem(4);
+    }
+  }
+
+  &footer {
+    background: $footer__background;
+    border-bottom: 1px solid $footer__background;
+    color: $footer__text-color;
+    display: flex;
+    flex: 1;
+    font-size: rem(12);
+    justify-content: center;
+    padding: rem(40) 0 rem(32);
+    position: relative;
+
+    .#{$moq__ns}link {
+      color: $footer__link-color;
+      font-size: rem(14);
+
+      &:hover,
+      &:focus {
+        color: darken($footer__link-color, 10%);
+      }
+    }
+
+    &__nav {
+      display: flex;
+      justify-content: flex-end;
+    }
+  }
+
+  &logo {
+    display: flex;
+    height: $moq__footer-logo__height;
+    font-family: $moq__font--default;
+  }
+
+  &wrapper {
+    flex-direction: row;
+    justify-content: space-between;
+  }
+
+  @include screen-medium {
+    &wrapper {
+      align-items: center;
+      flex-direction: column;
+      justify-content: space-around;
+    }
+    &logo {
+      flex: 0 1 rem(45);
+      justify-content: center;
+    }
+    &copyright {
+      text-align: center;
+    }
+  }
+}
+
+.#{$moq__ns}footer--ratel {
+  padding: rem(20) 0;
+
+  .#{$moq__ns}wrapper {
+    position: relative;
+  }
+
+  .#{$moq__ns}copyright {
+    bottom: 0;
+    font-size: rem(11);
+    position: absolute;
+    right: 0;
+  }
+
+  .#{$moq__ns}list {
+    display: flex;
+    width: 100%;
+
+    &__item {
+      flex: 0 0 16.6666666667%;
+      font-size: rem(11);
+      font-weight: 500;
+      line-height: rem(16);
+      padding: 0 rem(15);
+
+      ::ng-deep * {
+        font-size: rem(11);
+        line-height: rem(16);
+      }
+
+      ::ng-deep a {
+        color: $footer__link-color;
+        text-decoration: underline;
+
+        &::after {
+          display: none;
+        }
+      }
+    }
+  }
+
+  @include screen-small {
+    padding: rem(60) 0;
+    .#{$moq__ns}list {
+      flex-direction: column;
+      justify-content: space-around;
+    }
+    .#{$moq__ns}wrapper {
+      align-items: flex-start;
+    }
+
+    .#{$moq__ns}copyright {
+      text-align: left;
+      padding: 0 rem(15);
+      position: relative;
+    }
+  }
+}

@@ -1,0 +1,12 @@
+
+<dl [class]="appearance ? 'nt-container nt-container--'+appearance : 'nt-container'">
+  <dt *ngIf="title || matIcon" class="nt-container__header">
+    <i *ngIf="iconStyle" class="nt-icon nt-icon--{{iconStyle}}">
+      <mat-icon *ngIf="matIcon">{{matIcon}}</mat-icon>
+    </i>{{
+      title
+    }}</dt>
+  <dd class="nt-container__body">
+    <ng-content></ng-content>
+  </dd>
+</dl>

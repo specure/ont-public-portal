@@ -1,0 +1,152 @@
+@import 'src/assets/styles/core';
+
+.#{$moq__ns}aside {
+  background: white;
+  border-radius: rem(8);
+  counter-reset: list1;
+  margin-right: rem(4);
+  min-height: rem(64);
+  padding: rem(22) rem(24);
+  padding-left: 0;
+  align-self: flex-start;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  width: rem(453);
+  position: fixed;
+  transition: all 0.1s ease-in-out;
+
+  @include screen-large {
+    width: calc($moq__container-width--large * 0.3155);
+  }
+
+  @media screen and (max-width: $moq__container-width--large) {
+    width: calc(32% - 6px);
+  }
+
+  @include screen-medium {
+    position: relative;
+    width: 100%;
+    max-height: none;
+  }
+
+  &__header {
+    color: $aside__title-color;
+    font-size: rem(12);
+    font-weight: bold;
+    margin-bottom: rem(40);
+    padding-left: rem(25);
+    text-transform: capitalize;
+  }
+
+  &__navigation {
+    overflow: auto;
+    padding-left: rem(25);
+  }
+
+  &__link {
+    display: none;
+    line-height: 1.75;
+
+    &--h2 {
+      counter-reset: list2;
+      display: block;
+      margin-bottom: rem(12);
+      padding-left: rem(40);
+      position: relative;
+      text-indent: rem(-18);
+
+      a::before {
+        counter-increment: list1;
+        content: counter(list1) '. ';
+      }
+
+      .#{$moq__ns}btn {
+        border-radius: 50%;
+        color: $aside__title-color;
+        left: rem(-16);
+        position: absolute;
+        top: rem(-8);
+
+        mat-icon {
+          transform: rotate(-90deg);
+          transition: transform 0.15s ease-in-out;
+        }
+
+        &--expanded {
+          mat-icon {
+            transform: rotate(0deg);
+            transition: transform 0.15s ease-in-out;
+          }
+        }
+      }
+
+      & > .#{$moq__ns}link {
+        display: block;
+        font-size: rem(16);
+        margin-bottom: rem(8);
+      }
+
+      .#{$moq__ns}wrapper {
+        margin: 0 rem(-20);
+        overflow: hidden;
+        padding: 0 0 0 rem(18);
+        width: rem(220);
+
+        & > .#{$moq__ns}list {
+          margin-bottom: rem(6);
+        }
+      }
+    }
+
+    &--h3 {
+      display: block;
+      margin-bottom: rem(4);
+      padding-left: rem(13);
+      text-indent: rem(-28);
+
+      & > .#{$moq__ns}link {
+        font-size: rem(14);
+      }
+
+      a::before {
+        counter-increment: list2;
+        content: counter(list1) '.' counter(list2) '. ';
+      }
+    }
+
+    .#{$moq__ns}link {
+      color: $aside__link-color;
+
+      &:visited {
+        color: $aside__link-color;
+      }
+
+      &--active,
+      &--active:visited {
+        color: $aside__link-color--alt;
+      }
+    }
+  }
+}
+
+.#{$moq__ns}article {
+  background: white;
+  border-radius: rem(8);
+  width: rem(920);
+  margin-left: 33%;
+
+  @include screen-large {
+    width: rem(600);
+    margin-left: 33%;
+  }
+
+  @include screen-medium {
+    margin-left: 0;
+    width: 100%;
+  }
+
+  &--fullwidth {
+    margin-left: 0;
+  }
+}

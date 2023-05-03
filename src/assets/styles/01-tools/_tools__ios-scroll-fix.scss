@@ -1,0 +1,11 @@
+@keyframes redraw{
+  0% {opacity: 1;}
+  100% {opacity: .99;}
+}
+
+@mixin ios-scroll-fix {
+  @supports (-webkit-touch-callout: none) {
+    -webkit-perspective: 1000;
+    -webkit-animation: redraw 1s linear infinite;
+  }
+}

@@ -1,0 +1,154 @@
+#{$moq__ns}main {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.#{$moq__ns}wrapper {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  max-width: rem(1415);
+  padding: 0 rem(14);
+
+  .#{$moq__ns}wrapper {
+    padding: 0;
+  }
+
+  @include screen-large {
+    max-width: $moq__container-width--large;
+  }
+
+  @include screen-medium {
+    max-width: 100%;
+    padding: 0 rem(10);
+  }
+}
+
+.#{$moq__ns}container {
+  @include widget-card();
+  flex-shrink: 0;
+  margin-bottom: rem(20);
+  max-width: 100%;
+  overflow: hidden;
+  position: relative;
+
+  & &__accessor {
+    position: absolute;
+    top: rem(4);
+    left: rem(16);
+
+    &--right {
+      left: auto;
+      right: rem(20);
+    }
+
+    .mat-icon {
+      color: color(gray2);
+    }
+  }
+
+  &__header {
+    text-transform: capitalize;
+    font-weight: bold;
+    font-size: rem(11);
+    padding: rem(11) rem(20);
+  }
+
+  &__body {
+    padding: 0 rem(17);
+    min-height: rem(50);
+    display: flex;
+
+    &--borderless {
+      border: none;
+    }
+
+    &--scrollable {
+      height: calc(100vh - 132px);
+      overflow-y: auto;
+    }
+  }
+
+  &__col {
+    flex: 1;
+
+    &75 {
+      flex: 1 0 75%;
+    }
+    &66 {
+      flex: 1 0 66%;
+    }
+    &50 {
+      flex: 1 0 50%;
+    }
+    &33 {
+      flex: 1 0 33.33%;
+    }
+    &25 {
+      flex: 1 0 25%;
+    }
+    &12 {
+      flex: 1 0 12.5%;
+    }
+    &10 {
+      flex: 1 0 10%;
+    }
+    .mat-form-field-infix {
+      width: 100%;
+    }
+  }
+
+  &__row {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+
+  &--screen {
+    height: calc(100vh - 40px);
+    margin-bottom: 0;
+  }
+
+  @include screen-medium {
+    margin: rem(10) 0 0;
+
+    &__header {
+      padding: rem(14) rem(10);
+    }
+
+    &__body {
+      border-top: 0;
+      padding: 0 rem(20) !important;
+    }
+  }
+}
+
+.#{$moq__ns}container--screen {
+  @include screen-medium {
+    height: calc(100vh - 90px);
+
+    .#{$moq__ns}container__body {
+      height: calc(100vh - 189px);
+    }
+
+    .#{$moq__ns}container__col33 {
+      flex: 0 0 50%;
+    }
+  }
+
+  @include screen-small {
+    .#{$moq__ns}container__col33 {
+      flex: 0 0 100%;
+    }
+  }
+}
+
+.#{$moq__ns}invisible {
+  left: -9999px;
+  position: absolute;
+  z-index: -1;
+}

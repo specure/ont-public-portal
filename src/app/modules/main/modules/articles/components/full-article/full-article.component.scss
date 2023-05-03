@@ -1,0 +1,27 @@
+@import 'src/assets/styles/core';
+
+.#{$moq__ns}article {
+  padding: rem(60) rem(60) rem(40) rem(60);
+
+  @include screen-small {
+    padding: rem(20);
+  }
+}
+
+.#{$moq__ns}title {
+  margin-bottom: rem(24);
+  margin-top: rem(72);
+}
+
+.#{$moq__ns}meta {
+  margin-bottom: rem(40);
+}
+
+.#{$moq__ns}picture {
+  object-fit: cover;
+
+  img {
+    height: auto;
+    width: 100%;
+  }
+}

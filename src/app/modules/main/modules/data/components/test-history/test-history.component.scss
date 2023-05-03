@@ -1,0 +1,30 @@
+@import 'src/assets/styles/core';
+
+#{$moq__ns}general-card,
+.#{$moq__ns}container {
+  width: calc(100% + 50px);
+}
+
+.#{$moq__ns}history__heading {
+  display: flex;
+  justify-content: space-between;
+  padding: rem(20) rem(25);
+  font-size: rem(16);
+  border-bottom: 1px solid rgba($color__primary, 0.25);
+}
+
+@include screen-medium {
+  nt-general-card {
+    margin: 0 0 rem(80) 0;
+  }
+
+  .#{$moq__ns}history__heading {
+    padding: rem(20) rem(10);
+  }
+}
+
+.#{$moq__ns}export-button {
+  @media print {
+    display: none;
+  }
+}

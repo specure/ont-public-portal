@@ -1,0 +1,55 @@
+<ng-container [ngSwitch]="flavor$ | async">
+  <!-- RATEL flavor -->
+
+  <ng-container *ngSwitchCase="menuFlavors.RATEL">
+    <footer class="nt-footer nt-footer--ratel">
+      <div *ngIf="menu$ | async as menu" class="nt-wrapper">
+        <ul class="nt-list">
+          <li class="nt-list__item" *ngFor="let block of menu">
+            <pre
+              [innerHtml]="
+                block
+                  | translate: 'content':'parseMarkdown'
+                  | mainSafeHtml: cookieWidgetOpener
+              "
+            ></pre>
+          </li>
+        </ul>
+        <pre
+          *ngIf="project && project.copyright"
+          class="nt-container nt-copyright"
+          >{{ project | translate: 'copyright' }} ({{ project.version }})</pre
+        >
+      </div>
+    </footer>
+  </ng-container>
+
+  <!-- Default template -->
+
+  <ng-container *ngSwitchDefault>
+    <footer class="nt-footer">
+      <div class="nt-wrapper">
+        <a
+          [href]="project?.footer_logo_link || '/'"
+          class="nt-logo"
+          target="_blank"
+        >
+          <img
+            [src]="logoPath$ | async"
+            [alt]="logoAlt"
+            height="79"
+            width="253"
+          />
+        </a>
+        <section *ngIf="menu$ | async as menu" class="nt-container">
+          <nt-main-nav className="nt-footer__nav" [menu]="menu"></nt-main-nav>
+          <pre
+            *ngIf="project && project.copyright"
+            class="nt-container nt-copyright"
+            >{{ project | translate: 'copyright' }} ({{ project.version }})</pre
+          >
+        </section>
+      </div>
+    </footer>
+  </ng-container>
+</ng-container>

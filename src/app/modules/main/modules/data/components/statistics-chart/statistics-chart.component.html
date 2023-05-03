@@ -1,0 +1,11 @@
+<ul class="nt-legend">
+  <li class="nt-legend__item nt-legend__item--download">
+    {{ this.chart?.data.datasets[0].label }}
+  </li>
+  <li class="nt-legend__item nt-legend__item--upload">
+    {{ this.chart?.data.datasets[1].label }}
+  </li>
+</ul>
+<div [style.height.px]="chartHeight">
+  <canvas [id]="id" [style.height.%]="100" [style.width.%]="100"></canvas>
+</div>

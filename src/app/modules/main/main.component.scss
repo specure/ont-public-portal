@@ -1,0 +1,47 @@
+@import 'src/assets/styles/core';
+
+.#{$moq__ns} {
+  &layout {
+    display: flex;
+    flex: 1 0 auto;
+    justify-content: center;
+    margin: 0;
+    min-height: 100%;
+    padding-bottom: rem(32);
+    padding-top: calc($header__size + rem(40));
+    position: relative;
+
+    @include screen-medium {
+      margin: 0;
+      padding-top: rem(62);
+    }
+  }
+  &widget-content {
+    & > div {
+      left: 50%;
+      top: 50%;
+      position: fixed;
+      transform: translate(-50%, -50%);
+    }
+  }
+  &drawer {
+    z-index: 30;
+  }
+}
+
+mat-drawer-container {
+  flex-grow: 1;
+  min-height: calc(100vh - #{$footer__max-height} - #{$header__size});
+
+  @include screen-medium {
+    min-height: calc(100vh - #{$header__size--md} - #{$footer__max-height--md});
+
+    @media (max-height: #{$open-data__height-break-point--md}) {
+      min-height: auto;
+    }
+  }
+
+  @include screen-xs {
+    min-height: calc(100vh - #{$header__size--md} - #{$footer__max-height--sm});
+  }
+}
