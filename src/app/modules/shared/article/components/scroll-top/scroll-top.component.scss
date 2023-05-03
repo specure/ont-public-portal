@@ -1,0 +1,13 @@
+@import "src/assets/styles/core";
+
+.#{$moq__ns} {
+  &scroll-top {
+    background-color: rgba($color__primary, .85);
+    width: rem(64);
+    height: rem(64);
+    position: fixed;
+    border-radius: 50%;
+    right: rem(24);
+    z-index: 102;
+  }
+}

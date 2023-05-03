@@ -1,0 +1,47 @@
+.smartbanner.smartbanner-nettest {
+  background: rgb(245, 250, 255);
+  bottom: 0;
+  box-shadow: 0 0 3px 1px rgba(0, 0, 0, 0.1);
+  color: black;
+  position: fixed;
+  top: auto;
+
+  .smartbanner {
+    &-button {
+      align-items: center;
+      background: $color__link;
+      border-radius: 3px;
+      box-shadow: none;
+      display: flex;
+      height: 30px;
+      text-shadow: none;
+      color: $color__alt;
+      overflow: hidden;
+      padding: 12px;
+
+      * {
+        background: $color__link;
+      }
+    }
+
+    &-close {
+      color: $color__primary;
+    }
+
+    &-icon {
+      background-color: white;
+    }
+
+    &-title {
+      font-weight: bold;
+    }
+  }
+
+  .#{$moq__ns}link--external::after {
+    display: none;
+  }
+}
+
+.smartbanner-show {
+  margin-top: 0;
+}

@@ -1,0 +1,47 @@
+@import 'src/assets/styles/core';
+
+.#{$moq__ns}container {
+  border-radius: rem(8);
+  display: flex;
+
+  &__col {
+    &--text {
+      padding-right: 11%;
+    }
+    &--form {
+      font-size: rem(14);
+      min-width: rem(420);
+      padding: rem(156) rem(46) rem(46) 0;
+    }
+  }
+
+  @include screen-small {
+    flex-direction: column;
+
+    &__col {
+      &--text {
+        padding-right: 11%;
+      }
+      &--form {
+        font-size: rem(14);
+        min-width: rem(270);
+        padding-left: rem(46);
+        padding-top: 0;
+      }
+    }
+  }
+}
+
+.#{$moq__ns}small-print {
+  color: rgba($color: #000000, $alpha: 0.5);
+  font-size: rem(12);
+  margin-top: rem(16);
+
+  * {
+    color: rgba($color: #000000, $alpha: 0.5) !important;
+  }
+}
+
+.mat-flat-button {
+  margin-top: rem(42);
+}

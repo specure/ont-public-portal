@@ -1,0 +1,170 @@
+@import 'src/assets/styles/core';
+
+.#{$moq__ns}banner {
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  height: rem(320);
+  left: 0;
+  overflow: hidden;
+  position: absolute;
+  right: 0;
+  top: $header__size;
+
+  @include screen-medium {
+    top: $header__size--md;
+  }
+
+  &__wrapper {
+    height: rem(320);
+    margin-bottom: rem(-120);
+  }
+}
+
+.#{$moq__ns}bc {
+  margin-bottom: rem(38);
+  margin-top: rem(-20);
+  &__link {
+    align-items: center;
+    display: flex;
+
+    .mat-icon {
+      margin-right: rem(8);
+    }
+  }
+}
+
+.#{$moq__ns}container {
+  &__col {
+    flex: 0 0 50%;
+    padding: 0 rem(4);
+
+    &--coat {
+      flex: 0 0 rem(95);
+
+      &:first-child {
+        flex-basis: rem(142);
+        margin: 0 auto;
+        max-height: rem(178);
+      }
+    }
+
+    &--coat,
+    &--map {
+      padding: 0;
+
+      img {
+        max-height: 100%;
+        max-width: 100%;
+      }
+    }
+
+    &--coat {
+      text-align: center;
+      img {
+        max-height: rem(140);
+      }
+    }
+
+    &--map {
+      flex-basis: 65%;
+    }
+
+    &--map-link {
+      align-items: flex-end;
+      display: flex;
+      flex: 1;
+    }
+  }
+
+  &__row {
+    margin: 0 rem(-4);
+
+    &--vertical {
+      flex-direction: column-reverse;
+    }
+  }
+
+  &--padded {
+    height: rem(320);
+    padding: rem(40) rem(40) rem(24) rem(20);
+    width: 100%;
+
+    .#{$moq__ns}container__row,
+    .#{$moq__ns}container__col {
+      height: 100%;
+    }
+  }
+
+  &--no-data {
+    padding: rem(24) rem(40);
+  }
+}
+
+.#{$moq__ns}dd {
+  margin-bottom: rem(24);
+}
+
+.#{$moq__ns}dt {
+  color: $color__label;
+  font-size: rem(12);
+  font-weight: bold;
+  line-height: rem(14);
+  margin-bottom: rem(7);
+  text-transform: capitalize;
+}
+
+.#{$moq__ns}stats {
+  width: 100%;
+
+  &__footer {
+    color: rgba($color: $color__primary, $alpha: 0.5);
+    font-size: rem(12);
+    padding: rem(16) rem(20);
+  }
+
+  &__row {
+    margin-top: rem(20);
+  }
+
+  &__filter {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+    padding: rem(20) rem(40);
+
+    .mat-radio-button {
+      margin-right: rem(24);
+    }
+  }
+}
+
+.#{$moq__ns}title {
+  font-size: rem(24);
+  line-height: rem(32);
+  margin-bottom: rem(38);
+}
+
+@include screen-small {
+  #info {
+    flex-direction: column;
+
+    .#{$moq__ns}container__col:last-child {
+      .#{$moq__ns}container--padded {
+        .#{$moq__ns}container__row:last-of-type {
+          flex-direction: column-reverse;
+
+          .#{$moq__ns}container__col {
+            &:first-of-type {
+              flex: 1;
+            }
+            &:last-of-type {
+              text-align: center;
+              img {
+                max-height: rem(220);
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

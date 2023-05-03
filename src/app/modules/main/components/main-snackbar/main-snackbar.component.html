@@ -1,0 +1,15 @@
+<div class="nt-container" *transloco="let t">
+  <div class="nt-container__col">
+    <mat-icon
+      [className]="
+        data.status === 'success'
+          ? 'nt-icon nt-icon--success'
+          : 'nt-icon nt-icon--error'
+      "
+      >{{
+        data.status === 'success' ? 'check_circle' : 'report_problem_black'
+      }}</mat-icon
+    >
+  </div>
+  <div class="nt-container__col">{{ t(data.message) }}</div>
+</div>

@@ -1,0 +1,117 @@
+<ng-container *ngIf="project">
+  <ng-container *ngIf="project.slug !== 'nt'; else initialStateOnt">
+    <div class="nt-test-invite" *transloco="let t">
+      <section class="nt-test-invite__panel">
+        <h1 class="nt-test-title">{{ t('test.title') }}</h1>
+        <button
+          mat-flat-button
+          color="primary"
+          class="nt-run-test-btn"
+          (click)="launchTest.emit($event)"
+        >
+          {{ t('test.start_test') }}
+        </button>
+        <div
+          class="nt-test-invite__server server-selector"
+          *ngIf="project.can_choose_server || !isProd"
+        >
+          <p>{{ t('test.measurement_server') }}&nbsp;&nbsp;</p>
+          <mat-form-field @openClose *ngIf="servers">
+            <mat-select
+              class="nt-test-invite__server-select"
+              (selectionChange)="changeServer($event)"
+              [value]="selectedServer"
+              [compareWith]="objectComparisonFunction"
+            >
+              <mat-select-trigger>
+                <p>{{ selectedServer?.title }}</p>
+              </mat-select-trigger>
+              <mat-option *ngFor="let server of servers" [value]="server">
+                {{ server.distance | distance }}{{ server.title }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <a
+          class="nt-link"
+          [routerLink]="getMethodologyLink(t('test.learn_about_route'))"
+        >
+          <mat-icon>info</mat-icon>
+          <span>{{ t('test.learn_about') }}</span>
+        </a>
+      </section>
+      <section class="nt-test-invite__image">
+        <img
+          @openClose
+          *ngIf="testInviteImg$ | async as testInviteImg"
+          [src]="testInviteImg?.url"
+          [alt]="
+            testInviteImg?.alternativeText ||
+            testInviteImg?.caption ||
+            testInviteImg?.name ||
+            ''
+          "
+          [title]="
+            testInviteImg?.alternativeText ||
+            testInviteImg?.caption ||
+            testInviteImg?.name ||
+            ''
+          "
+          width="280"
+          height="280"
+        />
+      </section>
+    </div>
+  </ng-container>
+</ng-container>
+
+<ng-template #initialStateOnt>
+  <div class="nt-test-invite nt-test-invite--ont" *transloco="let t">
+    <section class="nt-test-invite__panel">
+      <h1 class="nt-test-title">{{ t('test.title') }}</h1>
+      <button
+        mat-flat-button
+        color="primary"
+        class="nt-run-test-btn"
+        (click)="launchTest.emit($event)"
+      >
+        {{ t('test.start_test') }}
+      </button>
+      <div
+        class="nt-test-invite__server server-selector"
+        *ngIf="project?.can_choose_server || !isProd"
+      >
+        <p>{{ t('test.measurement_server') }}&nbsp;&nbsp;</p>
+        <mat-form-field
+          @openClose
+          *ngIf="isBrowser && servers; else loadingServers"
+        >
+          <mat-select
+            class="nt-test-invite__server-select"
+            (selectionChange)="changeServer($event)"
+            [value]="selectedServer"
+            [compareWith]="objectComparisonFunction"
+          >
+            <mat-select-trigger>
+              <p>{{ selectedServer?.title }}</p>
+            </mat-select-trigger>
+            <mat-option *ngFor="let server of servers" [value]="server">
+              {{ server.distance | distance }}{{ server.title }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <a
+        class="nt-link"
+        [routerLink]="getMethodologyLink(t('test.learn_about_route'))"
+      >
+        <mat-icon>info</mat-icon>
+        <span>{{ t('test.learn_about') }}</span>
+      </a>
+    </section>
+  </div>
+</ng-template>
+
+<ng-template #loadingServers>
+  <div class="nt-loading-servers"></div>
+</ng-template>

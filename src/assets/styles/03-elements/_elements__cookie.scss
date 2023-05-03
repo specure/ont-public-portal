@@ -1,0 +1,61 @@
+#{$moq__ns}cookie-widget .#{$moq__ns}cookie * {
+  font-family: $moq__font--default;
+  font-size: rem(16);
+
+  .nt-cookie__dialog {
+    border-radius: rem(8);
+  }
+
+  .MuiSelect-root {
+    text-transform: capitalize;
+  }
+
+  .MuiButton-outlinedSecondary {
+    border: rem(2) solid $color__link;
+  }
+
+  .MuiSwitch-colorSecondary {
+    color: white;
+  }
+
+  .MuiSwitch-switchBase + .MuiSwitch-track {
+    opacity: 1;
+  }
+
+  .Mui-disabled.MuiSwitch-switchBase.Mui-checked + .MuiSwitch-track {
+    opacity: 0.3;
+  }
+
+  .MuiSwitch-track {
+    background-color: black;
+  }
+
+  .Mui-checked {
+    .MuiSwitch-track {
+      background-color: $color__link;
+    }
+  }
+
+  .MuiSwitch-track {
+    border-radius: rem(10);
+  }
+
+  .MuiSwitch-root {
+    width: rem(65);
+    height: rem(45);
+  }
+
+  .MuiButtonBase-root {
+    padding: rem(15);
+  }
+
+  .MuiSwitch-thumb {
+    width: rem(15);
+    height: rem(15);
+  }
+}
+
+body .MuiListItem-root {
+  text-transform: capitalize !important;
+  font-family: $moq__font--default !important;
+}

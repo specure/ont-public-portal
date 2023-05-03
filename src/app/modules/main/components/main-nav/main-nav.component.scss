@@ -1,0 +1,62 @@
+@import "src/assets/styles/core";
+@import "../main-menu-item/main-menu-item.component.scss";
+
+.#{$moq__ns}{
+  &menu {
+    display: flex;
+    font-size: rem(14);
+  }
+  &header__nav {
+    color: $header__link-color;
+    justify-content: flex-end;
+
+    &>mat-menu {
+      position: absolute;
+    }
+  }
+  &footer__nav{
+    display: block;
+    margin-bottom: rem(12);
+
+    #{$moq__ns}main-menu-item {
+      display: inline;
+
+      &:not(:last-child)::after {
+        content: '|';
+        font-size: rem(16);
+        line-height: 1;
+        margin: 0 rem(8);
+        position: relative;
+        top: rem(3);
+      }
+    }
+  }
+  &sidenav__nav.#{$moq__ns}menu {
+    flex-direction: column;
+
+    .#{$moq__ns}menu__item {
+      flex: 0 0 rem(60);
+    }
+
+    #{$moq__ns}main-menu-item {
+      flex: 0 0 rem(60);
+    }
+  }
+
+  @include screen-medium {
+    &footer__nav{
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-bottom: rem(12);
+
+      #{$moq__ns}main-menu-item {
+        flex: 0;
+
+        &:not(:last-child)::after {
+          margin: 0 rem(3);
+        }
+      }
+    }
+  }
+}

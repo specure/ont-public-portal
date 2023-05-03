@@ -1,0 +1,151 @@
+@use '@angular/material' as mat;
+@import '../01-tools/tools__pixel-to-rem';
+
+@include mat.legacy-core();
+
+$color__primary: black;
+$color__link: #0958bd;
+$color__alt: white;
+$color__accent: #ff004d;
+$color__btn--hover: darken(
+  $color: white,
+  $amount: 2,
+);
+$color__label: black;
+
+$aside__link-color: #212222;
+$aside__link-color--alt: $color__link;
+$aside__title-color: black;
+
+$header__background: white;
+$header__background--alt: $color__alt;
+$header__size: 92px;
+$header__size--md: 64px;
+$header__link-color: black;
+$header__link-color--active: $color__link;
+$header__link-color--alt: black;
+$header__link-color--accent: $color__accent;
+$header__text-color: $color__alt;
+$header__link-map-color: black;
+
+$footer__background: white;
+$footer__link-color: black;
+$footer__text-color: black;
+$footer__max-height: rem(150);
+$footer__max-height--md: rem(214);
+$footer__max-height--sm: rem(239);
+
+$main__background: $color__alt;
+$main__background--alt: rgba(0, 0, 0, 0.85);
+$main__text-color: black;
+$main__text-color--alt: $color__alt;
+$main__text-color--pale: #6d7278;
+
+$open-data__height-break-point--md: 768px;
+$open-data__height-break-point--sm: 860px;
+
+$palette__primary: (
+  50: #e1ebf7,
+  100: #b5cdeb,
+  200: #84acde,
+  300: #538ad1,
+  400: #2e71c7,
+  500: #0958bd,
+  600: #0850b7,
+  700: #0647ae,
+  800: #053da6,
+  900: #022d98,
+  A100: #c3d0ff,
+  A200: #90a8ff,
+  A400: #5d80ff,
+  A700: #446cff,
+  contrast: (
+    50: rgba(black, 0.87),
+    100: rgba(black, 0.87),
+    200: rgba(black, 0.87),
+    300: rgba(black, 0.87),
+    400: rgba(black, 0.87),
+    500: white,
+    600: white,
+    700: white,
+    800: rgba(white, 0.87),
+    900: rgba(white, 0.87),
+    A100: rgba(black, 0.87),
+    A200: white,
+    A400: white,
+    A700: white,
+  ),
+);
+$palette__accent: (
+  50: #aaa,
+  100: #999,
+  200: #777,
+  300: #666,
+  400: #555,
+  500: #000,
+  600: #333,
+  700: #222,
+  800: #111,
+  900: #000,
+  A100: #ffffff,
+  A200: #ffffff,
+  A400: #cfdaff,
+  A700: #b6c6ff,
+  contrast: (
+    50: rgba(black, 0.87),
+    100: rgba(black, 0.87),
+    200: rgba(black, 0.87),
+    300: rgba(black, 0.87),
+    400: rgba(black, 0.87),
+    500: white,
+    600: white,
+    700: white,
+    800: rgba(white, 0.87),
+    900: rgba(white, 0.87),
+    A100: rgba(black, 0.87),
+    A200: white,
+    A400: white,
+    A700: white,
+  ),
+);
+$palette__warn: (
+  50: #f9e2e5,
+  100: #f1b8bf,
+  200: #e88895,
+  300: #de586a,
+  400: #d7354a,
+  500: #d0112a,
+  600: #cb0f25,
+  700: #c40c1f,
+  800: #be0a19,
+  900: #b3050f,
+  A100: #ffddde,
+  A200: #ffaaad,
+  A400: #ff777b,
+  A700: #ff5e62,
+  contrast: (
+    50: rgba(black, 0.87),
+    100: rgba(black, 0.87),
+    200: rgba(black, 0.87),
+    300: rgba(black, 0.87),
+    400: rgba(black, 0.87),
+    500: white,
+    600: white,
+    700: white,
+    800: rgba(white, 0.87),
+    900: rgba(white, 0.87),
+    A100: rgba(black, 0.87),
+    A200: white,
+    A400: white,
+    A700: white,
+  ),
+);
+
+$moq__header-logo__height: rem(40);
+$moq__footer-logo__height: rem(40);
+
+$moq__font--default: 'Roboto', Helvetica, Arial, sans-serif;
+$moq__font--alt: 'Helvetica Neue Regular', Arial, sans-serif;
+$moq__base-font-size: 16;
+
+$moq__container-width--large: 1280px;

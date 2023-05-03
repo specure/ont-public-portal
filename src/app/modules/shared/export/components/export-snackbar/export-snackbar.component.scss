@@ -1,0 +1,67 @@
+@import 'src/assets/styles/core';
+
+.#{$moq__ns}container {
+  background: none;
+
+  &__row {
+    background: #323232;
+    border-radius: rem(4);
+    box-shadow: 0 0 rem(8) 0 rgba(0, 0, 0, 0.24);
+    height: rem(80);
+    justify-content: stretch;
+    margin-top: rem(8);
+  }
+
+  &__col {
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  &__col:first-of-type {
+    flex: 0 0 rem(60);
+  }
+
+  &__col:nth-of-type(2) {
+    align-items: flex-start;
+    flex: 1;
+    overflow: hidden;
+
+    p {
+      max-width: 100%;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+  }
+
+  &__col:nth-of-type(3) {
+    flex: 0 0 rem(96);
+  }
+
+  &__col:last-of-type {
+    flex: 0 0 rem(56);
+  }
+}
+
+.#{$moq__ns}icon {
+  &--warning {
+    color: #dba104;
+  }
+  &--ready {
+    color: #748ad5;
+  }
+}
+
+.#{$moq__ns}btn {
+  color: #748ad5;
+
+  &:disabled {
+    color: rgba(255, 255, 255, 0.5);
+  }
+}
+
+.#{$moq__ns}spinner {
+  margin: auto;
+}

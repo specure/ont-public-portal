@@ -1,0 +1,49 @@
+@import 'src/assets/styles/core';
+
+#{$moq__ns}general-card,
+.#{$moq__ns}container {
+  width: calc(100% + 50px);
+}
+
+.#{$moq__ns}functional-cookie {
+  &__wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: rem(150);
+    width: 100%;
+  }
+
+  &__text {
+    max-width: rem(600);
+    text-align: center;
+    color: $main__text-color;
+    font-size: rem(18);
+    line-height: rem(36);
+  }
+
+  &__button {
+    background-color: $color__link;
+    color: color(white);
+    padding: rem(12) rem(16);
+    margin-top: rem(34);
+    margin-bottom: rem(170);
+  }
+
+  &__icon-wrapper {
+    margin-bottom: rem(24);
+    width: 64px;
+    height: 64px;
+    background-color: rgba($main__text-color, 0.05);
+    border-radius: 50%;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #f8d960;
+
+    &--success {
+      color: $color__link;
+    }
+  }
+}

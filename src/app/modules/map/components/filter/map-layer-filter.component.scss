@@ -1,0 +1,148 @@
+@import '../../map.component.scss';
+
+.#{$moq__ns}select-option {
+  font-family: $moq__font--default;
+  font-size: rem(16);
+}
+
+.#{$moq__ns}filters {
+  background: #ffffff;
+  border-radius: 4px;
+  height: fit-content;
+  left: rem(24);
+  position: absolute;
+  top: rem(106);
+  transition: all 0.3s ease-in-out;
+  width: rem(420);
+  z-index: 10;
+
+  @include screen-small {
+    left: rem(8);
+    right: rem(8);
+    top: rem(72);
+    width: auto;
+
+    &--expanded {
+      border-radius: 0;
+      left: 0;
+      right: 0;
+      top: rem(64);
+    }
+  }
+
+  &__sec {
+    padding: rem(20);
+
+    @include screen-small {
+      align-items: center;
+      display: flex;
+      padding: rem(8);
+
+      &:first-of-type .#{$moq__ns}filters__mobile-operators {
+        margin-left: rem(12);
+      }
+    }
+
+    &--collapsed {
+      padding-top: 0;
+
+      & + .#{$moq__ns}filters__disclaimer {
+        @include screen-small {
+          padding: 0 rem(8) rem(8);
+        }
+      }
+    }
+
+    &--expanded {
+      box-shadow: inset 0 rem(1) 0 0 rgba(0, 32, 91, 0.05);
+    }
+
+    &--operators {
+      padding-bottom: 0;
+
+      @include screen-small {
+        mat-form-field {
+          font-size: rem(14);
+          padding-bottom: 0;
+        }
+
+        .mat-expansion-panel:first-of-type {
+          display: none;
+        }
+      }
+    }
+  }
+
+  &__disclaimer {
+    padding: 0 rem(20) rem(20);
+    font-size: rem(14);
+    line-height: rem(16);
+
+    @include screen-small {
+      padding: 0 rem(8) rem(16);
+    }
+  }
+
+  &__mobile-operators {
+    font-family: $moq__font--default;
+    font-size: rem(14);
+    font-weight: bold;
+
+    &--collapsed {
+      line-height: rem(16);
+      padding-bottom: rem(20);
+    }
+
+    &--expanded {
+      line-height: rem(14);
+    }
+  }
+
+  &__technology-filter-button {
+    color: $main__text-color;
+    height: rem(32);
+    display: inline-block;
+    width: rem(64);
+    border-radius: rem(16);
+    line-height: rem(32);
+    text-align: center;
+  }
+
+  .#{$moq__ns}disabled-button-background {
+    background-color: rgba(0, 32, 91, 0.05);
+  }
+
+  &__technology-filter-button + &__technology-filter-button {
+    margin-left: rem(4);
+  }
+
+  .#{$moq__ns}panel-toggle {
+    margin-right: rem(20);
+  }
+
+  .#{$moq__ns}two-g-color {
+    background-color: #f7b500;
+  }
+
+  .#{$moq__ns}three-g-color {
+    background-color: #6dd400;
+  }
+
+  .#{$moq__ns}four-g-color {
+    background-color: #44d7b6;
+  }
+
+  .#{$moq__ns}five-g-color {
+    background-color: #6236ff;
+    color: #ffffff;
+  }
+
+  .#{$moq__ns}all-color {
+    background-color: #4069f2;
+    color: #ffffff;
+  }
+}
+
+.mat-radio-button {
+  margin-bottom: rem(10);
+}

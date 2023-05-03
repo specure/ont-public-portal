@@ -1,0 +1,28 @@
+a,
+.#{$moq__ns}link {
+  border-bottom: 1px solid transparent;
+  color: $color__link;
+  font-size: inherit;
+  font-weight: 500;
+
+  &:hover,
+  &:focus {
+    color: darken($color__link, 10%);
+    text-decoration: none;
+  }
+
+  &:visited {
+    color: lighten($color__link, 5%);
+  }
+
+  &--external {
+    &::after {
+      content: 'open_in_new';
+      display: inline-block;
+      font-family: 'Material Icons';
+      font-size: 75%;
+      margin-left: 0.1em;
+      transform: translateY(-1px);
+    }
+  }
+}

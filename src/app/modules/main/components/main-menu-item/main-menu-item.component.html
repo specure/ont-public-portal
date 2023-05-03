@@ -1,0 +1,61 @@
+<ng-container
+  *ngTemplateOutlet="
+    !!item.url
+      ? external
+      : item.route !== null && item.route !== undefined
+      ? default
+      : noRoute;
+    context: { $implicit: item }
+  "
+></ng-container>
+
+<ng-template #default let-item>
+  <a
+    mat-button
+    class="nt-menu__item {{ item.className }} {{
+      isRouterLinkActive(item) ? 'nt-menu__item--active' : ''
+    }}"
+    [routerLink]="item.route"
+    routerLinkActive="nt-menu__item--active"
+    (click)="menuClick.emit($event)"
+    role="menuitem"
+    [ntLinkRel]="item.route"
+  >
+    <ng-container
+      *ngTemplateOutlet="linkText; context: { $implicit: item }"
+    ></ng-container>
+  </a>
+</ng-template>
+
+<ng-template #external let-item>
+  <a
+    mat-button
+    class="nt-menu__item {{ item.className }}"
+    [href]="item.url"
+    role="menuitem"
+    target="_blank"
+  >
+    <ng-container
+      *ngTemplateOutlet="linkText; context: { $implicit: item }"
+    ></ng-container>
+  </a>
+</ng-template>
+
+<ng-template #noRoute let-item>
+  <a
+    mat-button
+    href="javascript:;"
+    class="nt-menu__item {{ item.className }}"
+    (click)="menuClick.emit($event)"
+    role="menuitem"
+  >
+    <ng-container
+      *ngTemplateOutlet="linkText; context: { $implicit: item }"
+    ></ng-container>
+  </a>
+</ng-template>
+
+<ng-template #linkText let-item>
+  <mat-icon *ngIf="item.icon">{{ item.icon }}</mat-icon>
+  <span>{{ item | translate : 'label' }}</span>
+</ng-template>

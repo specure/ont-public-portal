@@ -1,0 +1,73 @@
+<ng-container *transloco="let t">
+  <div class="nt-container__row" id="open-data">
+    <nt-general-card [title]="title$ | async" appearance="full-width">
+      <article class="nt-container transparent">
+        <div class="nt-open-data__wrapper">
+          <p>{{ t('opendata.info') }}</p>
+        </div>
+        <div class="nt-open-data__wrapper">
+          <mat-radio-group [(ngModel)]="exportType">
+            <mat-radio-button class="nt-open-data__radio" value="monthly">{{
+              t('opendata.monthly')
+            }}</mat-radio-button>
+            <mat-radio-button class="nt-open-data__radio" value="full">{{
+              t('opendata.full')
+            }}</mat-radio-button>
+          </mat-radio-group>
+          <fieldset class="nt-open-data__fieldset">
+            <label
+              *ngIf="exportType === 'monthly'"
+              class="nt-open-data__select"
+            >
+              {{ t('opendata.month') }}
+              <mat-select [(ngModel)]="month">
+                <mat-option *ngFor="let month of months" [value]="month">
+                  <div>{{ month }}</div>
+                </mat-option>
+              </mat-select>
+            </label>
+            <div *ngIf="exportType === 'full'" class="nt-open-data__desc">
+              {{ t('opendata.full_description') }}
+            </div>
+          </fieldset>
+          <button
+            type="button"
+            class="nt-btn nt-open-data__button"
+            (click)="load()"
+            mat-flat-button
+          >
+            {{ t('opendata.download') }}
+          </button>
+
+          <div class="nt-open-data__footer">
+            <pre
+              *ngIf="content; else defaultLicense"
+              [innerHtml]="content"
+            ></pre>
+          </div>
+        </div>
+      </article>
+    </nt-general-card>
+  </div>
+</ng-container>
+
+<ng-template #defaultLicense>
+  <p *transloco="let t">
+    {{ t('opendata.license') }}
+    <a href="https://creativecommons.org/licenses/by/4.0/"
+      >Creative Commons Attribution 4.0 (CC BY 4.0)</a
+    >
+    {{ t('opendata.license.end') }}
+  </p>
+  <div class="nt-open-data__icons">
+    <a
+      rel="license"
+      href="http://creativecommons.org/licenses/by/4.0/"
+      target="_blank"
+      ><img
+        alt="Creative Commons License"
+        style="border-width: 0"
+        src="https://i.creativecommons.org/l/by/4.0/88x31.png"
+    /></a>
+  </div>
+</ng-template>

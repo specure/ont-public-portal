@@ -1,0 +1,45 @@
+//	CONTENT THIS FILE:
+//		# NAMESPACE
+//      # CONFIG - FONTS
+//		# BASIC VALUE FOR PROJECT
+//      # HEADINGS | FONT-SIZE DEFAULT
+//		# CONFIG - GRID - FLOAT
+//		# CONFIG - RESPONSIVE TYPE
+
+$moq__ns: nt- !default;
+
+$moq__font--default: 'New Atten', Helvetica, Arial, sans-serif;
+$moq__font--alt: 'New Atten', 'Helvetica Neue Regular', Arial, sans-serif;
+
+$moq__base-font-size: 14;
+$moq__base-line-height: 1.5;
+$moq__base-background-color: white;
+$moq__base-color: black;
+$moq__base-background-document: gray5;
+$moq__base-typography-color: gray1;
+$moq__base-spacing: 30;
+$moq__base-path-font: '/assets/fonts/' !default;
+$moq__base-path-img: '../assets/images/';
+$moq__base-path-svg: '../assets/images/svg/';
+$moq__base-path-icons: '../assets/images/icons/';
+
+$moq__h1: 36 !default;
+$moq__h2: 32 !default;
+$moq__h3: 28 !default;
+$moq__h4: 24 !default;
+$moq__h5: 20 !default;
+$moq__h6: 18 !default;
+
+$moq__screen-xs: 375px;
+$moq__screen-sm: 768px;
+$moq__screen-md: 960px;
+$moq__screen-lg: 1440px;
+
+$header__menu-item-size: 92px;
+$header__menu-item-font-size: 16px;
+$header__language-dropdown-top: 50px;
+
+$moq__header-logo__height: 65px;
+$moq__footer-logo__height: 80px;
+
+$moq__container-width--large: 935px;

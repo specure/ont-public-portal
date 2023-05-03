@@ -1,0 +1,5 @@
+//__<<ngThemingMigrationEscapedComment0>>__
+
+@mixin card-shadow($width: 1px, $color: rgba(0, 0, 0, 0.12)) {
+    border: $width solid $color;
+}

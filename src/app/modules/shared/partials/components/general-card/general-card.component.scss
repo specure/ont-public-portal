@@ -1,0 +1,126 @@
+@import 'src/assets/styles/core';
+
+.#{$moq__ns}container {
+  border-radius: rem(8);
+  &__header {
+    align-items: center;
+    color: scale-color($main__text-color, $alpha: -50%);
+    display: flex;
+    font-size: rem(14);
+    font-weight: bold;
+    padding: rem(16) rem(24);
+    text-transform: none;
+  }
+
+  &__header:first-letter {
+    text-transform: capitalize;
+  }
+
+  &__body {
+    padding: 0 rem(24);
+  }
+
+  &--body-expanded {
+    .#{$moq__ns}container{
+      &__body {
+        padding: 0
+      }
+    }
+  }
+
+  &--header-collapsed, &--widget {
+    .#{$moq__ns}container{
+      background: none;
+
+      &__header {
+        color: color(black1);
+        font-family: $moq__font--alt;
+        font-size: rem(18);
+        font-weight: 300;
+        margin-bottom: rem(16);
+        padding: 0;
+        text-transform: none;
+        min-width: rem(210);
+      }
+
+      &__body {
+        padding: 0;
+      }
+    }
+  }
+
+  &--header-collapsed {
+    .#{$moq__ns}container{
+      &__header {
+        padding: 0 rem(20);
+      }
+    }
+  }
+
+  &--page-header {
+    border-radius: 0;
+    margin-bottom: rem(20);
+    padding: 0;
+
+    .#{$moq__ns}container{
+
+      &__header {
+        color: color(black);
+      }
+
+      &__body {
+        align-items: center;
+        height: rem(52);
+      }
+    }
+  }
+
+  &--inverted {
+    background: $main__background--alt;
+    color: $main__text-color--alt;
+
+    .#{$moq__ns}container{
+
+      &__header {
+        display: none;
+      }
+
+      &__body {
+        font-size: rem(14);
+      }
+    }
+  }
+
+  &--full-width {
+    .#{$moq__ns}container {
+      &__body {
+        padding: 0 !important;
+      }
+
+      @include screen-medium {
+        &__header {
+          padding: rem(16) rem(10) 0;
+        }
+      }
+    }
+  }
+
+  &--widget {
+    background: none;
+  }
+}
+
+.#{$moq__ns}icon {
+  align-items: center;
+  display: flex;
+  justify-content: center;
+
+  &--gray-circle {
+    background-color: color(gray1);
+    border-radius: 50%;
+    color: color(gray2);
+    flex: 0 0 rem(48);
+    height: rem(48);
+    margin-right: rem(16);
+  }
+}

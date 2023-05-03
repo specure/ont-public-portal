@@ -1,0 +1,79 @@
+<nt-general-card appearance="widget">
+  <div
+    *ngIf="page$ | async as page"
+    class="nt-container"
+    style="background: none; width: 100%"
+  >
+    <div class="nt-container__row" *transloco="let t">
+      <aside
+        class="nt-aside"
+        *ngIf="tocIsEnabled"
+        [ngStyle]="{
+          position: tocStyle.position,
+          maxHeight: tocHeight,
+          top: tocStyle.top
+        }"
+      >
+        <header class="nt-aside__header">
+          {{ title || t('article.toc') }}
+        </header>
+        <nav class="nt-aside__navigation" id="toc">
+          <ol @openClose *ngIf="toc$ | async as toc" class="nt-list">
+            <li
+              *ngFor="let tocMenu of toc; let i = index"
+              class="nt-aside__link nt-aside__link--{{ tocMenu.tagName }}"
+            >
+              <button
+                *ngIf="shouldExist(tocMenu)"
+                mat-icon-button
+                (click)="toggleToc(i)"
+                class="nt-btn"
+                [class.nt-btn--expanded]="expandedTocs.includes(i)"
+              >
+                <mat-icon>arrow_drop_down</mat-icon>
+              </button>
+              <ng-container
+                *ngTemplateOutlet="tocItemTpl; context: { $implicit: tocMenu }"
+              ></ng-container>
+              <div class="nt-wrapper">
+                <ol
+                  *ngIf="shouldExist(tocMenu) && expandedTocs.includes(i)"
+                  @submenuAnimation
+                  class="nt-list"
+                >
+                  <li
+                    *ngFor="let tocItem of tocMenu.children"
+                    class="nt-aside__link nt-aside__link--{{ tocItem.tagName }}"
+                  >
+                    <ng-container
+                      *ngTemplateOutlet="
+                        tocItemTpl;
+                        context: { $implicit: tocItem }
+                      "
+                    ></ng-container>
+                  </li>
+                </ol>
+              </div>
+            </li>
+          </ol>
+        </nav>
+      </aside>
+      <article
+        class="nt-article nt-container__col nt-container__col66"
+        [class.nt-article--fullwidth]="!tocIsEnabled"
+      >
+        <pre [innerHTML]="page | mainSafeHtml : testStarter"></pre>
+      </article>
+    </div>
+  </div>
+</nt-general-card>
+<ng-template #tocItemTpl let-tocItem>
+  <a
+    [href]="tocItem?.href"
+    [id]="tocItem?.linkId"
+    class="nt-link"
+    [class.nt-link--active]="isTocItemActive(tocItem)"
+    >{{ tocItem?.text }}</a
+  >
+</ng-template>
+<nt-scroll-top></nt-scroll-top>

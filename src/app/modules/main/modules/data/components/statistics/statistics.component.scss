@@ -1,0 +1,121 @@
+@import 'src/assets/styles/core';
+
+$border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+
+.#{$moq__ns}stats {
+  width: 100%;
+
+  &__chart {
+    min-height: rem(70);
+    padding: rem(16) rem(20) rem(4);
+  }
+
+  &__filter {
+    border-bottom: $border-bottom;
+    padding: 0 rem(20);
+
+    .mat-form-field {
+      padding-bottom: 0;
+      width: rem(192);
+    }
+
+    .mat-radio-group {
+      margin-right: rem(16);
+    }
+
+    .mat-radio-button {
+      margin-right: rem(24);
+    }
+  }
+
+  &__footer {
+    color: rgba($color: $color__primary, $alpha: 0.5);
+    font-size: rem(12);
+    padding: rem(16) rem(20);
+  }
+
+  &__header {
+    border-bottom: $border-bottom;
+    padding: rem(30) rem(20) rem(24);
+
+    &--no-border {
+      border-bottom: none;
+    }
+  }
+
+  &__lead {
+    font-size: rem(14);
+    margin-top: rem(8);
+  }
+
+  &__list {
+    columns: 3;
+    list-style: none;
+
+    * {
+      font-size: rem(16);
+    }
+
+    &--cols4 {
+      columns: unset;
+    }
+
+    .#{$moq__ns}stats {
+      &__dd {
+        columns: 4;
+        margin-bottom: rem(36);
+
+        @include screen-small {
+          columns: 3;
+        }
+
+        @include screen-xs {
+          columns: 2;
+        }
+
+        * {
+          font-size: rem(14);
+        }
+      }
+
+      &__dt {
+        font-size: rem(18);
+        margin-bottom: rem(11);
+      }
+      &__link {
+        display: block;
+      }
+    }
+  }
+
+  &__row {
+    margin-bottom: rem(20);
+  }
+
+  &__search {
+    margin-top: rem(6);
+
+    .mat-icon {
+      font-size: rem(24);
+      margin-right: rem(18);
+      position: relative;
+      top: rem(9);
+    }
+  }
+
+  &__title {
+    font-size: rem(24);
+    line-height: rem(40);
+  }
+
+  &--municipalities {
+    padding: rem(40);
+
+    .#{$moq__ns}stats {
+      &__header {
+        margin-bottom: rem(24);
+        padding: 0;
+      }
+    }
+  }
+}

@@ -1,0 +1,43 @@
+<ng-container *transloco="let t">
+  <nt-general-card class="nt-functional-cookie">
+    <div class="nt-functional-cookie__wrapper">
+      <ng-container *ngIf="!functionalCookiesEnabled">
+        <div class="nt-functional-cookie__icon-wrapper">
+          <mat-icon>report_problem</mat-icon>
+        </div>
+        <p class="nt-functional-cookie__text">
+          {{ t('test.functional_cookie_warning') }}
+        </p>
+        <button
+          type="button"
+          class="nt-btn nt-functional-cookie__button"
+          (click)="enableCookie()"
+          mat-flat-button
+        >
+          {{ t('test.functional_cookie_enable') }}
+        </button>
+      </ng-container>
+
+      <ng-container *ngIf="functionalCookiesEnabled">
+        <ng-container *ngIf="cookieWidgetEnabled === true">
+          <div
+            class="nt-functional-cookie__icon-wrapper nt-functional-cookie__icon-wrapper--success"
+          >
+            <mat-icon>check</mat-icon>
+          </div>
+          <p class="nt-functional-cookie__text">
+            {{ t('test.functional_cookie_enabled') }}
+          </p>
+        </ng-container>
+        <button
+          type="button"
+          class="nt-btn nt-functional-cookie__button"
+          (click)="runTest()"
+          mat-flat-button
+        >
+          {{ t('test.functional_cookie_run') }}
+        </button>
+      </ng-container>
+    </div>
+  </nt-general-card>
+</ng-container>

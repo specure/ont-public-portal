@@ -1,0 +1,35 @@
+.#{$moq__ns}input {
+  &--search {
+    flex: 0 0 33%;
+    padding: 0;
+
+    @include screen-medium {
+      flex: 0 0 50%;
+    }
+
+    @include screen-small {
+      flex: 0 0 100%;
+    }
+
+    &.mat-form-field-appearance-legacy {
+      .mat-form-field {
+        &-infix {
+          display: flex;
+          padding: rem(5) 0;
+        }
+        &-label-wrapper {
+          .mat-form-field-label {
+            color: color(gray6);
+            margin-left: rem(24);
+            text-transform: none;
+          }
+        }
+      }
+      .mat-icon {
+        color: color(gray6);
+        font-size: rem(20);
+        line-height: 1.1;
+      }
+    }
+  }
+}

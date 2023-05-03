@@ -1,0 +1,24 @@
+@import "../../../assets/styles/core";
+
+.#{$moq__ns}panel-toggle {
+    background: rgba(0, 32, 91, 0.05);
+    border: none;
+    border-radius: 50%;
+    box-shadow: none;
+    display: inline-block;
+    height: rem(24);
+    line-height: rem(24);
+    vertical-align: middle;
+    width: rem(24);
+
+    mat-icon {
+        color: $main__text-color;
+        transition: transform .3s ease-in-out;
+    }
+
+    &--switched {
+        mat-icon {
+            transform: rotate(180deg);
+        }
+    }
+}

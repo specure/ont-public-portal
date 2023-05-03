@@ -1,0 +1,16 @@
+/*------------------------------------
+    # ELEMENT BODY
+------------------------------------*/
+
+body {
+    position: relative;
+    font-family: $moq__font--default;
+    color: color($moq__base-color);
+    background-color: color($moq__base-background-document);
+    overflow-x: hidden;
+    -webkit-text-size-adjust: 100%;
+}
+
+/*------------------------------------
+   # END ELEMENT BODY
+------------------------------------*/

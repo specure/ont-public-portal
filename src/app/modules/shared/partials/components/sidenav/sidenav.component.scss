@@ -1,0 +1,97 @@
+@import '../../../../../../assets/styles/core.scss';
+
+.#{$moq__ns}sidenav {
+  height: 100vh;
+  width: rem(306);
+
+  &__sec {
+    padding: rem(20) 0;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 rem(1) 0 0 #efefef;
+
+    &--language {
+      align-items: center;
+      flex-direction: row;
+      padding: 0 0 0 rem(38);
+
+      .mat-icon {
+        margin-right: rem(4);
+      }
+    }
+
+    &--ratel-logo {
+      padding: 0 0 0 rem(32);
+
+      img {
+        height: 80px;
+        width: 80px;
+        margin-top: -8px;
+        margin-bottom: -8px;
+      }
+    }
+  }
+
+  &__footer-copyright {
+    padding: rem(20) rem(40);
+    box-shadow: none;
+    color: $main__text-color;
+    font-family: $moq__font--default;
+    font-size: rem(16);
+    letter-spacing: 0;
+    line-height: rem(24);
+  }
+
+  &__close-button {
+    padding: rem(6) rem(29);
+    width: 100%;
+    text-align: left;
+    line-height: rem(51);
+
+    &-icon {
+      float: right;
+
+      mat-icon {
+        vertical-align: middle;
+      }
+    }
+  }
+
+  &__language-select {
+    padding: rem(22) rem(30) rem(22) 0;
+    line-height: rem(20);
+    height: rem(64);
+    color: $main__text-color;
+    font-family: $moq__font--default;
+    font-size: rem(16);
+    letter-spacing: 0;
+  }
+}
+
+.#{$moq__ns}menu-button {
+  color: $main__text-color;
+  padding: rem(20) rem(40);
+  width: 100%;
+  font-family: $moq__font--default;
+  font-size: rem(16);
+  letter-spacing: 0;
+  line-height: rem(17);
+  text-align: left;
+  text-transform: none;
+
+  &--active {
+    color: $color__link;
+  }
+
+  &--feedback {
+    color: $color__accent;
+
+    &::after {
+      display: none;
+    }
+
+    @media screen and (min-height: 671px) {
+      display: none;
+    }
+  }
+}

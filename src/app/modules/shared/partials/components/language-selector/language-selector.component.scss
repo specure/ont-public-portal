@@ -1,0 +1,29 @@
+@import 'src/assets/styles/core';
+
+.mat- {
+  &form-field {
+    padding-bottom: 0;
+    text-transform: capitalize;
+    width: rem(100);
+  }
+  &select {
+    font-size: $header__menu-item-font-size;
+  }
+}
+
+.#{$moq__ns} {
+  &header__select {
+    margin-top: 0;
+  }
+}
+
+mat-select-trigger {
+  .#{$moq__ns}language-selector__language-name {
+    align-items: center;
+    display: flex;
+
+    .mat-icon {
+      margin-right: rem(4);
+    }
+  }
+}

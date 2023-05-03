@@ -1,0 +1,213 @@
+@import '../test-home/test-home.component.scss';
+
+$primary-button-gradient: linear-gradient(84.79deg, #0958bd 0%, #00acb1 100%),
+  linear-gradient(
+    84.79deg,
+    rgba(9, 88, 189, 0.2) 0%,
+    rgba(0, 172, 177, 0.2) 100%
+  );
+$secondary-button-gradient: linear-gradient(84.79deg, #00acb1 0%, #09bd5e 100%),
+  linear-gradient(
+    84.79deg,
+    rgba(0, 172, 177, 0.2) 0%,
+    rgba(9, 189, 94, 0.2) 100%
+  );
+$tertiary-button-gradient: linear-gradient(84.79deg, #09bd5e 0%, #ffcc00 100%),
+  linear-gradient(
+    84.79deg,
+    rgba(9, 189, 94, 0.2) 0%,
+    rgba(255, 204, 0, 0.2) 100%
+  );
+
+@keyframes pulse {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 100%;
+  }
+}
+
+@keyframes hover {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 100%;
+  }
+}
+
+.#{$moq__ns}test-invite {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  margin: 0 rem(64);
+  padding-bottom: rem(20);
+
+  h1 {
+    font-size: rem(36);
+    line-height: rem(43);
+  }
+
+  &__panel {
+    display: flex;
+    flex-basis: 50%;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    .#{$moq__ns}link {
+      .mat-icon {
+        margin-right: rem(9);
+        vertical-align: middle;
+      }
+    }
+  }
+  &__image {
+    flex-basis: 50%;
+    margin-left: rem(32);
+    min-width: rem(280);
+    @include screen-medium {
+      min-width: rem(127);
+    }
+    @include screen-small {
+      display: none;
+    }
+
+    img {
+      max-height: rem(227);
+      width: 100%;
+    }
+  }
+  &__server {
+    display: flex;
+    margin-bottom: rem(35);
+    align-items: baseline;
+    p {
+      white-space: nowrap;
+    }
+    mat-select {
+      mat-select-trigger {
+        p {
+          color: $color__link;
+        }
+      }
+    }
+  }
+}
+
+.#{$moq__ns}run-test-btn {
+  font-size: rem(16);
+  margin: rem(40) 0;
+  border-radius: 30px;
+  justify-content: center;
+
+  & + .#{$moq__ns}link {
+    max-width: rem(260);
+
+    .mat-icon {
+      margin-right: rem(9);
+      vertical-align: middle;
+    }
+  }
+}
+
+.#{$moq__ns}test-invite--ont {
+  margin: rem(120) 0;
+
+  .#{$moq__ns}test-title {
+    font-size: rem(48);
+    font-weight: bold;
+  }
+
+  .#{$moq__ns}test-invite {
+    &__panel {
+      align-items: center;
+      flex-basis: auto;
+      justify-content: center;
+    }
+  }
+
+  .#{$moq__ns}run-test-btn {
+    background: $primary-button-gradient;
+    border: rgb(205, 230, 241) 10px solid;
+    border-radius: rem(42);
+    height: rem(84);
+    font-size: rem(24);
+    font-weight: bold;
+    margin-bottom: rem(80);
+    margin-top: rem(80);
+    overflow: hidden;
+    width: rem(232);
+    -webkit-mask-image: -webkit-radial-gradient(white, black);
+
+    &::before {
+      animation: pulse 1s ease-out 10ms infinite alternate;
+      background: $secondary-button-gradient;
+      content: '';
+      display: block;
+    }
+
+    &:hover {
+      border-color: rgb(232, 243, 213);
+      transition: border-color 300ms;
+      &::before {
+        animation: hover 300ms ease-out;
+        background: $tertiary-button-gradient;
+      }
+    }
+  }
+}
+
+$dot_diameter: 6px;
+
+.#{$moq__ns}loading-servers {
+  position: relative;
+  width: $dot_diameter;
+  height: $dot_diameter;
+  border-radius: calc($dot_diameter/2);
+  background-color: $color__primary;
+  color: $color__primary;
+  animation: loading-servers 500ms infinite linear alternate;
+  animation-delay: 0s;
+  top: -2px;
+
+  &::before {
+    left: calc($dot_diameter/2 + $dot_diameter);
+    width: $dot_diameter;
+    height: $dot_diameter;
+    border-radius: calc($dot_diameter/2);
+    background-color: $color__primary;
+    color: $color__primary;
+    animation: loading-servers 500ms infinite alternate;
+    animation-delay: 250ms;
+  }
+
+  &::after {
+    left: calc(($dot_diameter/2 + $dot_diameter) * 2);
+    width: $dot_diameter;
+    height: $dot_diameter;
+    border-radius: calc($dot_diameter/2);
+    background-color: $color__primary;
+    color: $color__primary;
+    animation: loading-servers 500ms infinite alternate;
+    animation-delay: 500ms;
+  }
+}
+.#{$moq__ns}loading-servers::before,
+.#{$moq__ns}loading-servers::after {
+  content: '';
+  display: inline-block;
+  position: absolute;
+  top: 0;
+}
+
+@keyframes loading-servers {
+  0% {
+    background-color: $color__primary;
+  }
+  50%,
+  100% {
+    background-color: fade-out($color__primary, 0.7);
+  }
+}

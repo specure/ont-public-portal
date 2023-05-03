@@ -1,0 +1,40 @@
+/*------------------------------------
+    # ELEMENT DIALOG
+-------------------------------------*/
+
+.#{$moq__ns}dialog {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-width: rem(300);
+    &__header {
+        padding-bottom: rem(20);
+        font-size: rem(20);
+    }
+    &__actions{
+        padding: rem(20) 0;
+        button{
+        margin: 0 10px;
+        }
+    }
+    &__text{
+        padding: rem(20) 0;
+        margin: 0;
+        color: #2d2d2d;
+        font-family: inherit;
+        font-size: rem(16);
+        max-width: rem(512);
+        white-space: pre-wrap;
+    }
+
+    @include screen-xs {
+        min-width: auto;
+        width: calc(100vw - 110px);
+    }
+    &--complex {
+        align-items: baseline;
+        div {
+            align-self: center;
+        }
+    }
+}
