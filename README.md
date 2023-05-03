@@ -20,6 +20,8 @@ The portal depends on a CMS to display such things as menus and texts. Any headl
 
 The portal also depends on the control server for running tests and keeping history of results. It is published separately at https://github.com/specure.
 
+The portal uses Mapbox to display the map with the measurement data. See https://docs.mapbox.com/studio-manual/guides/ and https://docs.mapbox.com/mapbox-gl-js/guides/ for the official documentation.
+
 To run the app itself in the debug mode call:
 
 ```
