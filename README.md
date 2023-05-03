@@ -2,7 +2,7 @@
 
 ## Setup
 
-The folder `config` can contain files specific for different flavors, such as images, styles, templates. `config/environments` folder should contain `*.json` files with settings for various environments, such as dev, beta, etc. You can set there such things, as the URLs of your control server and CMS, Mapbox IDs and so on. It contains an example `environment.json`, which will be used when running the app in the debug mode.
+The folder `config` can contain files specific for different flavors, such as images, styles, templates. `config/environments` folder is to contain `*.json` files with settings for various environments, such as dev, beta, etc. You can set there such things, as the URLs of your control server and CMS, Mapbox IDs and so on. It contains an example `environment.json`, which will be used when running the app in the debug mode.
 
 To configure the project for a certain flavor run:
 
@@ -12,7 +12,15 @@ To configure the project for a certain flavor run:
 
 ## Running
 
-To run in the debug mode using the dev server use:
+The portal depends on a CMS to display such things as menus and texts. Any headless CMS can be used for this purpose (e.g. Strapi or Wordpress with the headless plugin), as long as its responses are formatted correctly. The folder `examples/api` contains a simple server, providing example responses for some of the CMS endpoints used by the portal. All the endpoints are listed in the `config/nettest/environments/environment.ts`. You can run this server by calling:
+
+```
+    node examples/api
+```
+
+The portal also depends on the control server for running tests and keeping history of results. It is published separately at https://github.com/specure.
+
+To run the app itself in the debug mode call:
 
 ```
     npm run start

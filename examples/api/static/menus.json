@@ -1,0 +1,123 @@
+[
+  {
+    "id": 0,
+    "name": "Header Menu Nettest",
+    "placement": "header",
+    "flavor": null,
+    "created_at": "2021-05-21T13:08:19.990Z",
+    "updated_at": "2023-04-25T13:32:31.286Z",
+    "menu_items": [
+      {
+        "id": 1,
+        "label": "Methodology",
+        "parent": null,
+        "url": null,
+        "description": null,
+        "menu_order": 1,
+        "page": 1,
+        "route": "methodology",
+        "content": null,
+        "created_at": "2021-05-21T13:12:05.303Z",
+        "updated_at": "2022-12-19T07:40:59.480Z",
+        "translations": [
+          {
+            "id": 1,
+            "label": "Methodik",
+            "description": null,
+            "locale": {
+              "id": 10,
+              "iso": "de",
+              "name": "German",
+              "created_at": "2022-02-01T15:42:58.260Z",
+              "updated_at": "2022-02-01T15:42:58.275Z"
+            },
+            "content": null,
+            "created_at": "2023-04-13T09:16:34.302Z",
+            "updated_at": "2023-04-13T11:44:50.092Z",
+            "language": "de"
+          }
+        ]
+      },
+      {
+        "id": 2,
+        "label": "Internet speed test",
+        "parent": null,
+        "url": null,
+        "description": null,
+        "menu_order": -3,
+        "page": 2,
+        "route": "internet-speed-test",
+        "content": null,
+        "created_at": "2022-11-04T09:09:25.051Z",
+        "updated_at": "2023-04-27T07:37:56.589Z",
+        "translations": []
+      },
+      {
+        "id": 3,
+        "label": "My history",
+        "parent": null,
+        "url": null,
+        "description": null,
+        "menu_order": -2,
+        "page": 3,
+        "route": "history",
+        "content": null,
+        "created_at": "2021-05-21T13:09:32.933Z",
+        "updated_at": "2023-04-27T07:38:08.984Z",
+        "translations": []
+      }
+    ]
+  },
+  {
+    "id": 11,
+    "name": "Footer Menu Nettest",
+    "placement": "footer",
+    "flavor": null,
+    "created_at": "2021-05-21T13:25:19.532Z",
+    "updated_at": "2023-04-26T12:30:26.882Z",
+    "menu_items": [
+      {
+        "id": 4,
+        "label": "Privacy policy",
+        "parent": null,
+        "url": null,
+        "description": null,
+        "menu_order": 0,
+        "page": 4,
+        "route": "privacy-policy",
+        "content": null,
+        "created_at": "2021-05-21T13:24:48.251Z",
+        "updated_at": "2022-12-19T07:41:52.329Z",
+        "translations": []
+      },
+      {
+        "id": 5,
+        "label": "About",
+        "parent": null,
+        "url": null,
+        "description": "About Nettest",
+        "menu_order": -1,
+        "page": 5,
+        "route": "about",
+        "content": null,
+        "created_at": "2021-05-21T13:17:21.008Z",
+        "updated_at": "2023-02-13T14:15:00.732Z",
+        "translations": []
+      },
+      {
+        "id": 6,
+        "label": "Terms of use",
+        "parent": null,
+        "url": null,
+        "description": null,
+        "menu_order": 0,
+        "page": 6,
+        "route": "terms-of-use",
+        "content": null,
+        "created_at": "2021-05-21T13:27:53.316Z",
+        "updated_at": "2022-12-19T07:41:58.983Z",
+        "translations": []
+      }
+    ]
+  }
+]

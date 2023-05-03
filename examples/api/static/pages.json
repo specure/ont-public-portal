@@ -1,0 +1,31 @@
+{
+  "id": 0,
+  "name": "Run test",
+  "description": "This is a speedtest tool to test the quality of your Internet connection. The measurement methodology is open source and available on Github.",
+  "keywords": "speed,test,speedtest,speed test,bandwidth speed test,internet speed test,broadband speed test,speakeasy,flash,cnet,internet,network,connection,broadband,bandwidth,latency,ping,throughput,download,upload,connection,dsl,adsl,cable,t1,isp,voip,ip,ip address,tcp",
+  "content": null,
+  "created_at": "2022-11-04T09:11:55.563Z",
+  "updated_at": "2023-04-27T07:37:56.586Z",
+  "enable_table_of_contents": false,
+  "editable_content": true,
+  "translations": [
+    {
+      "id": 0,
+      "name": "Run test",
+      "description": "This is a speedtest tool to test the quality of your Internet connection. The measurement methodology is open source and available on Github.",
+      "keywords": "speed,test,speedtest,speed test,bandwidth speed test,internet speed test,broadband speed test,speakeasy,flash,cnet,internet,network,connection,broadband,bandwidth,latency,ping,throughput,download,upload,connection,dsl,adsl,cable,t1,isp,voip,ip,ip address,tcp",
+      "content": "This is a speedtest tool to test the quality of your Internet connection. The measurement methodology is open source and available on Github.",
+      "locale": {
+        "id": 0,
+        "iso": "en",
+        "name": "English",
+        "created_at": "2021-01-13T09:31:06.761Z",
+        "updated_at": "2021-01-13T09:31:06.761Z"
+      },
+      "created_at": "2023-02-13T08:55:38.810Z",
+      "updated_at": "2023-03-22T09:36:15.343Z",
+      "enable_table_of_contents": false,
+      "language": "en"
+    }
+  ]
+}

@@ -245,7 +245,8 @@ export class MainHttpService {
           (versions) =>
             versions.find((v) => v.component === environment.versionName)
               ?.version ?? 'n/a'
-        )
+        ),
+        catchError(() => of('n/a'))
       )
   }
 }

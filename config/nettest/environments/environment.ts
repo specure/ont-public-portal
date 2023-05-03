@@ -16,25 +16,25 @@ export const environment = {
     },
     projectSlug: 'nt',
     type: 'strapi',
-    url: 'https://dev.example.org',
+    url: 'http://localhost:3000',
     routes: {
       articles: '/articles',
       export: '/export',
       exportQueue: '/exportQueue',
       feedback: '/feedback',
-      menus: '/menus',
+      menus: '/menus.json',
       municipalities: '/municipalities',
-      translations: '/translations',
+      translations: '/translations.json',
       images: '/images',
       clearExport: '/clearExport',
       cookiesProject: '/cookies/project',
       cookieConsents: '/cookie-consents',
-      pages: '/pages',
+      pages: '/pages.json',
       pagesProject: '/pages/project',
-      projects: '/projects',
+      projects: '/projects.json',
       scheduleExport: '/scheduleExport',
       uploads: '/uploads',
-      versions: '/versions',
+      versions: '/versions.json',
     },
   },
   controlServer: {
@@ -88,7 +88,7 @@ export const environment = {
         '&at={center}' +
         '&in=countryCode:USA' +
         '&limit=10' +
-        '&apiKey=***REMOVED***',
+        '&apiKey=',
     },
     municipalitiesMaxZoom: 7.5,
     hexagons10kmMaxZoom: 10,
@@ -100,7 +100,7 @@ export const environment = {
   },
   robotsMayIndex: false,
   recaptchaSiteKey: null,
-  versionName: null,
+  versionName: 'ont-public-portal',
 }
 
 /*
