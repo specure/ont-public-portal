@@ -7,7 +7,7 @@ The folder `config` is meant to contain files specific for different flavors, su
 To configure the project for a certain flavor run:
 
 ```
-    npm run configure -- ${flavor}
+    npm run configure -- <YOUR_FLAVOR>
 ```
 
 ## Running
