@@ -2,7 +2,7 @@
 
 ## Setup
 
-The folder `config` can contain files specific for different flavors, such as images, styles, templates. `config/environments` folder is to contain `*.json` files with settings for various environments, such as dev, beta, etc. You can set there such things, as the URLs of your control server and CMS, Mapbox IDs and so on. It contains an example `environment.json`, which will be used when running the app in the debug mode.
+The folder `config` is meant to contain files specific for different flavors, such as images, styles, templates. `config/<YOUR_FLAVOR>/environments` folder is meant to contain `*.json` files with settings for various environments, e.g. dev, beta, etc. You can set there the URLs of your control server and CMS, Mapbox IDs and so on. `config/nettest/environments` contains an example `environment.json`, which will be used when running the app in the debug mode.
 
 To configure the project for a certain flavor run:
 
@@ -12,15 +12,17 @@ To configure the project for a certain flavor run:
 
 ## Running
 
-The portal depends on a CMS to display such things as menus and texts. Any headless CMS can be used for this purpose (e.g. Strapi or Wordpress with the headless plugin), as long as its responses are formatted correctly. The folder `examples/api` contains a simple server, providing example responses for some of the CMS endpoints used by the portal. All the endpoints are listed in the `config/nettest/environments/environment.ts`. You can run this server by calling:
+The portal depends on the control server for running tests and keeping history of results. Its code is published separately at https://github.com/specure.
+
+The portal uses a CMS to display such things as menus and texts. Any headless CMS can be used for this purpose (e.g. Strapi or Wordpress with the headless plugin), as long as its responses are formatted correctly. The folder `examples/api` contains a simple server, providing example responses for some of the CMS endpoints used by the portal. You can run this server by calling:
 
 ```
     node examples/api
 ```
 
-The portal also depends on the control server for running tests and keeping history of results. It is published separately at https://github.com/specure.
+All the endpoints used by the portal are listed in the `config/nettest/environments/environment.ts` under `cms.routes` and `controlServer.routes` sections.
 
-The portal uses Mapbox to display the map with the measurement data. See https://docs.mapbox.com/studio-manual/guides/ and https://docs.mapbox.com/mapbox-gl-js/guides/ for the official documentation.
+The portal uses Mapbox to display the map with the measurement data. See https://docs.mapbox.com/studio-manual/guides/ and https://docs.mapbox.com/mapbox-gl-js/guides/ for the official documentation. It also uses HERE API for search and geocoding, https://developer.here.com/documentation/geocoding-search-api/dev_guide/index.html. The section `map` in the `config/nettest/environments/environment.ts` contains all the required settings.
 
 To run the app itself in the debug mode call:
 
@@ -42,7 +44,7 @@ To build the app for production use:
 
 ## Pre-rendering
 
-To pre-render pages, to server them statically from your server, you can specify their routes in `config/<YOUR_FLAVOR>/prerender-routes.txt`, then run:
+To pre-render pages, to serve them statically later, you can specify their routes in `config/<YOUR_FLAVOR>/prerender-routes.txt`, then run:
 
 ```
     npm run configure <YOUR_FLAVOR> && npm run prerender:prod
