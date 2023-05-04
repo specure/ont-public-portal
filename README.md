@@ -47,7 +47,7 @@ To build the app for production use:
 To pre-render pages, to serve them statically later, you can specify their routes in `config/<YOUR_FLAVOR>/prerender-routes.txt`, then run:
 
 ```
-    npm run configure <YOUR_FLAVOR> && npm run prerender:prod
+    npm run configure -- <YOUR_FLAVOR> && npm run prerender:prod
 ```
 
 `npm run prerender:dev` and `npm run prerender:beta` are also available.
