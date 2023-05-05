@@ -97,6 +97,11 @@ export const environment = {
   },
   municipality: {
     mapLayout: 'horizontal',
+    forTesting: {
+      name: 'Oslo',
+      code: '0301',
+      website: 'https://www.oslo.kommune.no',
+    },
   },
   robotsMayIndex: false,
   recaptchaSiteKey: null,

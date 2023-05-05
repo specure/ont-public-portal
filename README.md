@@ -22,7 +22,7 @@ The portal uses a CMS to display such things as menus and texts. Any headless CM
 
 All the endpoints used by the portal are listed in the `config/nettest/environments/environment.ts` under `cms.routes` and `controlServer.routes` sections.
 
-The portal uses Mapbox to display the map with the measurement data. See https://docs.mapbox.com/studio-manual/guides/ and https://docs.mapbox.com/mapbox-gl-js/guides/ for the official documentation. It also uses HERE API for search and geocoding, https://developer.here.com/documentation/geocoding-search-api/dev_guide/index.html. The section `map` in the `config/nettest/environments/environment.ts` contains all the required settings.
+The portal uses Mapbox to display the map with the measurement data. See https://docs.mapbox.com/studio-manual/guides/ and https://docs.mapbox.com/mapbox-gl-js/guides/ for the official documentation. HERE API is also used, for search and geocoding, https://developer.here.com/documentation/geocoding-search-api/dev_guide/index.html. The section `map` in the `config/nettest/environments/environment.ts` contains all the required settings.
 
 To run the app itself in the debug mode call:
 
@@ -51,3 +51,25 @@ To pre-render pages, to serve them statically later, you can specify their route
 ```
 
 `npm run prerender:dev` and `npm run prerender:beta` are also available.
+
+## Testing
+
+You have to set up the portal with the control server, the CMS, and the map before running tests. Once it's done, start the app and launch:
+
+```
+    npm run configure-playwright-dev
+```
+
+in parallel, to configure the environment for the test suite. Then use:
+
+```
+    npm run test
+```
+
+or
+
+```
+    npm run test-headless
+```
+
+to run all the avaialable tests.
