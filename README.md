@@ -1,4 +1,4 @@
-# ONT Public Portal
+# Open Nettest Public Portal
 
 ## Setup
 
