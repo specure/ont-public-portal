@@ -35,10 +35,7 @@ export class PathResolver implements Resolve<any> {
           /**
            * This is to scroll the page to the anchor after the data is loaded
            */
-          if (
-            navigationEvent?.navigationTrigger === 'imperative' &&
-            navigationEvent?.url?.includes('#')
-          ) {
+          if (navigationEvent?.url?.includes('#')) {
             this.store.dispatch(
               action({
                 route: actualPath,

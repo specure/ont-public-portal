@@ -1,6 +1,6 @@
 import { Component } from '@angular/core'
 import { Store } from '@ngrx/store'
-import { map, withLatestFrom } from 'rxjs'
+import { map, take, withLatestFrom } from 'rxjs'
 import { Paginator } from 'src/app/core/classes/paginator.class'
 import { ERoutes } from 'src/app/core/enums/routes.enum'
 import { IPaginator } from 'src/app/core/interfaces/paginator.interface'
@@ -19,7 +19,7 @@ export const ARTICLES_PAGINATOR_SIZE = 6
 })
 export class ArticlesListComponent {
   articles$ = this.store.select(getArticlesState).pipe(
-    withLatestFrom(this.config.defaultArticleCover$),
+    withLatestFrom(this.config.defaultArticleCover$.pipe(take(1))),
     map(([s, defaultCover]) => {
       this.paginator = s?.paginator
       this.defaultCover = defaultCover
@@ -32,29 +32,6 @@ export class ArticlesListComponent {
   totalArticles = 0
 
   constructor(private config: ConfigService, private store: Store<IAppState>) {}
-
-  getArticleClasses(index: number) {
-    const classList = ['nt-article']
-    switch (index) {
-      case 0:
-        classList.push('nt-article--primary')
-        break
-      case 1:
-      case 2:
-        classList.push('nt-article--secondary')
-        break
-      default:
-        classList.push('nt-article--tertiary')
-        break
-    }
-    return classList
-  }
-
-  getArticlePicture(article: IArticle) {
-    return article?.picture?.url
-      ? this.config.getFullImageUrl(article.picture.url)
-      : this.defaultCover
-  }
 
   loadMore() {
     const paginator = new Paginator(

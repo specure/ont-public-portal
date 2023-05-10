@@ -46,21 +46,4 @@ export class FullArticleComponent {
     private transloco: TranslocoService,
     private translate: TranslatePipe
   ) {}
-
-  getAuthor(article: IArticle, t: (key: string) => string) {
-    const { firstname, lastname, username } = article.created_by
-    let author = ''
-    if (firstname) {
-      author = firstname
-      if (lastname) {
-        author += ` ${lastname}`
-      }
-    } else {
-      author = username
-    }
-    if (author) {
-      return t('articles.created_by').replace('%author%', author)
-    }
-    return ''
-  }
 }

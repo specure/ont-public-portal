@@ -6,16 +6,19 @@
   >
     <article class="nt-container nt-article">
       <div class="nt-cover">
-        <img [src]="cover" [alt]="article.title" />
+        <img [src]="cover" [alt]="article | translate : 'title'" />
       </div>
-      <h1 class="nt-title">{{ article.title }}</h1>
+      <h1 class="nt-title">{{ article | translate : 'title' }}</h1>
       <p class="nt-meta">
         {{
           article.published_at
-            | date: t('history.date_format'):undefined:activeLanguage
-        }}{{ getAuthor(article, t) }}
+            | date : t('history.date_format') : undefined : activeLanguage
+        }}{{ article | articleAuthor : t }}
       </p>
-      <pre class="nt-content" [innerHtml]="article.content"></pre>
+      <pre
+        class="nt-content"
+        [innerHtml]="article | translate : 'content'"
+      ></pre>
     </article>
   </div>
 </nt-general-card>

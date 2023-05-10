@@ -8,18 +8,20 @@
       <ng-container
         *ngFor="let article of articles; let i = index; trackBy: useArticleId"
       >
-        <article [ngClass]="getArticleClasses(i)">
+        <article [ngClass]="i | articleClasses">
           <div class="nt-cover">
-            <img [src]="getArticlePicture(article)" [alt]="article.title" />
+            <img
+              [src]="article | articlePicture : defaultCover"
+              [alt]="article | translate : title"
+            />
           </div>
           <h2 class="nt-title">
-            <a [routerLink]="article.slug">{{ article.title }}</a>
+            <a [routerLink]="article.slug">{{
+              article | translate : 'title'
+            }}</a>
           </h2>
           <p class="nt-description">
-            <ng-container *ngIf="article.description">{{
-              article.description
-            }}</ng-container
-            >&nbsp;
+            {{ article | translate : 'description' }}&nbsp;
             <a [routerLink]="article.slug">{{ t('articles.read_more') }}</a>
           </p>
         </article>
