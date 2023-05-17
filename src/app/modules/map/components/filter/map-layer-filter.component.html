@@ -75,6 +75,7 @@
               <mat-radio-button
                 *ngFor="let providerType of providerTypes"
                 [value]="providerType.value"
+                style="display: block"
               >
                 {{ t(providerType.label) }}
               </mat-radio-button>
