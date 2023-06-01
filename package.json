@@ -1,4 +1,6 @@
 {
+  "author": "Specure GmbH",
+  "license": "Apache-2.0",
   "name": "ont-public-portal",
   "version": "3.1.2",
   "scripts": {
