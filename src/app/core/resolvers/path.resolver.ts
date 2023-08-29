@@ -50,7 +50,7 @@ export class PathResolver implements Resolve<any> {
                   if (!anchor) {
                     anchor = globalThis.document?.querySelector(`.${hash[1]}`)
                   }
-                  if (anchor || value > 2000) {
+                  if (anchor || value > 60000) {
                     anchor?.scrollIntoView()
                     int.unsubscribe()
                   }

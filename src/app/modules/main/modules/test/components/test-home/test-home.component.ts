@@ -114,11 +114,17 @@ export class TestHomeComponent implements OnDestroy {
   testStages = ETestStages
 
   get appStoreImg() {
-    return `${environment.cms.routes.images}/${this.language}/app-store-badge.png`
+    if (this.language === 'nb') {
+      return `${environment.cms.routes.images}/${this.language}/app-store-badge.png`
+    }
+    return `${environment.cms.routes.images}/en/app-store-badge.png`
   }
 
   get googlePlayImg() {
-    return `${environment.cms.routes.images}/${this.language}/google-play-badge.png`
+    if (this.language === 'nb') {
+      return `${environment.cms.routes.images}/${this.language}/google-play-badge.png`
+    }
+    return `${environment.cms.routes.images}/en/google-play-badge.png`
   }
 
   get isMobile() {
