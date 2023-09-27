@@ -113,6 +113,19 @@
     margin-bottom: 0;
   }
 
+  @media screen and (max-width: $moq__container-width--large) {
+    margin: rem(10) 0 0;
+
+    &__header {
+      padding: rem(14) rem(10);
+    }
+
+    &__body {
+      border-top: 0;
+      padding: 0 rem(20) !important;
+    }
+  }
+
   @include screen-medium {
     margin: rem(10) 0 0;
 

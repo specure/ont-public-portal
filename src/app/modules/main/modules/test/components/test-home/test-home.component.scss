@@ -274,6 +274,32 @@ $run-again-btn-width: rem(190);
         margin: rem(12) rem(-12) rem(10);
       }
     }
+
+    @media screen and (max-width: $moq__container-width--large) {
+      flex-direction: column;
+      margin: 0;
+
+      nt-general-card {
+        margin: 0;
+      }
+
+      .#{$moq__ns}test-chart {
+        width: 100%;
+      }
+    }
+
+    @include screen-medium {
+      flex-direction: column;
+      margin: 0;
+
+      nt-general-card {
+        margin: 0;
+      }
+
+      .#{$moq__ns}test-chart {
+        width: 100%;
+      }
+    }
   }
 
   @include screen-medium {
@@ -371,19 +397,6 @@ $run-again-btn-width: rem(190);
 
       a {
         margin-bottom: rem(24);
-      }
-    }
-
-    &#test-charts {
-      flex-direction: column;
-      margin: 0;
-
-      nt-general-card {
-        margin: 0;
-      }
-
-      .#{$moq__ns}test-chart {
-        width: 100%;
       }
     }
   }
