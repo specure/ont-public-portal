@@ -11,7 +11,7 @@ test.describe('Map Page Responsiveness', () => {
 
   test.beforeAll(async ({ browser }) => {
     page = await start(browser, `/en/${ERoutes.MAP}`, true)
-    await expect(page.locator('canvas.mapboxgl-canvas')).toBeVisible()
+    await expect(page.locator('canvas.maplibregl-canvas')).toBeVisible()
     await expect(page.locator('.nt-cookie__dialog')).toBeVisible()
     await handleCookieWidget(page, EButtonTypes.ALL)
   })
@@ -150,7 +150,7 @@ test.describe('Map Page Responsiveness', () => {
   test('should show the map and controls for tablets at 900 width', async () => {
     await page.setViewportSize({ width: 900, height: 600 })
 
-    await expect(page.locator('canvas.mapboxgl-canvas')).toBeVisible()
+    await expect(page.locator('canvas.maplibregl-canvas')).toBeVisible()
     await checkTimeline()
 
     await checkFiltersExpanded()
@@ -165,7 +165,7 @@ test.describe('Map Page Responsiveness', () => {
   test('should show the map and controls for phones at 768 width', async () => {
     await page.setViewportSize({ width: 768, height: 600 })
 
-    await expect(page.locator('canvas.mapboxgl-canvas')).toBeVisible()
+    await expect(page.locator('canvas.maplibregl-canvas')).toBeVisible()
     await checkTimeline()
 
     await checkFiltersExpanded()
@@ -180,7 +180,7 @@ test.describe('Map Page Responsiveness', () => {
   test('should show the map and controls for phones at 375 width', async () => {
     await page.setViewportSize({ width: 375, height: 600 })
 
-    await expect(page.locator('canvas.mapboxgl-canvas')).toBeVisible()
+    await expect(page.locator('canvas.maplibregl-canvas')).toBeVisible()
     await checkTimeline()
 
     await checkFiltersExpanded()

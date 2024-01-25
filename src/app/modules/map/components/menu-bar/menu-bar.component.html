@@ -20,7 +20,7 @@
         class="mapboxgl-ctrl-geocoder--input"
         [ngModel]="geocodeRequest"
         (ngModelChange)="this.geocodeRequestChanged.next($event)"
-        (keyup.enter)="flyToOnEnter()"
+        (keyup.enter)="flyToActiveCandidate()"
         [placeholder]="t('map.search')"
       />
       <div *ngIf="geocodeResponse" class="suggestions-wrapper">
@@ -37,7 +37,7 @@
               *ngFor="let candidate of geocodeResponse; let i = index"
               [class.active]="i === activeCandidate"
             >
-              <a (click)="flyTo(candidate)" (mouseover)="activeCandidate = i">
+              <a (mouseover)="activeCandidate = i">
                 <dl class="mapboxgl-ctrl-geocoder--suggestion">
                   <dt class="mapboxgl-ctrl-geocoder--suggestion-title">
                     {{ candidate.title }}

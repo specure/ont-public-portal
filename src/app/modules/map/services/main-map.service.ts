@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core'
 import { IMainMapStyle } from '../interfaces/main-map-style.interface'
 import { MapState } from '../../../store/map/map.reducer'
 import { ENetworkOperator } from '../components/filter/map-layer-filter.component'
-import { LngLat, Map, Marker } from 'mapbox-gl'
+import { LngLat, Map, Marker } from 'maplibre-gl'
 import { environment } from 'src/environments/environment'
 import { ELayerPrefix } from '../enums/layer-prefix.enum'
 import { IGeocodingFeature } from '../interfaces/geocoding-feature.interface'
@@ -16,14 +16,14 @@ export class MainMapService {
   get style(): IMainMapStyle {
     return {
       name: 'map.style.street',
-      url: `mapbox://styles/specure/${environment.map.styleId}`,
+      url: environment.map.styleUrl,
     }
   }
 
   get ispStyle(): IMainMapStyle {
     return {
       name: 'map.style.street',
-      url: `mapbox://styles/specure/${environment.map.ispStyleId}`,
+      url: environment.map.ispStyleUrl,
     }
   }
 

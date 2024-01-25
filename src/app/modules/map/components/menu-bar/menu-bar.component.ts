@@ -16,7 +16,7 @@ import {
   switchMap,
   tap,
 } from 'rxjs/operators'
-import { LngLat } from 'mapbox-gl'
+import { LngLat } from 'maplibre-gl'
 import { ERoutes } from '../../../../core/enums/routes.enum'
 import { environment } from '../../../../../environments/environment'
 import { Store } from '@ngrx/store'
@@ -45,7 +45,7 @@ export class MenuBarComponent implements OnDestroy {
   logoPath$ = forkJoin([this.config.logoMap$, this.config.logoHeader$]).pipe(
     map(([logoMap, logoHeader]) => logoMap || logoHeader)
   )
-  map: mapboxgl.Map
+  map: maplibregl.Map
   text: string
   routes = ERoutes
 
@@ -61,11 +61,10 @@ export class MenuBarComponent implements OnDestroy {
       }),
       debounceTime(300),
       distinctUntilChanged(),
-      switchMap(this.geocoder.getLocationsFromQuery)
+      switchMap(this.geocoder.getLocationsFromQuery),
+      tap((res) => (this.geocodeResponse = res))
     )
-    .subscribe({
-      next: (res) => (this.geocodeResponse = res),
-    })
+    .subscribe()
 
   constructor(
     private config: ConfigService,
@@ -85,14 +84,14 @@ export class MenuBarComponent implements OnDestroy {
     this.resetGeocoder()
   }
 
-  flyToOnEnter() {
+  flyToActiveCandidate() {
     const location = this.geocodeResponse?.[this.activeCandidate]
     if (location) {
       this.flyTo(location)
     }
   }
 
-  setMap(mapContainer: mapboxgl.Map) {
+  setMap(mapContainer: maplibregl.Map) {
     this.map = mapContainer
     this.setMunicipality()
   }
@@ -159,6 +158,9 @@ export class MenuBarComponent implements OnDestroy {
   @HostListener('document:mousedown', ['$event'])
   private resetGeocoder(evt?: MouseEvent) {
     const el = evt?.target as HTMLElement
+    if (el?.className === 'mapboxgl-ctrl-geocoder--suggestion-title') {
+      this.flyToActiveCandidate()
+    }
     if (
       el?.className !== 'mapboxgl-ctrl-geocoder--suggestion-title' &&
       el?.className !== 'mapboxgl-ctrl-geocoder--suggestion-address' &&

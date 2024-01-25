@@ -11,6 +11,7 @@ import { MatExpansionModule } from '@angular/material/expansion'
 import { CommonModule } from '@angular/common'
 import { TimelineComponent } from './components/timeline/timeline.component'
 import { MobileTimelineComponent } from './components/mobile-timeline/mobile-timeline.component'
+import { NgxMapLibreGLModule } from '@maplibre/ngx-maplibre-gl'
 
 @NgModule({
   declarations: [
@@ -29,6 +30,7 @@ import { MobileTimelineComponent } from './components/mobile-timeline/mobile-tim
     FormsModule,
     ReactiveFormsModule,
     MatExpansionModule,
+    NgxMapLibreGLModule,
   ],
 })
 export class MapModule {}

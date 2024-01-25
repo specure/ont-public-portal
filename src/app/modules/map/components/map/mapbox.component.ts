@@ -7,7 +7,6 @@ import {
   OnDestroy,
   Output,
 } from '@angular/core'
-import * as mapboxgl from 'mapbox-gl'
 import { environment } from 'src/environments/environment'
 import { fromEvent, lastValueFrom, Observable, Subscription, timer } from 'rxjs'
 import {
@@ -25,6 +24,7 @@ import { getMapState, MapState } from '../../../../store/map/map.reducer'
 import { PopupService } from '../../services/popup.service'
 import { ELayerPrefix } from '../../enums/layer-prefix.enum'
 import { PlatformService } from 'src/app/core/services/platform.service'
+import * as maplibregl from 'maplibre-gl'
 
 const CONTAINER_ID = 'map'
 
@@ -35,13 +35,13 @@ const CONTAINER_ID = 'map'
 })
 export class MapboxComponent implements OnDestroy, AfterViewInit {
   @Output()
-  afterMapInit = new EventEmitter<mapboxgl.Map>()
+  afterMapInit = new EventEmitter<maplibregl.Map>()
 
   screenHeight = globalThis.innerHeight
   width = globalThis.innerWidth
 
   private mapDataLoaded = new EventEmitter()
-  private map: mapboxgl.Map
+  private map: maplibregl.Map
   private mapLayersSub = this.store
     .pipe(
       select(getMapState),
@@ -152,24 +152,23 @@ export class MapboxComponent implements OnDestroy, AfterViewInit {
   private initControls() {
     this.map
       .addControl(
-        new mapboxgl.NavigationControl({ showCompass: false }),
+        new maplibregl.NavigationControl({ showCompass: false }),
         'bottom-right'
       )
-      .addControl(new mapboxgl.AttributionControl(), 'bottom-right')
-      .addControl(new mapboxgl.GeolocateControl(), 'bottom-right')
+      .addControl(new maplibregl.GeolocateControl({}), 'bottom-right')
     navigator.geolocation.getCurrentPosition(
       () => {},
       () => {
         timer(0).subscribe(() => {
           const label = 'Location not available'
           document
-            .querySelector('.mapboxgl-ctrl-geolocate')
+            .querySelector('.maplibregl-ctrl-geolocate')
             ?.setAttribute('disabled', 'true')
           document
-            .querySelector('.mapboxgl-ctrl-geolocate')
+            .querySelector('.maplibregl-ctrl-geolocate')
             ?.setAttribute('label', label)
           document
-            .querySelector('.mapboxgl-ctrl-geolocate')
+            .querySelector('.maplibregl-ctrl-geolocate')
             ?.setAttribute('title', label)
         })
       }
@@ -178,10 +177,8 @@ export class MapboxComponent implements OnDestroy, AfterViewInit {
 
   private initMap() {
     this.ngZone.runOutsideAngular(() => {
-      const { accessToken, center, zoom } = environment.map
-      this.map = new mapboxgl.Map({
-        accessToken,
-        attributionControl: false,
+      const { center, zoom } = environment.map
+      this.map = new maplibregl.Map({
         container: CONTAINER_ID,
         maxZoom: 15,
         minZoom: 1,
@@ -222,17 +219,17 @@ export class MapboxComponent implements OnDestroy, AfterViewInit {
       state.date?.value &&
       this.styleLoaded
     ) {
+      this.currentLayer = this.mapper.getLayer(this.map, state)
       this.map.getStyle().layers.forEach((layer) => {
         const prefix = layer.id.split('-')?.[0]
         if (
           Object.values(ELayerPrefix).includes(prefix as ELayerPrefix) &&
-          !layer.id.includes('Borders')
+          !layer.id.includes('Borders') &&
+          layer.id !== this.currentLayer
         ) {
           this.map.setLayoutProperty(layer.id, 'visibility', 'none')
         }
       })
-
-      this.currentLayer = this.mapper.getLayer(this.map, state)
 
       if (!this.layerExists(this.currentLayer)) {
         return

@@ -10,7 +10,7 @@ test.describe('Map Page', () => {
 
   test.beforeAll(async ({ browser }) => {
     page = await start(browser, `/en/${ERoutes.MAP}`, true)
-    await expect(page.locator('canvas.mapboxgl-canvas')).toBeVisible()
+    await expect(page.locator('canvas.maplibregl-canvas')).toBeVisible()
     await expect(page.locator('.nt-cookie__dialog')).toBeVisible()
     await handleCookieWidget(page, EButtonTypes.ALL)
   })

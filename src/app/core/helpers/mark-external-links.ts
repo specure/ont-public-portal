@@ -11,7 +11,7 @@ export function markExternalLinks() {
         !l.href.includes(globalThis.location?.host) &&
         !l.href.includes('javascript') &&
         !l.querySelector('img') &&
-        !l.classList.contains('mapboxgl-ctrl-logo')
+        !l.classList.contains('maplibregl-ctrl-logo')
       ) {
         l.classList.add('nt-link--external')
         l.target = '_blank'
