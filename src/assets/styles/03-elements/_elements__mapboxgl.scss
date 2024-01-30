@@ -104,13 +104,16 @@ $button-height--default: rem(56);
         position: absolute;
         width: rem(280);
         right: rem(-22);
+        text-align: center;
         top: calc(100% + 4px);
         a {
           font-family: $moq__font--default;
           font-weight: 400;
+          white-space: nowrap;
         }
 
         &.maplibregl-compact {
+          border-radius: 4px 12px 4px 4px;
           bottom: rem(-108);
           right: rem(-10);
           top: auto;
@@ -119,10 +122,6 @@ $button-height--default: rem(56);
           &::after {
             background-color: white;
           }
-        }
-
-        .maplibregl-ctrl-attrib-button {
-          display: none;
         }
       }
 
@@ -145,6 +144,7 @@ $button-height--default: rem(56);
 
         @include screen-small {
           margin-bottom: rem(2);
+          margin-right: 0;
 
           .maplibregl-ctrl-geolocate {
             height: rem(48);

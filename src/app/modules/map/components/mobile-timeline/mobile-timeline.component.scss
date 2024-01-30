@@ -1,73 +1,73 @@
-@import "../../map.component.scss";
+@import '../../map.component.scss';
 
 .#{$moq__ns}btn {
-    background: white;
-    height: 100%;
+  background: white;
+  height: 100%;
 }
 
 .#{$moq__ns}list {
-    &__item {
-        border-top: 1px solid #efefef;
-        height: rem(40);
-        margin: auto rem(-2);
+  &__item {
+    border-top: 1px solid #efefef;
+    height: rem(40);
+    margin: auto rem(-2);
 
-        &--selected * {
-            color: $color__link;
-        }
+    &--selected * {
+      color: $color__link;
     }
+  }
 
-    &__wrapper {
-        margin: auto rem(-24) rem(-16);
-        max-height: rem(120);
-        overflow-x: hidden;
-        overflow-y: auto;
-    }
+  &__wrapper {
+    margin: auto rem(-24) rem(-16);
+    max-height: rem(120);
+    overflow-x: hidden;
+    overflow-y: auto;
+  }
 }
 
 .#{$moq__ns}timeline {
-    bottom: 0;
-    position: absolute;
+  bottom: 0;
+  position: absolute;
+  width: 100%;
+  z-index: 1000;
+
+  &__header {
+    align-items: center;
+    border-bottom: 1px solid #efefef;
+    display: flex;
+    height: rem(48);
+    margin: auto rem(-24);
+  }
+
+  .#{$moq__ns}btn {
+    font-weight: normal;
+    text-align: left;
     width: 100%;
-    z-index: 1000;
-
-    &__header {
-        align-items: center;
-        border-bottom: 1px solid #efefef;
-        display: flex;
-        height: rem(48);
-        margin: auto rem(-24);
-    }
-
-    .#{$moq__ns}btn {
-        font-weight: normal;
-        text-align: left;
-        width: 100%;
-    }
+  }
 }
 
 .#{$moq__ns}timeline-toggle {
-    align-items: center;
-    border-radius: rem(4);
-    bottom: rem(42);
-    display: flex;
-    font-size: rem(12);
-    left: rem(24);
-    height: rem(48);
-    position: absolute;
+  align-items: center;
+  border-radius: rem(4);
+  bottom: rem(10);
+  display: flex;
+  font-size: rem(12);
+  left: rem(24);
+  height: rem(48);
+  position: absolute;
 
-    @include screen-small {
-        left: rem(8);
-    }
+  @include screen-small {
+    left: rem(8);
+  }
+
+  * {
+    font-weight: bold;
+  }
+
+  .#{$moq__ns}panel-toggle {
+    margin-right: rem(8);
 
     * {
-        font-weight: bold;
+      font-weight: normal;
     }
-
-    .#{$moq__ns}panel-toggle{
-        margin-right: rem(8);
-        
-        * {
-            font-weight: normal;
-        }
-    }
+  }
 }

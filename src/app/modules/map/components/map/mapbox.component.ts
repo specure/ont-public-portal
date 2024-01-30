@@ -62,7 +62,7 @@ export class MapboxComponent implements OnDestroy, AfterViewInit {
       tap((state) => {
         if (state.style?.url) {
           this.styleLoaded = false
-          this.map?.setStyle(state.style.url)
+          this.map?.setStyle(state.style.url, { diff: false })
         }
       })
     )
