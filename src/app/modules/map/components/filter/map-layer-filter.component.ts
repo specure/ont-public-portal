@@ -24,6 +24,7 @@ import { FormBuilder, FormControl, FormGroup } from '@angular/forms'
 import { loadNationalTable } from 'src/app/store/statistics/statistics.action'
 import { MainMapService } from '../../services/main-map.service'
 import { getMainState } from 'src/app/store/main/main.reducer'
+import { environment } from 'src/environments/environment'
 
 export enum ENetworkOperator {
   ALL = 'map.filter.operators.all',
@@ -88,6 +89,10 @@ export class MapLayerFilterComponent implements AfterViewChecked, OnDestroy {
     return !this.isMobile || this.expansionPanel?.expanded
   }
 
+  get disableProviderFilter() {
+    return environment.map.disableProviderFilter
+  }
+
   constructor(
     private cdr: ChangeDetectorRef,
     private fb: FormBuilder,
@@ -96,29 +101,7 @@ export class MapLayerFilterComponent implements AfterViewChecked, OnDestroy {
     private store: Store<IAppState>
   ) {
     this.resetFilters()
-    this.providerTypesForm = this.fb.group({
-      providerType: new FormControl(this.providerTypes[0].value),
-    })
-    this.providerTypesSub =
-      this.providerTypesForm.controls.providerType.valueChanges
-        .pipe(
-          tap((providerType) => {
-            this.selectedProviderType = this.providerTypes.find(
-              (t) => t.value === providerType
-            )
-            this.resetFilters()
-            this.loadNationalTable()
-            this.store.dispatch(
-              setStyle({
-                style:
-                  providerType === 'mno'
-                    ? this.mapper.style
-                    : this.mapper.ispStyle,
-              })
-            )
-          })
-        )
-        .subscribe()
+    this.initProviderFilter()
   }
 
   ngOnDestroy(): void {
@@ -164,7 +147,36 @@ export class MapLayerFilterComponent implements AfterViewChecked, OnDestroy {
     )
   }
 
+  private initProviderFilter() {
+    this.providerTypesForm = this.fb.group({
+      providerType: new FormControl(this.providerTypes[0].value),
+    })
+    this.providerTypesSub =
+      this.providerTypesForm.controls.providerType.valueChanges
+        .pipe(
+          tap((providerType) => {
+            this.selectedProviderType = this.providerTypes.find(
+              (t) => t.value === providerType
+            )
+            this.resetFilters()
+            this.loadNationalTable()
+            this.store.dispatch(
+              setStyle({
+                style:
+                  providerType === 'mno'
+                    ? this.mapper.style
+                    : this.mapper.ispStyle,
+              })
+            )
+          })
+        )
+        .subscribe()
+  }
+
   private loadNationalTable() {
+    if (this.disableProviderFilter) {
+      return
+    }
     let tech
     if (
       this.providerTypesForm.controls.providerType.value ===

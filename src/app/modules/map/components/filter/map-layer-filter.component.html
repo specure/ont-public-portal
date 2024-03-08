@@ -6,6 +6,7 @@
   >
     <section class="nt-filters__sec">
       <a
+        *ngIf="!disableProviderFilter"
         class="nt-panel-toggle"
         [class.nt-panel-toggle--switched]="!expansionPanel?.expanded"
         (click)="expansionPanel?.toggle(); shortExpansionPanel?.toggle()"
@@ -35,6 +36,7 @@
       </div>
     </section>
     <section
+      *ngIf="!disableProviderFilter"
       class="nt-filters__sec nt-filters__sec--operators"
       [class.nt-filters__sec--expanded]="isExpanded"
       [class.nt-filters__sec--collapsed]="!isExpanded"

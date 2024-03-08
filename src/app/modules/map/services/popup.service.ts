@@ -167,13 +167,18 @@ export class PopupService {
           ]
             .map((value, index) => {
               if (value.label) {
+                const label =
+                  value.label === COUNTIES_LABEL ||
+                  value.label === MUNICIPALITIES_LABEL
+                    ? ''
+                    : '<span class="maplibregl-popup-content__row__label">' +
+                      this.transloco.translate(value.label) +
+                      '</span>'
                 return `
                   <div class="maplibregl-popup-content__row ${
                     index ? '' : 'maplibregl-popup-content__header'
                   }">
-                    <span class="maplibregl-popup-content__row__label">${this.transloco.translate(
-                      value.label
-                    )}</span>
+                    ${label}
                     <span class="maplibregl-popup-content__row__value">${
                       value.value
                     }</span>
