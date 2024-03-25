@@ -22,6 +22,7 @@
               (selectionChange)="changeServer($event)"
               [value]="selectedServer"
               [compareWith]="objectComparisonFunction"
+              [panelWidth]="null"
             >
               <mat-select-trigger>
                 <p>{{ selectedServer?.title }}</p>
@@ -91,6 +92,7 @@
             (selectionChange)="changeServer($event)"
             [value]="selectedServer"
             [compareWith]="objectComparisonFunction"
+            [panelWidth]="null"
           >
             <mat-select-trigger>
               <p>{{ selectedServer?.title }}</p>

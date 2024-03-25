@@ -30,7 +30,7 @@ export class FullArticleComponent {
       const translatedContent = parseUnderlinedText(
         this.translate.transform(s.article, 'content')
       )
-      const content = parseFigures(marked.parse(translatedContent))
+      const content = parseFigures(marked.parse(translatedContent) as string)
       return { ...s.article, content }
     })
   )

@@ -1,4 +1,4 @@
-import { ActivatedRouteSnapshot, Resolve } from '@angular/router'
+import { ActivatedRouteSnapshot } from '@angular/router'
 import { Injectable } from '@angular/core'
 import { Store } from '@ngrx/store'
 
@@ -8,7 +8,7 @@ import { interval, timer } from 'rxjs'
 import { TestService } from 'src/app/modules/main/modules/test/services/test.service'
 
 @Injectable({ providedIn: 'root' })
-export class PathResolver implements Resolve<any> {
+export class PathResolver  {
   constructor(
     private store: Store<IAppState>,
     private testService: TestService

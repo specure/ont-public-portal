@@ -19,11 +19,11 @@ $border-bottom: 1px solid rgba(0, 0, 0, 0.12);
       width: rem(192);
     }
 
-    .mat-radio-group {
+    .mat-mdc-radio-group {
       margin-right: rem(16);
     }
 
-    .mat-radio-button {
+    .mat-mdc-radio-button {
       margin-right: rem(24);
     }
   }
@@ -97,9 +97,6 @@ $border-bottom: 1px solid rgba(0, 0, 0, 0.12);
 
     .mat-icon {
       font-size: rem(24);
-      margin-right: rem(18);
-      position: relative;
-      top: rem(9);
     }
   }
 

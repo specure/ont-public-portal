@@ -2,7 +2,7 @@
 
 .#{$moq__ns}select-option {
   font-family: $moq__font--default;
-  font-size: rem(16);
+  font-size: rem($moq__base-font-size);
 }
 
 .#{$moq__ns}filters {

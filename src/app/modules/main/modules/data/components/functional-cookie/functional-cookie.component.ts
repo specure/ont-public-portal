@@ -1,7 +1,8 @@
-import { Component, Input, OnInit } from '@angular/core'
+import { Component, Input } from '@angular/core'
 import { Router } from '@angular/router'
 import { ERoutes } from 'src/app/core/enums/routes.enum'
 import { TestService } from '../../../test/services/test.service'
+import { NTCookieService } from '@nettest/cookie-widget'
 
 @Component({
   selector: 'nt-functional-cookie',
@@ -15,7 +16,7 @@ export class FunctionalCookieComponent {
   constructor(private router: Router, private testService: TestService) {}
 
   enableCookie() {
-    window.NTCookieService?.storeOne({
+    NTCookieService.I.storeOne({
       _id: undefined,
       isAccepted: true,
       key: 'functional',

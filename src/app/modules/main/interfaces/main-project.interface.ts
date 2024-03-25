@@ -1,6 +1,6 @@
 import { IMainMenuItem } from './main-menu-item.interface'
 import { ITranslatable } from 'src/app/core/interfaces/translatable.interface'
-import { MatomoTrackerConfiguration } from '@ngx-matomo/tracker/lib/configuration'
+import { MatomoTrackerConfiguration } from 'ngx-matomo-client/core/tracker/configuration'
 
 export interface IMainProject extends ITranslatable {
   app_store_link?: string

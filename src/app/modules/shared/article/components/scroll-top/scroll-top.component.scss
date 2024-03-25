@@ -1,8 +1,10 @@
-@import "src/assets/styles/core";
+@import 'src/assets/styles/core';
 
 .#{$moq__ns} {
   &scroll-top {
-    background-color: rgba($color__primary, .85);
+    background-color: rgba($color__primary, 0.85);
+    border: none;
+    color: $color__alt;
     width: rem(64);
     height: rem(64);
     position: fixed;

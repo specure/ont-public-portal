@@ -9,7 +9,7 @@ import {
   postFeedbackEnd,
   setLanguage,
 } from './main.action'
-import { tap, switchMap, map, catchError, take } from 'rxjs/operators'
+import { tap, switchMap, map, catchError } from 'rxjs/operators'
 import { Store, Action } from '@ngrx/store'
 import { IAppState } from '..'
 import { loading, loadingSuccess, loadingError } from '../common/common.action'
@@ -22,24 +22,11 @@ import { SeoService } from 'src/app/core/services/seo.service'
 import { ERoutes } from 'src/app/core/enums/routes.enum'
 import { IFeedback } from 'src/app/modules/main/interfaces/feedback.interface'
 import { DefaultFeedback } from 'src/app/modules/main/classes/feedback.class'
-import { MatLegacySnackBar as MatSnackBar } from '@angular/material/legacy-snack-bar'
+import { MatSnackBar } from '@angular/material/snack-bar'
 import { MainSnackbarComponent } from 'src/app/modules/main/components/main-snackbar/main-snackbar.component'
-import { EventReplayer } from 'preboot'
-import { isPlatformBrowser } from '@angular/common'
 
 @Injectable()
 export class MainEffects {
-  private hasTransitionedFromPreboot = false
-  private transitionFromPreboot = () => {
-    if (
-      isPlatformBrowser(this.platformId) &&
-      !this.hasTransitionedFromPreboot
-    ) {
-      this.replayer.replayAll()
-      this.hasTransitionedFromPreboot = true
-    }
-  }
-
   loadMenus$ = createEffect(() =>
     this.actions$.pipe(
       ofType(loadMenus.type),
@@ -48,14 +35,12 @@ export class MainEffects {
         return this.http.getMenus().pipe(
           map((menus) => {
             this.store.dispatch(loadMenusEnd(menus))
-            this.transitionFromPreboot()
             return loadingSuccess()
           }),
           catchError((error: HttpErrorResponse) => {
             this.store.dispatch(
               loadMenusEnd({ headerMenu: null, footerMenu: null })
             )
-            this.transitionFromPreboot()
             return of(loadingError({ error }))
           })
         )
@@ -149,7 +134,6 @@ export class MainEffects {
   constructor(
     private actions$: Actions,
     private http: MainHttpService,
-    private replayer: EventReplayer,
     private router: Router,
     private seoService: SeoService,
     private snackbar: MatSnackBar,

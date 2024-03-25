@@ -10,6 +10,7 @@ import { TranslocoService } from '@ngneat/transloco'
 import { EMenuFlavors } from '../../enums/menu-flavors.enum'
 import { ConfigService } from 'src/app/core/services/config.service'
 import { environment } from 'src/environments/environment'
+import { NTCookieService } from '@nettest/cookie-widget'
 
 @Component({
   selector: 'nt-main-footer',
@@ -54,9 +55,7 @@ export class MainFooterComponent {
         {
           action: (e: MouseEvent) => {
             e.preventDefault()
-            if (window.NTCookieService) {
-              window.NTCookieService.isDialogOpen = true
-            }
+            NTCookieService.I.isDialogOpen = true
           },
           id: 'cookie-settings',
           label: cookieLabel,

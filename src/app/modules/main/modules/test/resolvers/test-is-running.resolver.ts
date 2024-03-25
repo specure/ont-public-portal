@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core'
-import { Router, Resolve } from '@angular/router'
+import { Router } from '@angular/router'
 import { TranslocoService } from '@ngneat/transloco'
 import { Store } from '@ngrx/store'
 import { Observable, map, of, tap } from 'rxjs'
@@ -10,7 +10,7 @@ import { getTestState } from 'src/app/store/test/test.reducer'
 @Injectable({
   providedIn: 'root',
 })
-export class TestIsRunningResolver implements Resolve<boolean> {
+export class TestIsRunningResolver  {
   constructor(
     private store: Store<IAppState>,
     private router: Router,

@@ -7,10 +7,11 @@ import {
   OnDestroy,
   PLATFORM_ID,
 } from '@angular/core'
-import { MatLegacySelectChange as MatSelectChange } from '@angular/material/legacy-select'
+import { MatSelectChange } from '@angular/material/select'
 import { MatSidenav } from '@angular/material/sidenav'
 import { TranslocoService } from '@ngneat/transloco'
 import { Store } from '@ngrx/store'
+import { NTCookieService } from '@nettest/cookie-widget'
 import { Subscription } from 'rxjs'
 import { filter, map, pluck, tap } from 'rxjs/operators'
 import { ERoutes } from 'src/app/core/enums/routes.enum'
@@ -35,9 +36,7 @@ export class SidenavComponent implements AfterViewInit, OnDestroy {
         return
       }
       e.preventDefault()
-      if (window.NTCookieService) {
-        window.NTCookieService.isDialogOpen = true
-      }
+      NTCookieService.I.isDialogOpen = true
     },
     id: 'cookie-settings',
     label: 'Cookie settings',

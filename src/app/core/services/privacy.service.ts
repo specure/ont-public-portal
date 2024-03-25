@@ -4,7 +4,7 @@ import { TranslocoService } from '@ngneat/transloco'
 import { IMainProject } from 'src/app/modules/main/interfaces/main-project.interface'
 import { environment } from 'src/environments/environment'
 import { ERoutes } from '../enums/routes.enum'
-import * as Sentry from '@sentry/angular'
+import { NTCookieWidget } from '@nettest/cookie-widget'
 
 @Injectable({
   providedIn: 'root',
@@ -42,6 +42,6 @@ export class PrivacyService {
       },
       theme: environment.cookieWidget.theme,
     }
-    globalThis.NTCookieWidget?.init(config)
+    NTCookieWidget.I.init(config)
   }
 }

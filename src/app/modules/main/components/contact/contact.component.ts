@@ -72,7 +72,7 @@ export class ContactComponent implements OnDestroy {
       if (!translatedPage) {
         return ''
       }
-      return parseFigures(marked.parse(translatedPage))
+      return parseFigures(marked.parse(translatedPage) as string)
     })
   )
   private onDestroy = new Subject()

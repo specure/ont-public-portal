@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core'
-import { MatomoTracker } from '@ngx-matomo/tracker'
+import { MatomoTracker } from 'ngx-matomo-client'
 import { timer } from 'rxjs'
 
 @Injectable({

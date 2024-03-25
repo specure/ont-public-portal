@@ -36,10 +36,17 @@
   &__button {
     min-width: auto;
     padding: 0 rem(9);
-    color: $header__link-map-color;
+    color: $header__link-map-color !important;
 
     @include screen-small {
       padding: 0 rem(11);
+    }
+
+    .mat-icon {
+      font-size: rem(24);
+      height: rem(24);
+      margin-right: 0;
+      width: rem(24);
     }
   }
 

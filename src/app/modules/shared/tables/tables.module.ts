@@ -3,21 +3,23 @@ import { NgModule } from '@angular/core'
 import { RouterModule } from '@angular/router'
 import { TranslocoModule } from '@ngneat/transloco'
 
-import { MaterialModule } from '../material/material.module'
 import { PartialsModule } from '../partials/partials.module'
 import { TableComponent } from './components/table/table.component'
+import { MatSortModule } from '@angular/material/sort'
+import { MatTableModule } from '@angular/material/table'
+import { MatTooltipModule } from '@angular/material/tooltip'
 
 @NgModule({
   declarations: [TableComponent],
   imports: [
     PartialsModule,
     CommonModule,
-    MaterialModule,
     RouterModule,
-    TranslocoModule
+    TranslocoModule,
+    MatSortModule,
+    MatTableModule,
+    MatTooltipModule,
   ],
-  exports: [
-    TableComponent
-  ]
+  exports: [TableComponent],
 })
-export class TablesModule { }
+export class TablesModule {}

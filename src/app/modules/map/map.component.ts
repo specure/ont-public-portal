@@ -7,7 +7,7 @@ import { ITimelineStep } from './interfaces/timeline-step.interface'
 import { Store } from '@ngrx/store'
 import { IAppState } from 'src/app/store'
 import { setDate } from 'src/app/store/map/map.action'
-import * as dayjs from 'dayjs'
+import dayjs from 'dayjs/esm'
 import { firstValueFrom } from 'rxjs'
 
 const TIMELINE_MONTHS = 23

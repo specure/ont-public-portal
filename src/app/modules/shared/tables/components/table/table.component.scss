@@ -244,6 +244,14 @@
         flex: 1;
       }
     }
+
+    &-download,
+    &-upload {
+      flex-grow: 2;
+      &--subHeader {
+        flex-grow: 2;
+      }
+    }
   }
 
   &__detail-row {

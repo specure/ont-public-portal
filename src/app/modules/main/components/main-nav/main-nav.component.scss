@@ -1,7 +1,7 @@
-@import "src/assets/styles/core";
-@import "../main-menu-item/main-menu-item.component.scss";
+@import 'src/assets/styles/core';
+@import '../main-menu-item/main-menu-item.component.scss';
 
-.#{$moq__ns}{
+.#{$moq__ns} {
   &menu {
     display: flex;
     font-size: rem(14);
@@ -10,11 +10,11 @@
     color: $header__link-color;
     justify-content: flex-end;
 
-    &>mat-menu {
+    & > mat-menu {
       position: absolute;
     }
   }
-  &footer__nav{
+  &footer__nav {
     display: block;
     margin-bottom: rem(12);
 
@@ -44,17 +44,17 @@
   }
 
   @include screen-medium {
-    &footer__nav{
+    &footer__nav {
       display: flex;
-      justify-content: center;
-      flex-wrap: wrap;
+      align-items: center;
+      flex-direction: column;
       margin-bottom: rem(12);
 
       #{$moq__ns}main-menu-item {
         flex: 0;
 
         &:not(:last-child)::after {
-          margin: 0 rem(3);
+          display: none;
         }
       }
     }

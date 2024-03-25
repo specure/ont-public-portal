@@ -24,6 +24,7 @@ import { convertMs } from 'src/app/core/helpers/convert-ms'
 import { ERoutes } from 'src/app/core/enums/routes.enum'
 import { IMainProject } from 'src/app/modules/main/interfaces/main-project.interface'
 import { isPlatformBrowser } from '@angular/common'
+import { NTCookieService } from '@nettest/cookie-widget'
 
 export const HISTORY_COLS: ITableColumn<IHistoryTableItem>[] = [
   {
@@ -114,7 +115,7 @@ export class TestHistoryComponent implements OnDestroy {
     filter((s) => !!s.project),
     map((s) => {
       if (isPlatformBrowser(this.platformId)) {
-        window.NTCookieService?.addEventListener(
+        NTCookieService.I.addEventListener(
           'consentUpdated',
           this.refresh(s.project)
         )
@@ -139,7 +140,7 @@ export class TestHistoryComponent implements OnDestroy {
     if (!isPlatformBrowser(this.platformId)) {
       return
     }
-    window.NTCookieService?.removeEventListener('consentUpdated', this.refresh)
+    NTCookieService.I.removeEventListener('consentUpdated', this.refresh)
   }
 
   getHeading(count: number) {
@@ -163,7 +164,7 @@ export class TestHistoryComponent implements OnDestroy {
     }
     let isAccepted = false
     if (isPlatformBrowser(this.platformId)) {
-      isAccepted = await window.NTCookieService?.isCookieAccepted('functional')
+      isAccepted = await NTCookieService.I.isCookieAccepted('functional')
     }
     if (!isAccepted) {
       this.store.dispatch(storeUuidInMemory({ uuid }))

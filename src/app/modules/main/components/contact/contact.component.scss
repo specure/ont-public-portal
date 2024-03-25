@@ -35,7 +35,7 @@
 .#{$moq__ns}small-print {
   color: rgba($color: #000000, $alpha: 0.5);
   font-size: rem(12);
-  margin-top: rem(16);
+  margin: rem(16) 0;
 
   * {
     color: rgba($color: #000000, $alpha: 0.5) !important;
@@ -44,4 +44,8 @@
 
 .mat-flat-button {
   margin-top: rem(42);
+}
+
+.mat-mdc-form-field {
+  margin-bottom: rem(16);
 }

@@ -54,13 +54,13 @@ test.describe('Municipality Page', () => {
       return
     }
     await expect(
-      page.locator('.mat-radio-group[formcontrolname="providerType"]')
+      page.locator('mat-radio-group[formcontrolname="providerType"]')
     ).toBeVisible()
     let radioClassList = await getClassList(
       page,
-      '.mat-radio-group[formcontrolname="providerType"] .mat-radio-button:first-of-type'
+      'mat-radio-group[formcontrolname="providerType"] mat-radio-button:first-of-type'
     )
-    expect(radioClassList.includes('mat-radio-checked')).toBeTruthy()
+    expect(radioClassList.includes('mat-mdc-radio-checked')).toBeTruthy()
 
     let responses = await Promise.all([
       page.waitForResponse(
@@ -69,15 +69,15 @@ test.describe('Municipality Page', () => {
         )
       ),
       page.click(
-        '.mat-radio-group[formcontrolname="providerType"] .mat-radio-button:last-of-type'
+        'mat-radio-group[formcontrolname="providerType"] mat-radio-button:last-of-type'
       ),
     ])
     expect(responses[0].ok()).toBeTruthy()
     radioClassList = await getClassList(
       page,
-      '.mat-radio-group[formcontrolname="providerType"] .mat-radio-button:last-of-type'
+      'mat-radio-group[formcontrolname="providerType"] mat-radio-button:last-of-type'
     )
-    expect(radioClassList.includes('mat-radio-checked')).toBeTruthy()
+    expect(radioClassList.includes('mat-mdc-radio-checked')).toBeTruthy()
 
     responses = await Promise.all([
       page.waitForResponse(
@@ -86,15 +86,15 @@ test.describe('Municipality Page', () => {
         )
       ),
       page.click(
-        '.mat-radio-group[formcontrolname="providerType"] .mat-radio-button:first-of-type'
+        'mat-radio-group[formcontrolname="providerType"] mat-radio-button:first-of-type'
       ),
     ])
     expect(responses[0].ok()).toBeTruthy()
     radioClassList = await getClassList(
       page,
-      '.mat-radio-group[formcontrolname="providerType"] .mat-radio-button:first-of-type'
+      'mat-radio-group[formcontrolname="providerType"] mat-radio-button:first-of-type'
     )
-    expect(radioClassList.includes('mat-radio-checked')).toBeTruthy()
+    expect(radioClassList.includes('mat-mdc-radio-checked')).toBeTruthy()
   })
 
   test('shows Aggregated national statistics table', async () => {
@@ -151,7 +151,7 @@ test.describe('Municipality Page', () => {
         style.style
       )
 
-      expect(await page.locator('.mat-row').count()).toBeGreaterThan(0)
+      expect(await page.locator('mat-row').count()).toBeGreaterThan(0)
     }
   })
 

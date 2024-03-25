@@ -32,7 +32,7 @@
         *ngIf="isMobile && !expansionPanel?.expanded"
         class="nt-filters__mobile-operators"
       >
-        {{ operatorsSelect.triggerValue }}
+        {{ operatorsSelect?.triggerValue }}
       </div>
     </section>
     <section
@@ -54,7 +54,7 @@
               ? t(selectedProviderType.label)
               : (t('map.filter.operators') | titlecase)) +
               ': ' +
-              operatorsSelect.triggerValue
+              operatorsSelect?.triggerValue
           }}
         </div>
       </mat-expansion-panel>

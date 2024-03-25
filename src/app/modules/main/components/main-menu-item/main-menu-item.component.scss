@@ -30,7 +30,8 @@
     color: inherit;
   }
 
-  &:visited {
+  &:visited,
+  &:not(:disabled) {
     color: $color__alt;
   }
 
@@ -42,8 +43,10 @@
     min-width: auto;
     padding-left: rem(4);
     padding-right: rem(4);
+    padding-bottom: 0 !important;
 
-    &:visited {
+    &:visited,
+    &:not(:disabled) {
       color: $footer__link-color;
     }
 
@@ -55,7 +58,8 @@
   &--header {
     color: $header__link-color;
 
-    &:visited {
+    &:visited,
+    &:not(:disabled) {
       color: $header__link-color;
     }
 
@@ -82,7 +86,8 @@
       color: $color__link !important;
     }
 
-    &:visited {
+    &:visited,
+    &:not(:disabled) {
       color: $header__link-color--alt;
     }
   }

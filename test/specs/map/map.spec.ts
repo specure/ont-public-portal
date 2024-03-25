@@ -45,10 +45,10 @@ test.describe('Map Page', () => {
       .locator('.nt-filters__mobile-operators--expanded mat-select')
       .click()
     const text = await page
-      .locator('.mat-option .mat-option-text')
+      .locator('mat-option')
       .first()
       .evaluate((el) => el.textContent)
-    await page.locator('.mat-option .mat-option-text').first().click()
+    await page.locator('mat-option').first().click()
     await page.locator('.nt-panel-toggle').click()
     const divText = await page
       .locator('.nt-filters__mobile-operators--collapsed')

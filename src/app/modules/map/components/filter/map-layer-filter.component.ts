@@ -6,7 +6,7 @@ import {
   ViewChild,
 } from '@angular/core'
 import { ITechnology } from '../../interfaces/technology.interface'
-import { MatLegacySelectChange as MatSelectChange } from '@angular/material/legacy-select'
+import { MatSelect, MatSelectChange } from '@angular/material/select'
 import { Store } from '@ngrx/store'
 import {
   setMapFilters,
@@ -37,6 +37,9 @@ export enum ENetworkOperator {
 })
 export class MapLayerFilterComponent implements AfterViewChecked, OnDestroy {
   @ViewChild('expansionPanel') expansionPanel: MatExpansionPanel
+  @ViewChild('shortExpansionPanel') shortExpansionPanel: MatExpansionPanel
+  @ViewChild('operatorsSelect')
+  operatorsSelect: MatSelect
 
   technologyAll: ITechnology = {
     key: 'ALL',

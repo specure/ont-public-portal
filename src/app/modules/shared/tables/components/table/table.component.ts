@@ -1,5 +1,14 @@
 import { ActionCreator } from '@ngrx/store'
-import { Component, Input, OnInit, Output, EventEmitter, ViewChild, OnChanges, SimpleChanges } from '@angular/core'
+import {
+  Component,
+  Input,
+  OnInit,
+  Output,
+  EventEmitter,
+  ViewChild,
+  OnChanges,
+  SimpleChanges,
+} from '@angular/core'
 import { MatSort } from '@angular/material/sort'
 import { TypedAction } from '@ngrx/store/src/models'
 
@@ -10,20 +19,23 @@ import { IPaginator } from 'src/app/core/interfaces/paginator.interface'
 import { ISort } from 'src/app/core/interfaces/sort.interface'
 import { ITableColumn } from '../../interfaces/table-column.interface'
 import { TableSortService } from 'src/app/core/services/table-sort.service'
-import { LegacyPageEvent as PageEvent } from '@angular/material/legacy-paginator'
+import { PageEvent } from '@angular/material/paginator'
 import { AVAILABLE_SIZES } from 'src/app/core/classes/paginator.class'
 import { TranslocoService } from '@ngneat/transloco'
 import { expandVertically } from 'src/app/core/animations/detail-expand.animation'
-import { MatLegacyTable as MatTable } from '@angular/material/legacy-table'
+import { MatTable } from '@angular/material/table'
 
 @Component({
   selector: 'nt-table',
   templateUrl: './table.component.html',
   styleUrls: ['./table.component.scss'],
-  animations: [arrowRotate, expandVertically]
+  animations: [arrowRotate, expandVertically],
 })
 export class TableComponent implements OnInit, OnChanges {
-  @Input() action: ActionCreator<string, (props: { request: IBasicRequest }) => IBasicRequest & TypedAction<string>>
+  @Input() action: ActionCreator<
+    string,
+    (props: { request: IBasicRequest }) => IBasicRequest & TypedAction<string>
+  >
   @Input() columns: ITableColumn[]
   @Input() data: IBasicResponse<any>
   @Input() expandedColumns: ITableColumn[]
@@ -48,8 +60,7 @@ export class TableComponent implements OnInit, OnChanges {
   constructor(
     private tableSortService: TableSortService,
     public transloco: TranslocoService
-
-  ) { }
+  ) {}
 
   ngOnChanges(changes: SimpleChanges): void {
     if ('data' in changes) {
@@ -58,8 +69,10 @@ export class TableComponent implements OnInit, OnChanges {
   }
 
   ngOnInit() {
-    this.displayedColumns = this.columns?.map(col => col.columnDef)
-    this.displayedSubHeaderColumns = this.subHeaderColumns?.map(col => col.columnDef)
+    this.displayedColumns = this.columns?.map((col) => col.columnDef)
+    this.displayedSubHeaderColumns = this.subHeaderColumns?.map(
+      (col) => col.columnDef
+    )
   }
 
   changeSort(newSort: MatSort) {
@@ -88,7 +101,8 @@ export class TableComponent implements OnInit, OnChanges {
   }
 
   shouldShowText(column: ITableColumn, element): boolean {
-    const isLinkDisabled = column.link && column.linkDisabled && column.linkDisabled(element)
+    const isLinkDisabled =
+      column.link && column.linkDisabled && column.linkDisabled(element)
     return !column.link || isLinkDisabled
   }
 
@@ -106,18 +120,18 @@ export class TableComponent implements OnInit, OnChanges {
       case 'center':
         return {
           justifyContent: justify,
-          textAlign: justify
+          textAlign: justify,
         }
       case 'flex-end':
         return {
           justifyContent: justify,
-          textAlign: 'right'
+          textAlign: 'right',
         }
       case 'flex-start':
       default:
         return {
           justifyContent: 'flex-start',
-          textAlign: 'left'
+          textAlign: 'left',
         }
     }
   }

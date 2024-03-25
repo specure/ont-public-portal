@@ -150,6 +150,7 @@
                   [compareWith]="objectComparisonFunction"
                   [class.disabledSelector]="testState.stage !== 'RESULT'"
                   [disabled]="testState.stage !== 'RESULT'"
+                  [panelWidth]="null"
                 >
                   <mat-select-trigger>
                     <p>{{ selectedServer?.title }}</p>

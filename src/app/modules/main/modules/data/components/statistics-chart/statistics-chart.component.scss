@@ -1,37 +1,38 @@
-@import "src/assets/styles/core";
+@import 'src/assets/styles/core';
 
 .#{$moq__ns}legend {
-    display: flex;
-    list-style-type: none;
-    margin-bottom: rem(16);
+  display: flex;
+  list-style-type: none;
+  margin-bottom: rem(16);
 
-    &__item {
-        flex: 0 0 rem(80);
-        color: #212222;
-        font-size: rem(14);
-        font-weight: bold;
-        line-height: rem(16);
+  &__item {
+    flex: 0 0 rem(80);
+    color: #212222;
+    font-size: rem(14);
+    font-weight: bold;
+    line-height: rem(16);
 
-        &::after {
-            border-radius: rem(2);
-            content: '';
-            display: block;
-            height: rem(4);
-            margin-top: rem(8);
-            width: rem(40);
-        }
-
-        &--download {
-            &::after {
-                background-color: #4069F2;
-            }
-        }
-
-        &--upload {
-            &::after {
-                background-color: #4069F2;
-                opacity: 0.5;
-            }
-        }
+    &::after {
+      border-radius: rem(2);
+      content: '';
+      display: block;
+      height: rem(4);
+      margin-top: rem(8);
+      width: rem(40);
     }
+
+    &--download {
+      &::after {
+        background-color: #4069f2;
+      }
+      margin-right: 1em;
+    }
+
+    &--upload {
+      &::after {
+        background-color: #4069f2;
+        opacity: 0.5;
+      }
+    }
+  }
 }

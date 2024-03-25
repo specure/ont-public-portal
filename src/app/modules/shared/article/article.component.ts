@@ -58,7 +58,7 @@ export class ArticleComponent {
         this.toc$.next(null)
         return ''
       }
-      const parsedPage = parseFigures(marked.parse(translatedPage))
+      const parsedPage = parseFigures(marked.parse(translatedPage) as string)
       this.tocIsEnabled =
         s.page.translations?.find(
           (t) => t.language === this.transloco.getActiveLang()

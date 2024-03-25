@@ -1,4 +1,4 @@
-import { Resolve, ActivatedRouteSnapshot } from '@angular/router'
+import { ActivatedRouteSnapshot } from '@angular/router'
 import { Injectable } from '@angular/core'
 import { IAppState } from 'src/app/store'
 import { Store } from '@ngrx/store'
@@ -6,7 +6,7 @@ import { of } from 'rxjs'
 import { TranslocoService } from '@ngneat/transloco'
 
 @Injectable({ providedIn: 'root'})
-export class RouteParamsResolver implements Resolve<any> {
+export class RouteParamsResolver  {
   constructor(
     private store: Store<IAppState>,
     private transloco: TranslocoService,

@@ -4,7 +4,7 @@ import { map } from 'rxjs/operators'
 import { TranslatePipe } from 'src/app/modules/shared/partials/pipes/translate.pipe'
 import { IAppState } from 'src/app/store'
 import { getMainState } from 'src/app/store/main/main.reducer'
-import * as dayjs from 'dayjs'
+import dayjs from 'dayjs/esm'
 import { enqueExport } from 'src/app/modules/shared/export/store/export.action'
 import { MarkdownService } from 'ngx-markdown'
 
@@ -31,7 +31,7 @@ export class OpenDataComponent {
       this.fillSelectWithYears()
       this.content = this.markdown.parse(
         this.translate.transform(s.page, 'content')
-      )
+      ) as string
       return this.translate.transform(s.page, 'name')
     })
   )

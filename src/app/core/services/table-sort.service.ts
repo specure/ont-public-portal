@@ -1,7 +1,7 @@
 import { ActionCreator, Store } from '@ngrx/store'
 import { Injectable } from '@angular/core'
 import { MatSort } from '@angular/material/sort'
-import { LegacyPageEvent as PageEvent } from '@angular/material/legacy-paginator'
+import { PageEvent } from '@angular/material/paginator'
 import { TypedAction } from '@ngrx/store/src/models'
 
 import { ERoutes } from '../enums/routes.enum'

@@ -1,8 +1,8 @@
 // tslint:disable: variable-name
 import { IUserSettingsRequest } from '../interfaces/user-settings-request.interface'
-import * as dayjs from 'dayjs'
-import * as utc from 'dayjs/plugin/utc'
-import * as tz from 'dayjs/plugin/timezone'
+import dayjs from 'dayjs/esm'
+import utc from 'dayjs/esm/plugin/utc'
+import tz from 'dayjs/esm/plugin/timezone'
 
 dayjs.extend(utc)
 dayjs.extend(tz)

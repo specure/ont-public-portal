@@ -27,16 +27,16 @@ import { UserSettingsRequest } from '../classes/user-settings-request.class'
 import { TestVisualizationService } from './test-visualization.service'
 import { ITestServerResponse } from '../interfaces/test-server-response.interface'
 import { loadingError } from 'src/app/store/common/common.action'
-import * as dayjs from 'dayjs'
-import * as utc from 'dayjs/plugin/utc'
-import * as tz from 'dayjs/plugin/timezone'
+import dayjs from 'dayjs/esm'
+import utc from 'dayjs/esm/plugin/utc'
+import tz from 'dayjs/esm/plugin/timezone'
 import { setLocation, visualInit } from 'src/app/store/test/test.action'
 import { getMainState } from '../../../../../store/main/main.reducer'
 import { setMeasurementServer } from '../../../../../store/main/main.action'
 import { getTestState } from '../../../../../store/test/test.reducer'
 import { EServerDefinition } from '../enums/server-definition.enum'
 import { isPlatformBrowser } from '@angular/common'
-import { MatomoTracker } from '@ngx-matomo/tracker'
+import { MatomoTracker } from 'ngx-matomo-client'
 import { EMatomoEventCategory } from 'src/app/core/enums/matomo-events.enum'
 import { getHistoryState } from 'src/app/store/history/history.reducer'
 import {
@@ -46,6 +46,7 @@ import {
 import { Router } from '@angular/router'
 import { ERoutes } from 'src/app/core/enums/routes.enum'
 import { TranslocoService } from '@ngneat/transloco'
+import { NTCookieService } from '@nettest/cookie-widget'
 
 dayjs.extend(utc)
 dayjs.extend(tz)
@@ -101,9 +102,7 @@ export class TestService {
           project?.can_choose_server && server
             ? of(server)
             : this.getTestServerFromApi(),
-          from(
-            window.NTCookieService?.isCookieAccepted('functional') ?? of(false)
-          ),
+          from(NTCookieService.I.isCookieAccepted('functional') ?? of(false)),
           of(project?.enable_cookie_widget),
           of(project?.version),
           of(uuid),
@@ -118,7 +117,7 @@ export class TestService {
             ]) => {
               this.testServer = testServer
               if (isCookieWidgetEnabled) {
-                this.isHistoryAllowed = isCookieAccepted
+                this.isHistoryAllowed = !!isCookieAccepted
               } else {
                 this.isHistoryAllowed = true
               }

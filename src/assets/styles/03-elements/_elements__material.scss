@@ -1,13 +1,12 @@
 @use '@angular/material' as mat;
 
 @include mat.core();
-@include mat.legacy-core();
 
 //create palettes
 $app-primary: mat.define-palette($palette__primary);
 $app-accent: mat.define-palette($palette__accent);
 $app-warn: mat.define-palette($palette__warn);
-$app-typography: mat.define-legacy-typography-config(
+$app-typography: mat.define-typography-config(
   $font-family: $moq__font--default,
 );
 $app-theme: mat.define-light-theme(
@@ -21,7 +20,6 @@ $app-theme: mat.define-light-theme(
   )
 );
 @include mat.all-component-themes($app-theme);
-@include mat.all-legacy-component-themes($app-theme);
 
 .mat-drawer-container {
   flex: 1;
@@ -137,8 +135,26 @@ mat-header-cell * {
 
 .#{$moq__ns}header {
   #{$moq__ns}language-selector {
+    .mat-mdc-select {
+      display: flex;
+      font-size: $header__menu-item-font-size;
+      padding-bottom: rem(4);
+    }
+
+    .mdc-notched-outline {
+      display: none;
+    }
+
+    .mdc-text-field--outlined {
+      padding: 0;
+    }
+
+    .mat-mdc-form-field-subscript-wrapper {
+      display: none;
+    }
+
     mat-select-trigger,
-    .mat-select-arrow {
+    .mat-mdc-select-arrow {
       color: $header__link-color !important;
     }
     .mat-form-field-wrapper {
@@ -149,11 +165,12 @@ mat-header-cell * {
 
   & .#{$moq__ns}wrapper &__select {
     width: rem(130);
-
-    .#{$moq__ns}language-selector__language-name {
-      justify-content: space-evenly;
-    }
   }
+}
+
+.#{$moq__ns}language-selector__language-name {
+  font-size: $header__menu-item-font-size;
+  justify-content: space-evenly;
 }
 
 .cdk-overlay-container .#{$moq__ns}header__select {
@@ -165,7 +182,9 @@ mat-header-cell * {
 
 .#{$moq__ns}menu__item--footer {
   .mat-button-ripple,
-  .mat-button-focus-overlay {
+  .mat-button-focus-overlay,
+  .mat-mdc-button-ripple,
+  .mdc-button__ripple {
     display: none !important;
   }
 }
@@ -301,65 +320,14 @@ mat-option,
   font-family: $moq__font--default !important;
 }
 
-.server-selector {
-  .mat-form-field {
-    width: auto !important;
-  }
-  .mat-select-value {
-    max-width: 100% !important;
-    width: auto !important;
-  }
-  .mat-form-field-wrapper {
-    padding: 0 !important;
-  }
-  .mat-form-field {
-    padding: 0 !important;
-  }
-  .mat-form-field-infix {
-    margin: 0 !important;
-    padding: 0 !important;
-    border: 0 !important;
-    width: auto;
-  }
-  .mat-form-field-ripple {
-    background-color: transparent !important;
-  }
-  .mat-input-element {
-    color: transparent !important;
-  }
-  .mat-form-field-underline {
-    background-color: transparent !important;
-    background-image: none !important;
-  }
-  .mat-form-field-label {
-    color: transparent !important;
-    .mat-form-field-required-marker {
-      color: transparent !important;
-    }
-  }
-}
-
-.#{$moq__ns}form-field {
-  .mat-form-field-label {
-    text-transform: uppercase;
-  }
-  .mat-select-placeholder,
-  ::placeholder {
-    color: rgba(0, 0, 0, 0.25);
-  }
-
-  &--checkbox {
-    .mat-checkbox-inner-container {
-      margin-top: rem(4);
-    }
-  }
-}
-
 .#{$moq__ns}main-snackbar {
-  background: white;
-  color: black;
+  .mdc-snackbar__surface {
+    background: white !important;
+  }
 
   .#{$moq__ns}container {
+    align-items: center;
+    color: black !important;
     display: flex;
     justify-content: flex-start;
     padding-bottom: rem(14);
@@ -384,4 +352,135 @@ mat-option,
       color: #fc2641;
     }
   }
+}
+
+.mdc-snackbar {
+  .mat-mdc-snack-bar-label {
+    padding-top: 0;
+    padding-bottom: 0;
+    .#{$moq__ns}container__row {
+      margin-top: 0;
+    }
+  }
+}
+
+.mat-mdc-paginator {
+  .mdc-text-field--outlined .mdc-notched-outline {
+    display: none;
+  }
+}
+
+#{$moq__ns}root {
+  .mat-mdc-form-field {
+    display: flex;
+
+    &.mat-form-field-appearance-fill {
+      margin-top: rem(10);
+      .mdc-text-field--filled {
+        background: none;
+        padding: 0;
+      }
+      .mat-mdc-form-field-focus-overlay {
+        display: none;
+      }
+      .mdc-line-ripple::before {
+        border-bottom-color: color(gray1) !important;
+      }
+    }
+
+    .mat-mdc-form-field-infix {
+      min-height: 0;
+    }
+
+    .mat-mdc-form-field-error-wrapper,
+    .mat-mdc-form-field-hint-wrapper {
+      padding: 0;
+    }
+  }
+
+  .#{$moq__ns}test-invite__server {
+    .mdc-line-ripple::before {
+      display: none;
+    }
+  }
+
+  .server-selector {
+    .mat-mdc-form-field {
+      margin: 0;
+    }
+    .mdc-line-ripple::before {
+      display: none;
+    }
+    .mat-mdc-select-value-text {
+      font-size: rem(16);
+    }
+    .mat-mdc-form-field-infix {
+      padding: 0 !important;
+      width: auto;
+    }
+    .mat-mdc-form-field-subscript-wrapper {
+      display: none;
+    }
+  }
+
+  .#{$moq__ns}form-field {
+    .mdc-floating-label {
+      text-transform: uppercase;
+    }
+    .mat-mdc-text-field-wrapper
+      .mat-mdc-form-field-flex
+      .mat-mdc-floating-label {
+      top: rem(18);
+    }
+
+    .mat-mdc-select-placeholder,
+    ::placeholder {
+      color: rgba(0, 0, 0, 0.25) !important;
+    }
+
+    &--checkbox {
+      .mat-checkbox-inner-container {
+        margin-top: rem(4);
+      }
+    }
+  }
+
+  #{$moq__ns}contact {
+    .mat-form-field-appearance-fill .mat-mdc-select-arrow-wrapper {
+      transform: none;
+    }
+  }
+
+  .#{$moq__ns}stats__filter .mat-mdc-select-value-text {
+    font-size: rem(14);
+  }
+
+  .mat-button-base:not(:disabled),
+  .mat-mdc-button-base:not(:disabled) {
+    &.mat-primary {
+      background-color: $color__link;
+      color: $color__alt;
+    }
+  }
+}
+
+.mat-button-base,
+.mat-mdc-button-base,
+.mat-mdc-form-field {
+  letter-spacing: normal !important;
+}
+
+.mdc-button .mdc-button__label {
+  z-index: 0;
+}
+
+.mat-mdc-select-value-text,
+.mat-mdc-option,
+.mdc-list-item {
+  font-size: rem($moq__base-font-size) !important;
+}
+
+.#{$moq__ns}menu__dropdown.mat-mdc-menu-panel {
+  white-space: nowrap;
+  max-width: fit-content;
 }

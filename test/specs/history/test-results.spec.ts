@@ -35,32 +35,22 @@ test.describe('Test results page', () => {
       'The history of your measurement results is not available. Please enable functional cookies to enable your measurement history.'
     )
     await expect(
-      page.locator(
-        '.nt-functional-cookie .nt-functional-cookie__button .mat-button-wrapper'
-      )
+      page.locator('.nt-functional-cookie .nt-functional-cookie__button')
     ).toBeVisible()
     await expect(
-      page.locator(
-        '.nt-functional-cookie .nt-functional-cookie__button .mat-button-wrapper'
-      )
+      page.locator('.nt-functional-cookie .nt-functional-cookie__button')
     ).toContainText('Enable Functional Cookies')
   })
 
   test('shows that the functional cookies are enabled', async () => {
     await expect(
-      page.locator(
-        '.nt-functional-cookie .nt-functional-cookie__button .mat-button-wrapper'
-      )
+      page.locator('.nt-functional-cookie .nt-functional-cookie__button')
     ).toBeVisible()
     await expect(
-      page.locator(
-        '.nt-functional-cookie .nt-functional-cookie__button .mat-button-wrapper'
-      )
+      page.locator('.nt-functional-cookie .nt-functional-cookie__button')
     ).toContainText('Enable Functional Cookies')
     await page
-      .locator(
-        '.nt-functional-cookie .nt-functional-cookie__button .mat-button-wrapper'
-      )
+      .locator('.nt-functional-cookie .nt-functional-cookie__button')
       .click()
     await expect(page.locator('.nt-functional-cookie')).not.toHaveCount(0)
     await expect(
@@ -82,19 +72,13 @@ test.describe('Test results page', () => {
       'Functional cookies are now enabled.  You will now see your list of measurement results in the history.'
     )
     await expect(
-      page.locator(
-        '.nt-functional-cookie .nt-functional-cookie__button .mat-button-wrapper'
-      )
+      page.locator('.nt-functional-cookie .nt-functional-cookie__button')
     ).toBeVisible()
     await expect(
-      page.locator(
-        '.nt-functional-cookie .nt-functional-cookie__button .mat-button-wrapper'
-      )
+      page.locator('.nt-functional-cookie .nt-functional-cookie__button')
     ).toContainText('Run Test')
-    await page.click(
-      '.nt-functional-cookie .nt-functional-cookie__button .mat-button-wrapper'
-    )
-    await page.waitForSelector(`.mat-button-wrapper:has-text("Run Test Again")`)
+    await page.click('.nt-functional-cookie .nt-functional-cookie__button')
+    await page.waitForSelector(`button:has-text("Run Test Again")`)
     await page.waitForTimeout(10_000)
   })
 

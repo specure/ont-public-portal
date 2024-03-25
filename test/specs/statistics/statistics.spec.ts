@@ -117,7 +117,7 @@ test.describe('Statistics Page', () => {
         style.style
       )
 
-      expect(await page.locator('.mat-row').count()).toBeGreaterThan(0)
+      expect(await page.locator('mat-row').count()).toBeGreaterThan(0)
     }
   })
 
@@ -130,11 +130,11 @@ test.describe('Statistics Page', () => {
     const techArr = ['All technologies', '5G', '4G', '3G', '2G']
     for (const tech of techArr) {
       await expect(
-        page.locator(`.mat-option-text:has-text("${tech}")`)
+        page.locator(`mat-option:has-text("${tech}")`)
       ).not.toHaveCount(0)
     }
     const textAll = await page
-      .locator('.mat-cell:nth-child(3)')
+      .locator('mat-cell:nth-child(3)')
       .evaluateAll((cells) => {
         return cells.map((cell) => cell.textContent)
       })
@@ -142,11 +142,11 @@ test.describe('Statistics Page', () => {
       page.waitForResponse(
         new RegExp(`.+${environment.controlServer.routes.providers}`)
       ),
-      page.locator('.mat-option-text:has-text("3G")').click(),
+      page.locator('mat-option:has-text("3G")').click(),
     ])
     expect(response.ok()).toBeTruthy()
     const text3G = await page
-      .locator('.mat-cell:nth-child(3)')
+      .locator('mat-cell:nth-child(3)')
       .evaluateAll((cells) => {
         return cells.map((cell) => cell.textContent)
       })
@@ -158,13 +158,13 @@ test.describe('Statistics Page', () => {
       return
     }
     await expect(
-      page.locator('.mat-radio-group[formcontrolname="providerType"]')
+      page.locator('mat-radio-group[formcontrolname="providerType"]')
     ).toBeVisible()
     let radioClassList = await getClassList(
       page,
-      '.mat-radio-group[formcontrolname="providerType"] .mat-radio-button:first-of-type'
+      'mat-radio-group[formcontrolname="providerType"] mat-radio-button:first-of-type'
     )
-    expect(radioClassList.includes('mat-radio-checked')).toBeTruthy()
+    expect(radioClassList.includes('mat-mdc-radio-checked')).toBeTruthy()
 
     let responses = await Promise.all([
       page.waitForResponse(
@@ -173,18 +173,18 @@ test.describe('Statistics Page', () => {
         )
       ),
       page.click(
-        '.mat-radio-group[formcontrolname="providerType"] .mat-radio-button:last-of-type'
+        'mat-radio-group[formcontrolname="providerType"] mat-radio-button:last-of-type'
       ),
     ])
     expect(responses[0].ok()).toBeTruthy()
     await expect(
-      page.locator('mat-select[name=tech].mat-select-disabled')
+      page.locator('mat-select[name=tech].mat-mdc-select-disabled')
     ).toBeVisible()
     radioClassList = await getClassList(
       page,
-      '.mat-radio-group[formcontrolname="providerType"] .mat-radio-button:last-of-type'
+      'mat-radio-group[formcontrolname="providerType"] mat-radio-button:last-of-type'
     )
-    expect(radioClassList.includes('mat-radio-checked')).toBeTruthy()
+    expect(radioClassList.includes('mat-mdc-radio-checked')).toBeTruthy()
 
     responses = await Promise.all([
       page.waitForResponse(
@@ -193,18 +193,18 @@ test.describe('Statistics Page', () => {
         )
       ),
       page.click(
-        '.mat-radio-group[formcontrolname="providerType"] .mat-radio-button:first-of-type'
+        'mat-radio-group[formcontrolname="providerType"] mat-radio-button:first-of-type'
       ),
     ])
     expect(responses[0].ok()).toBeTruthy()
     await expect(
-      page.locator('mat-select[name=tech].mat-select-disabled')
+      page.locator('mat-select[name=tech].mat-mdc-select-disabled')
     ).not.toBeVisible()
     radioClassList = await getClassList(
       page,
-      '.mat-radio-group[formcontrolname="providerType"] .mat-radio-button:first-of-type'
+      'mat-radio-group[formcontrolname="providerType"] mat-radio-button:first-of-type'
     )
-    expect(radioClassList.includes('mat-radio-checked')).toBeTruthy()
+    expect(radioClassList.includes('mat-mdc-radio-checked')).toBeTruthy()
   })
 
   test('shows counties and municipalities in alphabetical order', async () => {

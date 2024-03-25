@@ -90,6 +90,8 @@ $tertiary-button-gradient: linear-gradient(84.79deg, #09bd5e 0%, #ffcc00 100%),
       mat-select-trigger {
         p {
           color: $color__link;
+          font-size: rem($moq__base-font-size);
+          margin-right: 0.5em;
         }
       }
     }
@@ -146,6 +148,9 @@ $tertiary-button-gradient: linear-gradient(84.79deg, #09bd5e 0%, #ffcc00 100%),
       background: $secondary-button-gradient;
       content: '';
       display: block;
+      height: 100%;
+      width: 100%;
+      position: absolute;
     }
 
     &:hover {

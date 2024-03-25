@@ -21,7 +21,7 @@ test.describe('Test Home Page', () => {
   })
 
   test('should hide menu items and show hamburger icon', async () => {
-    await page.setViewportSize({ width: 900, height: 900 })
+    await page.setViewportSize({ width: 900, height: 1600 })
     await expect(page.locator('.nt-sidenav')).not.toBeVisible()
     await expect(page.locator('.nt-hamburger')).toBeVisible()
     await expect(page.locator('mat-icon:has-text("menu")')).toBeVisible()
@@ -49,7 +49,7 @@ test.describe('Test Home Page', () => {
     )
     expect(classes).toContain('nt-menu-button--active')
     await expect(
-      page.locator('.nt-sidenav .mat-button-wrapper:has-text("Cookie setting")')
+      page.locator('.nt-sidenav .nt-menu-button:has-text("Cookie settings")')
     ).toBeVisible()
     await expect(page.locator('.nt-sidenav__footer-copyright')).toBeVisible()
     await expect(page.locator('.nt-sidenav__footer-copyright')).not.toBeEmpty()
@@ -61,7 +61,7 @@ test.describe('Test Home Page', () => {
   test('speed chart size must have right width', async ({ browser }) => {
     await page.setViewportSize({ width: 320, height: 900 })
     await mockGeolocation(browser, { latitude: 30, longitude: -98 })
-    await page.locator('"Start speed test"').click()
+    await page.locator('button.nt-run-test-btn').click()
 
     const stages = [
       'Initialising',

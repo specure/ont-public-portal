@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core'
 import { NavigationEnd } from '@angular/router'
-import { PageUrlProvider } from '@ngx-matomo/router'
+import { PageUrlProvider } from 'ngx-matomo-client'
 import { Observable, of } from 'rxjs'
 import { ERoutes } from '../enums/routes.enum'
 

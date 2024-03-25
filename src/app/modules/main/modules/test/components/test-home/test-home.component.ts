@@ -13,7 +13,7 @@ import { TranslocoService } from '@ngneat/transloco'
 import { setShowProgress } from 'src/app/store/test/test.action'
 import { DatePipe } from '@angular/common'
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser'
-import { MatLegacySelectChange as MatSelectChange } from '@angular/material/legacy-select'
+import { MatSelectChange } from '@angular/material/select'
 import { IMainProject } from '../../../../interfaces/main-project.interface'
 import { DialogService } from 'src/app/core/services/dialog.service'
 import { PlatformService } from 'src/app/core/services/platform.service'
@@ -64,7 +64,7 @@ export class TestHomeComponent implements OnDestroy {
       if (!translatedPage) {
         return ''
       }
-      return parseFigures(marked.parse(translatedPage))
+      return parseFigures(marked.parse(translatedPage) as string)
     })
   )
   project$: Observable<IMainProject> = this.store.pipe(

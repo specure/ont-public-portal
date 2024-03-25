@@ -1,10 +1,8 @@
+import { APP_ID, ErrorHandler, NgModule } from '@angular/core'
 import {
-  APP_INITIALIZER,
-  ErrorHandler,
-  NgModule,
-  PLATFORM_ID,
-} from '@angular/core'
-import { BrowserModule } from '@angular/platform-browser'
+  BrowserModule,
+  provideClientHydration,
+} from '@angular/platform-browser'
 
 import { AppRoutingModule } from './app-routing.module'
 import { AppComponent } from './app.component'
@@ -24,23 +22,15 @@ import localeSk from '@angular/common/locales/sk'
 import localeSr from '@angular/common/locales/sr'
 import localeSrLatn from '@angular/common/locales/sr-Latn'
 import localeDe from '@angular/common/locales/de'
-import {
-  DOCUMENT,
-  isPlatformBrowser,
-  registerLocaleData,
-  ɵgetDOM,
-} from '@angular/common'
-import * as Sentry from '@sentry/angular'
+import { registerLocaleData } from '@angular/common'
+import * as Sentry from '@sentry/angular-ivy'
 import {
   MatomoConsentMode,
   MatomoInitializationMode,
-  NgxMatomoTrackerModule,
-} from '@ngx-matomo/tracker'
-import {
   MATOMO_PAGE_URL_PROVIDER,
-  NgxMatomoRouterModule,
-} from '@ngx-matomo/router'
-import { PrebootModule } from 'preboot'
+  provideMatomo,
+  withRouter,
+} from 'ngx-matomo-client'
 import { RECAPTCHA_V3_SITE_KEY, RecaptchaV3Module } from 'ng-recaptcha'
 import { MatomoUrlProviderService } from './core/services/matomo-url-provider.service'
 import {
@@ -103,24 +93,16 @@ Sentry.init({
 @NgModule({
   declarations: [AppComponent],
   imports: [
-    BrowserModule.withServerTransition({ appId: 'serverApp' }),
     AppRoutingModule,
     BrowserAnimationsModule,
-    EffectsModule.forRoot(APP_EFFECTS),
+    BrowserModule,
     HttpClientModule,
+    RecaptchaV3Module,
     SharedModule,
+    TranslocoRootModule,
+    EffectsModule.forRoot(APP_EFFECTS),
     StoreModule.forRoot(appReducers, { metaReducers }),
     !environment.production ? StoreDevtoolsModule.instrument() : [],
-    TranslocoRootModule,
-    NgxMatomoTrackerModule.forRoot({
-      requireConsent: MatomoConsentMode.COOKIE,
-      mode: MatomoInitializationMode.AUTO_DEFERRED,
-    }),
-    NgxMatomoRouterModule.forRoot({
-      delay: 600,
-    }),
-    PrebootModule.withConfig({ appRoot: 'nt-root', replay: false }),
-    RecaptchaV3Module,
   ],
   providers: [
     CookieService,
@@ -137,31 +119,42 @@ Sentry.init({
       useClass: MatomoUrlProviderService,
     },
     // SSR flicker solution from https://github.com/angular/preboot/issues/75#issuecomment-421266570
-    {
-      provide: APP_INITIALIZER,
-      useFactory:
-        (document: HTMLDocument, platformId: Object): Function =>
-        () => {
-          if (isPlatformBrowser(platformId)) {
-            const dom = ɵgetDOM().getDefaultDocument()
-            const styles = Array.prototype.slice.apply(
-              dom.querySelectorAll(`style[ng-transition]`)
-            )
-            styles.forEach((el) => {
-              // Remove ng-transition attribute to prevent Angular appInitializerFactory
-              // to remove server styles before preboot complete
-              el.removeAttribute('ng-transition')
-            })
-            document.addEventListener('PrebootComplete', () => {
-              // After preboot complete, remove the server scripts
-              setTimeout(() => styles.forEach((el) => el.remove()))
-            })
-            import('@nettest/cookie-widget').then()
-          }
-        },
-      deps: [DOCUMENT, PLATFORM_ID],
-      multi: true,
-    },
+    // {
+    //   provide: APP_INITIALIZER,
+    //   useFactory:
+    //     (document: HTMLDocument, platformId: Object): Function =>
+    //     () => {
+    //       if (isPlatformBrowser(platformId)) {
+    //         const dom = ɵgetDOM().getDefaultDocument()
+    //         const styles = Array.prototype.slice.apply(
+    //           dom.querySelectorAll(`style[ng-transition]`)
+    //         )
+    //         styles.forEach((el) => {
+    //           // Remove ng-transition attribute to prevent Angular appInitializerFactory
+    //           // to remove server styles before preboot complete
+    //           el.removeAttribute('ng-transition')
+    //         })
+    //         document.addEventListener('PrebootComplete', () => {
+    //           // After preboot complete, remove the server scripts
+    //           setTimeout(() => styles.forEach((el) => el.remove()))
+    //         })
+    //         import('@nettest/cookie-widget').then()
+    //       }
+    //     },
+    //   deps: [DOCUMENT, PLATFORM_ID],
+    //   multi: true,
+    // },
+    { provide: APP_ID, useValue: 'serverApp' },
+    provideMatomo(
+      {
+        requireConsent: MatomoConsentMode.COOKIE,
+        mode: MatomoInitializationMode.AUTO_DEFERRED,
+      },
+      withRouter({
+        delay: 600,
+      })
+    ),
+    provideClientHydration(),
   ],
   bootstrap: [AppComponent],
 })

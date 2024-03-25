@@ -1,7 +1,7 @@
 .#{$moq__ns}btn {
   cursor: pointer;
   border: none;
-  border-radius: 0;
+  border-radius: rem(4);
   font-size: rem(14);
   font-weight: 500;
   line-height: rem(20);
@@ -94,4 +94,5 @@
   font-size: rem(16);
   height: rem(48);
   min-width: rem(120);
+  padding: 0 rem(16);
 }

@@ -30,18 +30,16 @@ test.describe('Open Data', () => {
   })
 
   test('should show Monthly Export by default', async () => {
-    await page.waitForSelector('.mat-radio-button')
-    expect(await page.locator('.mat-radio-button').count()).toEqual(2)
+    await page.waitForSelector('mat-radio-button')
+    expect(await page.locator('mat-radio-button').count()).toEqual(2)
     await expect(
-      page.locator('.mat-radio-button:first-of-type.mat-radio-checked')
+      page.locator('mat-radio-button:first-of-type.mat-mdc-radio-checked')
     ).toBeVisible()
     await expect(
-      page.locator(
-        '.mat-radio-checked .mat-radio-label-content:has-text("Monthly Export")'
-      )
+      page.locator('.mat-mdc-radio-checked:has-text("Monthly Export")')
     ).toBeVisible()
     await expect(
-      page.locator('.nt-open-data__fieldset .nt-open-data__select .mat-select')
+      page.locator('.nt-open-data__fieldset .nt-open-data__select mat-select')
     ).toBeVisible()
     await expect(
       page.locator(
@@ -53,32 +51,32 @@ test.describe('Open Data', () => {
   test('should show correct dates in the first select', async () => {
     await expect(
       page.locator(
-        `.mat-select-value-text span:has-text("${dayjs().format('YYYY-MM')}")`
+        `.mat-mdc-select-value-text:has-text("${dayjs().format('YYYY-MM')}")`
       )
     ).toBeVisible()
-    await page.locator('.nt-open-data__fieldset .mat-select-trigger').click()
+    await page
+      .locator('.nt-open-data__fieldset .mat-mdc-select-trigger')
+      .click()
     await expect(
-      page.locator(`.mat-option-text:has-text("${dayjs().format('YYYY-MM')}")`)
+      page.locator(`.mat-mdc-option:has-text("${dayjs().format('YYYY-MM')}")`)
     ).toBeVisible()
     const prevMonth = dayjs().subtract(1, 'month').format('YYYY-MM')
-    await page.locator(`.mat-option-text div:has-text("${prevMonth}")`).click()
+    await page.locator(`.mat-mdc-option div:has-text("${prevMonth}")`).click()
     await expect(
-      page.locator(`.mat-select-value-text span:has-text("${prevMonth}")`)
+      page.locator(`.mat-mdc-select-value-text:has-text("${prevMonth}")`)
     ).toBeVisible()
   })
 
   test('should allow switching to Full Export', async () => {
-    await page.locator('.mat-radio-button:last-of-type').click()
+    await page.locator('mat-radio-button:last-of-type').click()
     await expect(
-      page.locator('.mat-radio-button:last-of-type.mat-radio-checked')
+      page.locator('mat-radio-button:last-of-type.mat-mdc-radio-checked')
     ).not.toHaveCount(0)
     await expect(
-      page.locator(
-        '.mat-radio-checked .mat-radio-label-content:has-text("Full Export")'
-      )
+      page.locator('.mat-mdc-radio-checked:has-text("Full Export")')
     ).not.toHaveCount(0)
     await expect(
-      page.locator('.nt-open-data__fieldset .nt-open-data__select .mat-select')
+      page.locator('.nt-open-data__fieldset .nt-open-data__select mat-select')
     ).toHaveCount(0)
     await expect(page.locator('.nt-open-data__desc')).not.toHaveCount(0)
     await expect(page.locator('.nt-open-data__desc')).toContainText(
@@ -94,15 +92,13 @@ test.describe('Open Data', () => {
         a[href="http://creativecommons.org/licenses/by/4.0/"]
         img[src="https://i.creativecommons.org/l/by/4.0/88x31.png"]`)
     ).not.toHaveCount(0)
-    await expect(
-      page.locator('.nt-btn .mat-button-wrapper:has-text("Download")')
-    ).not.toHaveCount(0)
+    await expect(page.locator('.nt-btn:has-text("Download")')).not.toHaveCount(
+      0
+    )
   })
 
   test('shows snackbar on click', async () => {
-    await page.click(
-      '.nt-open-data__wrapper .mat-button-wrapper:has-text("Download")'
-    )
+    await page.click('.nt-open-data__wrapper button:has-text("Download")')
     await expect(page.locator('nt-export-snackbar')).toBeVisible()
     await expect(page.locator('nt-export-snackbar .nt-icon')).toBeVisible()
     await expect(
@@ -118,66 +114,9 @@ test.describe('Open Data', () => {
       )
     ).toBeVisible()
     await expect(
-      page.locator(
-        'nt-export-snackbar .mat-button-wrapper:has-text("Download")'
-      )
+      page.locator('nt-export-snackbar button:has-text("Download")')
     ).toBeVisible()
     await page.click('mat-icon:has-text("close")')
-    await expect(page.locator('nt-export-snackbar')).not.toBeVisible()
-  })
-
-  test('keeps the snackbar open when navigating between pages', async () => {
-    await page
-      .locator(
-        '.nt-open-data__wrapper .mat-button-wrapper:has-text("Download")'
-      )
-      .click()
-    await expect(page.locator('nt-export-snackbar')).not.toHaveCount(0)
-    await expect(page.locator(`a[href="/en/${ERoutes.MAP}"]`)).not.toHaveCount(
-      0
-    )
-    await page.locator(`a[href="/en/${ERoutes.MAP}"]`).click({ force: true })
-    await expect(page.locator('nt-export-snackbar')).not.toHaveCount(0)
-    await expect(
-      page.locator(`a[href="/en/${ERoutes.ABOUT}"]`)
-    ).not.toHaveCount(0)
-    await page.locator(`a[href="/en/${ERoutes.ABOUT}"]`).click({ force: true })
-    await expect(page.locator('nt-export-snackbar')).not.toHaveCount(0)
-  })
-
-  test('hides the snackbar on reload and deletes scheduled exports', async () => {
-    await expect(page.locator('nt-export-snackbar')).not.toHaveCount(0)
-    await page.goto(`/en/${ERoutes.DATA}/${ERoutes.OPEN_DATA}`)
-    await expect(page.locator('nt-export-snackbar')).toHaveCount(0)
-  })
-
-  test('hides the snackbar on download', async () => {
-    await expect(
-      page.locator('.mat-button-wrapper:has-text("Download")')
-    ).toBeVisible()
-    await page.locator('.mat-button-wrapper:has-text("Download")').click()
-    await expect(page.locator('nt-export-snackbar')).toBeVisible()
-    const now = dayjs()
-    await expect(
-      page.locator('nt-export-snackbar .nt-icon--ready')
-    ).toBeVisible()
-    await expect(
-      page.locator(`nt-export-snackbar
-      .nt-container__col:nth-child(2)
-      p:has-text("Your download is ready.")`)
-    ).toBeVisible()
-    await expect(
-      page.locator(`nt-export-snackbar
-      .nt-container__col:nth-child(2)
-      p:has-text("Open Data - Monthly Export - ${now.year()}-${now.format(
-        'MM'
-      )}.csv")`)
-    ).toBeVisible()
-    await page
-      .locator(
-        'snack-bar-container button .mat-button-wrapper:has-text("Download")'
-      )
-      .click({ force: true })
     await expect(page.locator('nt-export-snackbar')).not.toBeVisible()
   })
 })

@@ -17,6 +17,16 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
+            "allowedCommonJsDependencies": [
+              "maplibre-gl",
+              "rmbtws",
+              "smart-app-banner",
+              "cookie-cutter",
+              "get-doc",
+              "object-assign",
+              "ua-parser-js",
+              "component-query"
+            ],
             "outputPath": "dist/nettest/browser",
             "index": "src/index.html",
             "main": "src/main.ts",
@@ -147,27 +157,27 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "nettest:build"
+            "buildTarget": "nettest:build"
           },
           "configurations": {
             "local": {
-              "browserTarget": "nettest:build:local"
+              "buildTarget": "nettest:build:local"
             },
             "stage": {
-              "browserTarget": "nettest:build:stage"
+              "buildTarget": "nettest:build:stage"
             },
             "production": {
-              "browserTarget": "nettest:build:production"
+              "buildTarget": "nettest:build:production"
             },
             "prod": {
-              "browserTarget": "nettest:build:prod"
+              "buildTarget": "nettest:build:prod"
             }
           }
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "nettest:build"
+            "buildTarget": "nettest:build"
           }
         },
         "test": {
@@ -223,7 +233,8 @@
               "optimization": false,
               "sourceMap": true,
               "extractLicenses": false,
-              "vendorChunk": true
+              "vendorChunk": true,
+              "buildOptimizer": false
             }
           },
           "defaultConfiguration": "production"
@@ -235,7 +246,7 @@
           }
         },
         "serve-ssr": {
-          "builder": "@nguniversal/builders:ssr-dev-server",
+          "builder": "@angular-devkit/build-angular:ssr-dev-server",
           "configurations": {
             "development": {
               "browserTarget": "nettest:build:development",
@@ -253,9 +264,10 @@
           "defaultConfiguration": "development"
         },
         "prerender": {
-          "builder": "@nguniversal/builders:prerender",
+          "builder": "@angular-devkit/build-angular:prerender",
           "options": {
-            "routes": ["/"]
+            "discoverRoutes": false,
+            "routesFile": "src/prerender-routes.txt"
           },
           "configurations": {
             "production": {

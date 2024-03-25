@@ -19,10 +19,10 @@ test.describe('Map Page Responsiveness', () => {
   const checkTimeline = async () => {
     await expect(page.locator('.nt-timeline-toggle')).toBeVisible()
     await expect(
-      page.locator('.nt-timeline-toggle .nt-panel-toggle .mat-icon')
+      page.locator('.nt-timeline-toggle .nt-panel-toggle mat-icon')
     ).toBeVisible()
     await expect(
-      page.locator('.nt-timeline-toggle .nt-panel-toggle .mat-icon')
+      page.locator('.nt-timeline-toggle .nt-panel-toggle mat-icon')
     ).toContainText('keyboard_arrow_up')
     await expect(
       page.locator('.nt-timeline-toggle .nt-panel-toggle + span')
@@ -39,12 +39,12 @@ test.describe('Map Page Responsiveness', () => {
     await expect(page.locator('.nt-timeline__header')).toBeVisible()
     await expect(
       page.locator(
-        '.nt-timeline__header .nt-btn .nt-panel-toggle--switched .mat-icon'
+        '.nt-timeline__header .nt-btn .nt-panel-toggle--switched mat-icon'
       )
     ).toBeVisible()
     await expect(
       page.locator(
-        '.nt-timeline__header .nt-btn .nt-panel-toggle--switched .mat-icon'
+        '.nt-timeline__header .nt-btn .nt-panel-toggle--switched mat-icon'
       )
     ).toContainText('keyboard_arrow_up')
     await expect(page.locator('.nt-list__wrapper .nt-list')).not.toHaveCount(0)
@@ -86,7 +86,7 @@ test.describe('Map Page Responsiveness', () => {
       await expect(page.locator('.nt-filters__sec').nth(i)).toBeVisible()
     }
     await expect(page.locator('.nt-filters__sec--expanded')).toBeVisible()
-    await expect(page.locator('.nt-filters .mat-select')).toBeVisible()
+    await expect(page.locator('.nt-filters mat-select')).toBeVisible()
     await expect(page.locator('.nt-filters__disclaimer')).toBeVisible()
   }
 
@@ -116,7 +116,7 @@ test.describe('Map Page Responsiveness', () => {
       await expect(page.locator('.nt-filters__sec').nth(i)).toBeVisible()
     }
     await expect(page.locator('.nt-filters__sec--expanded')).toBeVisible()
-    await expect(page.locator('.nt-filters .mat-select')).not.toBeVisible()
+    await expect(page.locator('.nt-filters mat-select')).not.toBeVisible()
     await expect(page.locator('.nt-filters__disclaimer')).toBeVisible()
   }
 
@@ -143,7 +143,7 @@ test.describe('Map Page Responsiveness', () => {
       await expect(page.locator('.nt-filters__sec').nth(i)).toBeVisible()
     }
     await expect(page.locator('.nt-filters__sec--expanded')).toHaveCount(0)
-    await expect(page.locator('.nt-filters .mat-select')).not.toBeVisible()
+    await expect(page.locator('.nt-filters mat-select')).not.toBeVisible()
     await expect(page.locator('.nt-filters__disclaimer')).toBeVisible()
   }
 

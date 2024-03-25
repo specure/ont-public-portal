@@ -16,7 +16,7 @@ import { getExportState } from './export.reducer'
 import { ExportSnackbarComponent } from '../components/export-snackbar/export-snackbar.component'
 import { EExportStatus } from '../enums/export-status.enum'
 import { OpenDataService } from '../services/open-data.service'
-import { MatLegacySnackBar as MatSnackBar, MatLegacySnackBarRef as MatSnackBarRef } from '@angular/material/legacy-snack-bar'
+import { MatSnackBar, MatSnackBarRef } from '@angular/material/snack-bar'
 import { IAppState } from 'src/app/store'
 import { loadingError } from 'src/app/store/common/common.action'
 

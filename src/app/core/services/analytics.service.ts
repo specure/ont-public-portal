@@ -1,7 +1,8 @@
 import { isPlatformBrowser } from '@angular/common'
 import { Inject, Injectable, OnDestroy, PLATFORM_ID } from '@angular/core'
 import { ICookie } from '@nettest/cookie-widget/dist/interfaces/cookie.interface'
-import { MatomoInitializerService } from '@ngx-matomo/tracker'
+import { MatomoInitializerService } from 'ngx-matomo-client'
+import { NTCookieService } from '@nettest/cookie-widget'
 import { CookieService } from 'ngx-cookie-service'
 import { IMainProject } from 'src/app/modules/main/interfaces/main-project.interface'
 
@@ -29,7 +30,7 @@ export class AnalyticsService implements OnDestroy {
     if (!isPlatformBrowser(this.platformId)) {
       return
     }
-    window.NTCookieService?.removeEventListener(
+    NTCookieService.I.removeEventListener(
       'consentUpdated',
       this.toggleGoogleAnalytics
     )
@@ -56,10 +57,8 @@ export class AnalyticsService implements OnDestroy {
     }
     let isAnalyticsAllowed = true
     if (this.project?.enable_cookie_widget) {
-      isAnalyticsAllowed = await window.NTCookieService?.isCookieAccepted(
-        'analytics'
-      )
-      window.NTCookieService?.addEventListener(
+      isAnalyticsAllowed = await NTCookieService.I.isCookieAccepted('analytics')
+      NTCookieService.I.addEventListener(
         'consentUpdated',
         (cookies: ICookie[]) => {
           if (cookies?.some((c) => c.key === 'analytics')) {

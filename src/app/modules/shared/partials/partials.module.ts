@@ -1,6 +1,5 @@
 import { CommonModule } from '@angular/common'
 import { FormsModule, ReactiveFormsModule } from '@angular/forms'
-import { MaterialModule } from '../material/material.module'
 import { NgModule } from '@angular/core'
 
 import { GeneralCardComponent } from './components/general-card/general-card.component'
@@ -15,6 +14,9 @@ import { DistancePipe } from './pipes/distance.pipe'
 import { LinkRelDirective } from './directives/link-rel.directive'
 import { MainSafeHtmlPipe } from './pipes/main-safe-html.pipe'
 import { ExportWarningComponent } from './components/export-warning/export-warning.component'
+import { MatSelectModule } from '@angular/material/select'
+import { MatPaginatorModule } from '@angular/material/paginator'
+import { MatIconModule } from '@angular/material/icon'
 
 @NgModule({
   declarations: [
@@ -34,7 +36,9 @@ import { ExportWarningComponent } from './components/export-warning/export-warni
     FormsModule,
     ReactiveFormsModule,
     RouterModule,
-    MaterialModule,
+    MatIconModule,
+    MatSelectModule,
+    MatPaginatorModule,
     TranslocoModule,
   ],
   exports: [
