@@ -1,18 +1,18 @@
 import { Component, Input } from '@angular/core'
 import { getMainState } from 'src/app/store/main/main.reducer'
 import { IAppState } from 'src/app/store'
-import { map, startWith, tap } from 'rxjs/operators'
+import { map } from 'rxjs/operators'
 import { Store, select } from '@ngrx/store'
 
 import { IMainProject } from '../../interfaces/main-project.interface'
-import { PlatformService } from '../../../../core/services/platform.service'
 import { TranslatePipe } from 'src/app/modules/shared/partials/pipes/translate.pipe'
 import { MatSidenav } from '@angular/material/sidenav'
 import { EMenuFlavors } from '../../enums/menu-flavors.enum'
 import { IMainMenu } from '../../interfaces/main-menu.interface'
-import { fromEvent, of } from 'rxjs'
 import { ConfigService } from 'src/app/core/services/config.service'
 import { environment } from 'src/environments/environment'
+import { TranslocoService } from '@ngneat/transloco'
+import { ERoutes } from 'src/app/core/enums/routes.enum'
 
 @Component({
   selector: 'nt-main-header',
@@ -25,6 +25,7 @@ export class MainHeaderComponent {
   logoPath$ = this.config.logoHeader$
   logoSidePath$ = this.config.logoHeaderSide$
   logoAlt = environment.projectTitle
+  logoLink = `/${this.transloco.getActiveLang()}/${ERoutes.TEST}`
   menuFlavors = EMenuFlavors
   menu$ = this.store.pipe(
     select(getMainState),
@@ -42,7 +43,8 @@ export class MainHeaderComponent {
   constructor(
     private config: ConfigService,
     private store: Store<IAppState>,
-    private translate: TranslatePipe
+    private translate: TranslatePipe,
+    private transloco: TranslocoService
   ) {}
 
   getProjectName(project: IMainProject): string {

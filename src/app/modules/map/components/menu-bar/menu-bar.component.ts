@@ -29,6 +29,7 @@ import { setMunicipality } from 'src/app/store/map/map.action'
 import { PopupService } from '../../services/popup.service'
 import { IGeocodingFeature } from '../../interfaces/geocoding-feature.interface'
 import { ConfigService } from 'src/app/core/services/config.service'
+import { TranslocoService } from '@ngneat/transloco'
 
 @Component({
   selector: 'nt-menu-bar',
@@ -42,6 +43,7 @@ export class MenuBarComponent implements OnDestroy {
   geocodeRequest: string
   geocodeRequestChanged: BehaviorSubject<string> = new BehaviorSubject(null)
   isMenuOpen = false
+  logoLink = `/${this.transloco.getActiveLang()}/${ERoutes.TEST}`
   logoPath$ = forkJoin([this.config.logoMap$, this.config.logoHeader$]).pipe(
     map(([logoMap, logoHeader]) => logoMap || logoHeader)
   )
@@ -71,7 +73,8 @@ export class MenuBarComponent implements OnDestroy {
     private geocoder: GeocodingService,
     private mapper: MainMapService,
     private popupper: PopupService,
-    private store: Store<IAppState>
+    private store: Store<IAppState>,
+    private transloco: TranslocoService
   ) {}
 
   ngOnDestroy(): void {

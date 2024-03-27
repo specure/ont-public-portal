@@ -1,13 +1,20 @@
 <div class="nt-wrapper" *transloco="let t">
-    <header class="nt-header">{{t('error.not-found.title')}}</header>
-    <section class="nt-section">
-        <a mat-raised-button color="primary" class="nt-btn mat-elevation-z0" href="/">{{t('error.not-found.btn')}}</a>
-    </section>
-    <section class="nt-section">
-        <img *ngIf="image$ | async as image"
-            [src]="image.url"
-            [alt]="image.alternativeText || image.name"
-            [title]="image.caption || image.name"
-        />
-    </section>
+  <header class="nt-header">{{ t('error.not-found.title') }}</header>
+  <section class="nt-section">
+    <a
+      mat-raised-button
+      color="primary"
+      class="nt-btn mat-elevation-z0"
+      [href]="this.homeLink"
+      >{{ t('error.not-found.btn') }}</a
+    >
+  </section>
+  <section class="nt-section">
+    <img
+      *ngIf="image$ | async as image"
+      [src]="image.url"
+      [alt]="image.alternativeText || image.name"
+      [title]="image.caption || image.name"
+    />
+  </section>
 </div>

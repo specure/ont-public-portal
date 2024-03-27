@@ -58,6 +58,7 @@ export class SeoService {
     this.setKeywords(keywords)
     this.setTitle(name ?? title)
     this.setCanonicalUrl()
+    this.setLangs()
     this.setNoIndex()
   }
 
@@ -87,7 +88,38 @@ export class SeoService {
       link.setAttribute('rel', 'canonical')
       document.querySelector('head').appendChild(link)
     }
-    link.setAttribute('href', document.URL)
+    link.setAttribute('href', `${location.origin}${location.pathname}`)
+  }
+
+  setLangs() {
+    if (!globalThis.document) {
+      return
+    }
+
+    const existingLinks = document.querySelectorAll('link[rel=alternate]')
+    for (const link of Array.from(existingLinks)) {
+      document.querySelector('head').removeChild(link)
+    }
+
+    const urlPathParts = location.pathname.split('/')
+    const addLink = (hreflang: string) => {
+      const link = document.createElement('link')
+      link.setAttribute('rel', 'alternate')
+      link.setAttribute('href', `${location.origin}${urlPathParts.join('/')}`)
+      link.setAttribute('hreflang', hreflang)
+      document.querySelector('head').appendChild(link)
+    }
+
+    if (urlPathParts.length > 1) {
+      urlPathParts[1] = this.transloco.getDefaultLang()
+    }
+    addLink('x-default')
+    for (const lang of this.transloco.getAvailableLangs() as string[]) {
+      if (urlPathParts.length > 1) {
+        urlPathParts[1] = lang
+      }
+      addLink(lang)
+    }
   }
 
   setNoIndex() {

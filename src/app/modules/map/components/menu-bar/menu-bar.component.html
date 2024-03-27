@@ -1,5 +1,5 @@
 <div class="nt-menu-bar" *transloco="let t">
-  <a routerLink="/" class="nt-logo">
+  <a [routerLink]="logoLink" class="nt-logo">
     <img class="nt-menu-bar__logo" [src]="logoPath$ | async" />
   </a>
   <section class="nt-menu-bar__geocoder">
