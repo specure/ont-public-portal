@@ -94,18 +94,20 @@ export class SeoService {
     if (!globalThis.document) {
       return
     }
+    const resultsPath = `/${ERoutes.TEST}/${
+      ERoutes.TEST_HYSTORY_RESULTS.split('/')[0]
+    }`
+    const historyPath = `/${ERoutes.DATA}/${ERoutes.TEST_HISTORY}`
     if (
-      document.URL.includes(ERoutes.TEST_HYSTORY_RESULTS.split('/')[0]) ||
+      document.URL.includes(resultsPath) ||
+      document.URL.includes(historyPath) ||
       document.URL.includes(ERoutes.PAGE_NOT_FOUND)
     ) {
       this.metaService.updateTag({
         name: 'robots',
         content: 'noindex, nofollow',
       })
-    } else if (
-      !document.URL.includes('beta') &&
-      !document.URL.includes('dev')
-    ) {
+    } else if (environment.robotsMayIndex) {
       this.metaService.removeTag('name="robots"')
     }
   }

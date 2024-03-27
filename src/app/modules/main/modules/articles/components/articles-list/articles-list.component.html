@@ -15,11 +15,11 @@
               [alt]="article | translate : title"
             />
           </div>
-          <h2 class="nt-title">
+          <h1 class="nt-title">
             <a [routerLink]="article.slug">{{
               article | translate : 'title'
             }}</a>
-          </h2>
+          </h1>
           <p class="nt-description">
             {{ article | translate : 'description' }}&nbsp;
             <a [routerLink]="article.slug">{{ t('articles.read_more') }}</a>
