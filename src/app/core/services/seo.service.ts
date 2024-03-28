@@ -120,6 +120,10 @@ export class SeoService {
       }
       addLink(lang)
     }
+
+    document
+      .querySelector('html')
+      .setAttribute('lang', this.transloco.getActiveLang())
   }
 
   setNoIndex() {

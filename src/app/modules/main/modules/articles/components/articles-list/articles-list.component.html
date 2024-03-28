@@ -15,11 +15,16 @@
               [alt]="article | translate : title"
             />
           </div>
-          <h1 class="nt-title">
+          <h1 *ngIf="i === 0" class="nt-title">
             <a [routerLink]="article.slug">{{
               article | translate : 'title'
             }}</a>
           </h1>
+          <h2 *ngIf="i !== 0" class="nt-title">
+            <a [routerLink]="article.slug">{{
+              article | translate : 'title'
+            }}</a>
+          </h2>
           <p class="nt-description">
             {{ article | translate : 'description' }}&nbsp;
             <a [routerLink]="article.slug">{{ t('articles.read_more') }}</a>
