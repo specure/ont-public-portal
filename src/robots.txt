@@ -1,3 +1,6 @@
 User-agent: *
 Disallow: /Products/
-Disallow: /history
+Disallow: /en/history
+Disallow: /de/history
+Disallow: /en/data/history
+Disallow: /de/data/history
