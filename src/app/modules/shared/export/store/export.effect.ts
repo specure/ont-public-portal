@@ -81,6 +81,14 @@ export class ExportEffects implements OnDestroy {
               this.exportSub?.unsubscribe()
               this.exportSub = null
             }
+            if (globalThis.addEventListener) {
+              const onBeforeUnload = () => {
+                const reportIds = reports.map((r) => r.id)
+                this.store.dispatch(clearExportQueue({ reportIds }))
+              }
+              globalThis.removeEventListener('beforeunload', onBeforeUnload)
+              globalThis.addEventListener('beforeunload', onBeforeUnload)
+            }
             return updateExportQueueEnd({ reports })
           }),
           catchError(() => {
