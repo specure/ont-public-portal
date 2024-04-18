@@ -1,11 +1,14 @@
-import { Component } from '@angular/core'
+import { Component, OnInit } from '@angular/core'
 import { select, Store } from '@ngrx/store'
 import { map } from 'rxjs/operators'
 import { TranslatePipe } from 'src/app/modules/shared/partials/pipes/translate.pipe'
 import { IAppState } from 'src/app/store'
 import { getMainState } from 'src/app/store/main/main.reducer'
 import dayjs from 'dayjs/esm'
-import { enqueExport } from 'src/app/modules/shared/export/store/export.action'
+import {
+  enqueExport,
+  initExportQueue,
+} from 'src/app/modules/shared/export/store/export.action'
 import { MarkdownService } from 'ngx-markdown'
 
 @Component({
@@ -13,7 +16,7 @@ import { MarkdownService } from 'ngx-markdown'
   templateUrl: './open-data.component.html',
   styleUrls: ['./open-data.component.scss'],
 })
-export class OpenDataComponent {
+export class OpenDataComponent implements OnInit {
   exportType = 'monthly'
   months = []
   month = this.months[this.months.length - 1]
@@ -41,6 +44,10 @@ export class OpenDataComponent {
     private store: Store<IAppState>,
     private translate: TranslatePipe
   ) {}
+
+  ngOnInit(): void {
+    this.store.dispatch(initExportQueue())
+  }
 
   fillSelectWithYears() {
     const currentYear = Number(dayjs().year())

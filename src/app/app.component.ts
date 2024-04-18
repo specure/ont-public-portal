@@ -10,7 +10,6 @@ import { AnalyticsService } from './core/services/analytics.service'
 import { PrivacyService } from './core/services/privacy.service'
 import { NavigationStart, Router } from '@angular/router'
 import { setNavigationEvent } from './store/common/common.action'
-import { clearPreviousExportQueue } from './modules/shared/export/store/export.action'
 import { isPlatformBrowser } from '@angular/common'
 import { ERoutes } from './core/enums/routes.enum'
 import { TestService } from './modules/main/modules/test/services/test.service'
@@ -58,7 +57,6 @@ export class AppComponent implements OnDestroy {
     if (globalThis.history && 'scrollRestoration' in globalThis.history) {
       globalThis.history.scrollRestoration = 'manual'
     }
-    this.store.dispatch(clearPreviousExportQueue())
 
     globalThis['startTest'] = () => {
       from(this.router.navigate([this.transloco.getActiveLang(), ERoutes.TEST]))

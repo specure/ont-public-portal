@@ -6,6 +6,7 @@ import { first, map, switchMap } from 'rxjs/operators'
 import { Store } from '@ngrx/store'
 import { IAppState } from 'src/app/store'
 import { getHistoryState } from 'src/app/store/history/history.reducer'
+import { lastValueFrom } from 'rxjs'
 
 @Injectable({
   providedIn: 'root',
@@ -64,18 +65,17 @@ export class OpenDataService {
     )
   }
 
-  updateExportQueue() {
-    return this.uuid$.pipe(
-      switchMap((uuid) =>
-        this.http.get<{ dataStreamResponses: IExportedReport[] }>(
-          `${this.exportHost}${environment.cms.routes.exportQueue}/${uuid}`,
-          {
-            headers: environment.controlServer.headers,
-          }
-        )
-      ),
-      map((p) => p.dataStreamResponses)
-    )
+  async updateExportQueue() {
+    const uuid = await lastValueFrom(this.uuid$)
+    const p: { dataStreamResponses: IExportedReport[] } = await (
+      await fetch(
+        `${this.exportHost}${environment.cms.routes.exportQueue}/${uuid}`,
+        {
+          headers: environment.controlServer.headers,
+        }
+      )
+    ).json()
+    return p.dataStreamResponses
   }
 
   private getDecimalSeparator() {
