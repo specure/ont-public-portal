@@ -1,6 +1,8 @@
+import { HttpErrorResponse } from '@angular/common/http'
 import { createAction, props } from '@ngrx/store'
 import { ITestInfo } from 'src/app/modules/main/modules/test/interfaces/test-info.interface'
 import { ITestResult } from 'src/app/modules/main/modules/test/interfaces/test-result.interface'
+import { ITestServer } from 'src/app/modules/main/modules/test/interfaces/test-server.interface'
 import { ITestVisualizationState } from 'src/app/modules/main/modules/test/interfaces/test-visualization-state.interface'
 
 export const setLocation = createAction(
@@ -64,4 +66,12 @@ export const visualResultEnd = createAction(
 export const visualReset = createAction(
   '[TEST] Resetting test...',
   props<{ route: string }>()
+)
+export const addTriedServer = createAction(
+  '[TEST] Adding tried server',
+  props<{ server: ITestServer; measurementRetries: number }>()
+)
+export const handleServerError = createAction(
+  '[TEST] Handling server error',
+  props<{ error: HttpErrorResponse }>()
 )

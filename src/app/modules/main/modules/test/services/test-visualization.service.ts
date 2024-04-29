@@ -10,21 +10,17 @@ import {
   visualUp,
   visualEnd,
   visualInitDown,
-  visualReset,
+  handleServerError,
 } from 'src/app/store/test/test.action'
 import { Inject, Injectable, NgZone, PLATFORM_ID } from '@angular/core'
 import { ITestResult } from '../interfaces/test-result.interface'
 import { ITestThread } from '../interfaces/test-thread.interface'
-import { loadingError } from 'src/app/store/common/common.action'
 import { HttpErrorResponse } from '@angular/common/http'
-import { ERoutes } from 'src/app/core/enums/routes.enum'
 import * as Sentry from '@sentry/angular-ivy'
 import { isPlatformBrowser } from '@angular/common'
 import { environment } from 'src/environments/environment'
 import { MatomoTracker } from 'ngx-matomo-client'
 import { EMatomoEventCategory } from 'src/app/core/enums/matomo-events.enum'
-import { Router } from '@angular/router'
-import { TranslocoService } from '@ngneat/transloco'
 
 declare const TestState: any
 
@@ -96,9 +92,7 @@ export class TestVisualizationService {
   constructor(
     private matomo: MatomoTracker,
     private ngZone: NgZone,
-    private router: Router,
     private store: Store<IAppState>,
-    private transloco: TranslocoService,
     @Inject(PLATFORM_ID) private platformId
   ) {
     if (isPlatformBrowser(this.platformId)) {
@@ -207,24 +201,20 @@ export class TestVisualizationService {
           `Socket was closed abnormally at ${globalThis.location?.href}.`
         )
         this.store.dispatch(
-          loadingError({
+          handleServerError({
             error: new HttpErrorResponse({
               error: 'Connection was closed abnormally',
             }),
           })
         )
-        this.store.dispatch(visualReset({ route: ERoutes.TEST }))
-        this.router.navigate([this.transloco.getActiveLang(), ERoutes.TEST])
       } else {
         this.store.dispatch(
-          loadingError({
+          handleServerError({
             error: new HttpErrorResponse({
               error: `test.status.${status.toLowerCase()}`,
             }),
           })
         )
-        this.store.dispatch(visualReset({ route: ERoutes.TEST }))
-        this.router.navigate([this.transloco.getActiveLang(), ERoutes.TEST])
       }
     })
   }
@@ -243,17 +233,12 @@ export class TestVisualizationService {
               console.log('IDLE!')
               this.stopTest()
               this.store.dispatch(
-                loadingError({
+                handleServerError({
                   error: new HttpErrorResponse({
                     error: 'test.status.measurement_server_not_responding',
                   }),
                 })
               )
-              this.store.dispatch(visualReset({ route: ERoutes.TEST }))
-              this.router.navigate([
-                this.transloco.getActiveLang(),
-                ERoutes.TEST,
-              ])
             }
           })
         }, IDLE_TIMEOUT)

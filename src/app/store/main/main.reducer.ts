@@ -10,6 +10,7 @@ import {
   storeAsset,
   postFeedbackEnd,
   loadPage,
+  setAvailableServers,
 } from './main.action'
 import { IMainProject } from 'src/app/modules/main/interfaces/main-project.interface'
 import { IMainPage } from 'src/app/modules/main/interfaces/main-page.interface'
@@ -28,6 +29,7 @@ export class MainState {
   page: IMainPage
   project: IMainProject
   server: TestServer
+  availableServers: TestServer[] = []
   assets: { [key: string]: IMainAsset } = {}
   feedback: IFeedback = DefaultFeedback.instance
 }
@@ -39,7 +41,14 @@ export const mainReducer = createReducer(
   on(loadPage, (state) => ({ ...state, page: null })),
   on(loadPageEnd, (state, { page }) => ({ ...state, page })),
   on(setLanguage, (state, { lang }) => ({ ...state, lang })),
-  on(setMeasurementServer, (state, { server }) => ({ ...state, server })),
+  on(setMeasurementServer, (state, { server }) => ({
+    ...state,
+    server,
+  })),
+  on(setAvailableServers, (state, { availableServers }) => ({
+    ...state,
+    availableServers,
+  })),
   on(storeAsset, (state, { key, asset }) => ({
     ...state,
     assets: { ...state.assets, [key]: asset },

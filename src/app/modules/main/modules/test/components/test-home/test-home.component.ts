@@ -44,7 +44,7 @@ export class TestHomeComponent implements OnDestroy {
 
   servers$ = this.testService.getTestServers().pipe(
     map(([selectedServer, servers]) => {
-      this.selectedServer = selectedServer
+      this.selectedServer = selectedServer as TestServer
       return servers
     })
   )

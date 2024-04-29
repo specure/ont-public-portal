@@ -30,9 +30,16 @@ import { loadingError } from 'src/app/store/common/common.action'
 import dayjs from 'dayjs/esm'
 import utc from 'dayjs/esm/plugin/utc'
 import tz from 'dayjs/esm/plugin/timezone'
-import { setLocation, visualInit } from 'src/app/store/test/test.action'
+import {
+  addTriedServer,
+  setLocation,
+  visualInit,
+} from 'src/app/store/test/test.action'
 import { getMainState } from '../../../../../store/main/main.reducer'
-import { setMeasurementServer } from '../../../../../store/main/main.action'
+import {
+  setAvailableServers,
+  setMeasurementServer,
+} from '../../../../../store/main/main.action'
 import { getTestState } from '../../../../../store/test/test.reducer'
 import { EServerDefinition } from '../enums/server-definition.enum'
 import { isPlatformBrowser } from '@angular/common'
@@ -95,45 +102,38 @@ export class TestService {
     ])
     this.store.dispatch(visualInit())
     return this.store.select(getMainState).pipe(
-      withLatestFrom(this.store.select(getHistoryState)),
+      withLatestFrom(
+        this.store.select(getHistoryState),
+        this.store.select(getTestState)
+      ),
       take(1),
-      switchMap(([{ project, server }, { uuid }]) => {
-        return forkJoin([
-          project?.can_choose_server && server
-            ? of(server)
-            : this.getTestServerFromApi(),
-          from(NTCookieService.I.isCookieAccepted('functional') ?? of(false)),
-          of(project?.enable_cookie_widget),
-          of(project?.version),
-          of(uuid),
-        ]).pipe(
-          switchMap(
-            ([
-              testServer,
-              isCookieAccepted,
-              isCookieWidgetEnabled,
-              appVersion,
-              uuid,
-            ]) => {
-              this.testServer = testServer
-              if (isCookieWidgetEnabled) {
-                this.isHistoryAllowed = !!isCookieAccepted
-              } else {
-                this.isHistoryAllowed = true
-              }
-              if (isCookieWidgetEnabled && isCookieAccepted) {
-                this.store.dispatch(storeUuidOnDisk({ uuid }))
-              } else {
-                this.store.dispatch(storeUuidInMemory({ uuid }))
-              }
-              return forkJoin([
-                this.getUserSettings(uuid),
-                of(appVersion),
-                of(uuid),
-              ])
+      switchMap(([{ project, server }, { uuid }, { measurementRetries }]) => {
+        return from(
+          NTCookieService.I.isCookieAccepted('functional') ?? of(false)
+        ).pipe(
+          switchMap((isCookieAccepted) => {
+            this.testServer = server
+            this.store.dispatch(
+              addTriedServer({
+                server,
+                measurementRetries: !!measurementRetries
+                  ? measurementRetries - 1
+                  : project?.measurement_retries,
+              })
+            )
+            if (project?.enable_cookie_widget) {
+              this.isHistoryAllowed = !!isCookieAccepted
+            } else {
+              this.isHistoryAllowed = true
             }
-          ),
-          tap(([_, appVersion, uuid]) => {
+            if (project?.enable_cookie_widget && isCookieAccepted) {
+              this.store.dispatch(storeUuidOnDisk({ uuid }))
+            } else {
+              this.store.dispatch(storeUuidInMemory({ uuid }))
+            }
+            return this.getUserSettings(uuid)
+          }),
+          tap(() => {
             if (!this.rmbtws) {
               return
             }
@@ -149,7 +149,7 @@ export class TestService {
               config.additionalSubmissionParameters = { network_type: 0 }
               config.additionalRegistrationParameters = {
                 uuid_permission_granted: this.isHistoryAllowed,
-                app_version: appVersion,
+                app_version: project?.version,
               }
               const ctrl = new this.rmbtws.RMBTControlServerCommunication(
                 config,
@@ -238,7 +238,7 @@ export class TestService {
     })
   }
 
-  getTestServers(): Observable<[TestServer, TestServer[]]> {
+  getTestServers() {
     return combineLatest([
       this.getAllTestServersFromApi(),
       this.store.select(getMainState),
@@ -283,7 +283,7 @@ export class TestService {
       )
   }
 
-  private getAllTestServersFromApi(): Observable<TestServer[]> {
+  private getAllTestServersFromApi() {
     return this.getLocation().pipe(
       switchMap((location) => {
         const params = !location
@@ -303,7 +303,11 @@ export class TestService {
             }
           )
           .pipe(
-            map(this.supportedServers),
+            map((servers) => {
+              const availableServers = this.supportedServers(servers)
+              this.store.dispatch(setAvailableServers({ availableServers }))
+              return availableServers
+            }),
             catchError(() => of([]))
           )
       })

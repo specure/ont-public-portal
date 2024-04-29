@@ -36,6 +36,10 @@ export const setMeasurementServer = createAction(
   '[MAIN] Setting server...',
   props<{ server: TestServer }>()
 )
+export const setAvailableServers = createAction(
+  '[MAIN] Setting available servers...',
+  props<{ availableServers: TestServer[] }>()
+)
 export const storeAsset = createAction(
   '[MAIN] Storing asset...',
   props<{ asset: IMainAsset; key: string }>()

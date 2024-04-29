@@ -16,6 +16,7 @@ import {
   visualResultEnd,
   visualInitDown,
   setShowProgress,
+  addTriedServer,
 } from './test.action'
 import { TestVisualizationStateInit } from 'src/app/modules/main/modules/test/classes/test-visualization-state-init.class'
 import { TestVisualizationStatePing } from 'src/app/modules/main/modules/test/classes/test-visualization-state-ping.class'
@@ -25,7 +26,6 @@ import { TestVisualizationStateInitDown } from 'src/app/modules/main/modules/tes
 import { TestVisualizationStateUp } from 'src/app/modules/main/modules/test/classes/test-visualization-state-up.class'
 import { TestVisualizationStateEnd } from 'src/app/modules/main/modules/test/classes/test-visualization-state-end.class'
 import { ITestInfo } from 'src/app/modules/main/modules/test/interfaces/test-info.interface'
-import { TestVisualizationStateFinalResult } from 'src/app/modules/main/modules/test/classes/test-visualization-state-final-result.class'
 import { ITestState } from 'src/app/modules/main/modules/test/interfaces/test-state.interface'
 import { ETestStages } from 'src/app/modules/main/modules/test/enums/test-stages.enum'
 
@@ -38,6 +38,8 @@ export class TestState implements ITestState {
   finished = false
   showProgress = false
   stage: ETestStages
+  triedServersIds: Set<number> = new Set()
+  measurementRetries: number
 }
 
 export const testReducer = createReducer(
@@ -145,7 +147,12 @@ export const testReducer = createReducer(
       : null,
     visualization,
   })),
-  on(visualReset, () => new TestState())
+  on(visualReset, () => new TestState()),
+  on(addTriedServer, (state, { server, measurementRetries }) => ({
+    ...new TestState(),
+    triedServersIds: new Set([...state.triedServersIds, server.id]),
+    measurementRetries,
+  }))
 )
 
 export const getTestState = (state: IAppState) => state.test

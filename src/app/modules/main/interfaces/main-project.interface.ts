@@ -29,4 +29,5 @@ export interface IMainProject extends ITranslatable {
   require_location?: boolean
   location?: { longitude: number; latitude: number }
   web_matomo_analytics_config?: MatomoTrackerConfiguration
+  measurement_retries?: number
 }

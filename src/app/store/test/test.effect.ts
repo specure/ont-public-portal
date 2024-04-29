@@ -1,14 +1,22 @@
 import { Action, Store } from '@ngrx/store'
 import { Actions, createEffect, ofType } from '@ngrx/effects'
-import { catchError, map, switchMap, tap, withLatestFrom } from 'rxjs/operators'
+import {
+  catchError,
+  distinctUntilKeyChanged,
+  map,
+  switchMap,
+  tap,
+  withLatestFrom,
+} from 'rxjs/operators'
 import { Injectable } from '@angular/core'
-import { of } from 'rxjs'
+import { lastValueFrom, of } from 'rxjs'
 
 import { IAppState } from '..'
 import { loading, loadingError } from '../common/common.action'
-import { loadPage } from '../main/main.action'
+import { loadPage, setMeasurementServer } from '../main/main.action'
 import { TestService } from 'src/app/modules/main/modules/test/services/test.service'
 import {
+  handleServerError,
   visualReset,
   visualResult,
   visualResultEnd,
@@ -19,6 +27,10 @@ import { ERoutes } from 'src/app/core/enums/routes.enum'
 import { TranslocoService } from '@ngneat/transloco'
 import { getTestState } from './test.reducer'
 import { TestVisualizationStateFinalResult } from 'src/app/modules/main/modules/test/classes/test-visualization-state-final-result.class'
+import { HttpErrorResponse } from '@angular/common/http'
+import { getMainState } from '../main/main.reducer'
+import { MainSnackbarComponent } from 'src/app/modules/main/components/main-snackbar/main-snackbar.component'
+import { MatSnackBar } from '@angular/material/snack-bar'
 
 @Injectable()
 export class TestEffects {
@@ -57,7 +69,7 @@ export class TestEffects {
       tap(() => this.store.dispatch(loading())),
       withLatestFrom(this.store.select(getTestState)),
       switchMap(([{ id, route }, state]) => {
-        return this.http.getTestResults(id).pipe(
+        return this.testService.getTestResults(id).pipe(
           map((data) => {
             TestVisualizationStateFinalResult.from(
               state.visualization,
@@ -76,10 +88,44 @@ export class TestEffects {
     )
   )
 
+  handleServerError$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType<Action & { error: HttpErrorResponse }>(handleServerError.type),
+        withLatestFrom(
+          this.store.select(getTestState),
+          this.store.select(getMainState)
+        ),
+        tap(([action, state, mainState]) => {
+          const nextServer = mainState.availableServers.find(
+            (server) => !state.triedServersIds.has(server.id)
+          )
+          if (nextServer && state.measurementRetries) {
+            this.store.dispatch(setMeasurementServer({ server: nextServer }))
+            this.snackbar.openFromComponent(MainSnackbarComponent, {
+              panelClass: 'nt-main-snackbar',
+              data: {
+                message: 'test.snackbar.switching_servers',
+              },
+              duration: 3000,
+            })
+            setTimeout(() => {
+              lastValueFrom(this.testService.launchTest()).then()
+            }, 300)
+          } else {
+            this.store.dispatch(loadingError({ error: action.error }))
+            this.router.navigate([this.transloco.getActiveLang(), ERoutes.TEST])
+          }
+        })
+      ),
+    { dispatch: false }
+  )
+
   constructor(
     private actions$: Actions,
-    private http: TestService,
+    private testService: TestService,
     private router: Router,
+    private snackbar: MatSnackBar,
     private store: Store<IAppState>,
     private transloco: TranslocoService
   ) {}
