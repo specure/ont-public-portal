@@ -26,6 +26,7 @@ import { ICounty } from '../../interfaces/county.interface'
 import { IMunicipality } from '../../interfaces/municipality.interface'
 import { IProviderStats } from '../../interfaces/provider-stats.interface'
 import { StatisticsService } from '../../services/statistics.service'
+import { environment } from 'src/environments/environment'
 
 export const NATIONAL_TABLE_COLS: ITableColumn<IProviderStats>[] = [
   {
@@ -172,21 +173,20 @@ export class StatisticsComponent implements OnDestroy {
     )
   }
 
-  private loadNationalTable(evt) {
-    let tech = evt
+  private loadNationalTable(tech) {
+    let country = environment.mapServer.country
     if (
-      tech === this.techOptions[0].value &&
-      this.project?.enable_stats_mno_isp_switch
+      this.project?.enable_stats_mno_isp_switch &&
+      this.form.controls.providerType.value === this.providerTypes[1].value
     ) {
-      if (
-        this.form.controls.providerType.value === this.providerTypes[0].value
-      ) {
-        tech = 'all_mno'
-      } else {
-        tech = 'all_isp'
-      }
+      country = `${country}_isp`
     }
-    this.store.dispatch(loadNationalTable({ filters: { tech } }))
+    const techSet = new Set(this.techOptions.slice(1).map((opt) => opt.value))
+    if (techSet.has(tech)) {
+      this.store.dispatch(loadNationalTable({ filters: { country, tech } }))
+    } else {
+      this.store.dispatch(loadNationalTable({ filters: { country } }))
+    }
   }
 
   private setMunicipalities(municipalities: IMunicipality[]) {

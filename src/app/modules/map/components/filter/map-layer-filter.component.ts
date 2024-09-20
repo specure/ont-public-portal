@@ -180,15 +180,15 @@ export class MapLayerFilterComponent implements AfterViewChecked, OnDestroy {
     if (this.disableProviderFilter) {
       return
     }
-    let tech
+    let country
     if (
       this.providerTypesForm.controls.providerType.value ===
       this.providerTypes[0].value
     ) {
-      tech = 'all_mno'
+      country = environment.mapServer.country
     } else {
-      tech = 'all_isp'
+      country = `${environment.mapServer.country}_isp`
     }
-    this.store.dispatch(loadNationalTable({ filters: { tech } }))
+    this.store.dispatch(loadNationalTable({ filters: { country } }))
   }
 }

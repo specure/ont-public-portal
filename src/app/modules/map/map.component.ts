@@ -23,12 +23,11 @@ export class MapComponent {
     first(),
     tap((s) => {
       const { project } = s
+      const now = new Date().toISOString()
       this.timelineStartDate = project.data_export_start_date
         ? dayjs(project.data_export_start_date, 'YYYY-MM').startOf('M')
-        : dayjs(project.mapbox_actual_date)
-            .subtract(TIMELINE_MONTHS, 'months')
-            .startOf('M')
-      this.populateSteps(project.mapbox_actual_date).then()
+        : dayjs(now).subtract(TIMELINE_MONTHS, 'months').startOf('M')
+      this.populateSteps(now).then()
     })
   )
   steps: ITimelineStep[] = []

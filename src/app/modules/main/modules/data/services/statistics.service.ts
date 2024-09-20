@@ -59,10 +59,10 @@ export class StatisticsService {
 
   getNationalTable(filters?: { [param: string]: string }) {
     return this.http.get<INationalTable>(
-      `${this.apiUrl}${environment.controlServer.routes.providers}`,
+      `${environment.mapServer.url}/national-table`,
       {
         headers: environment.controlServer.headers,
-        params: new HttpParams({ fromObject: filters }),
+        params: { country: environment.mapServer.country, ...filters },
       }
     )
   }

@@ -58,9 +58,7 @@ export class StatisticsEffects {
       switchMap(() => this.mainHttp.getOrDownloadProject()),
       switchMap((project) => {
         return forkJoin([
-          this.http.getNationalTable({
-            tech: this.techByFeatureFlag(project),
-          }),
+          this.http.getNationalTable(),
           this.mainHttp.getMunicipalities(),
         ]).pipe(
           map(([nationalTable, municipalities]) => {
@@ -95,7 +93,6 @@ export class StatisticsEffects {
               loadNationalTable({
                 filters: {
                   code: municipality.code,
-                  tech: this.techByFeatureFlag(project),
                 },
               })
             )
@@ -119,9 +116,6 @@ export class StatisticsEffects {
       tap(() => this.store.dispatch(loadMenus()))
     )
   )
-
-  private techByFeatureFlag = (project: IMainProject) =>
-    project.enable_stats_mno_isp_switch ? 'all_mno' : 'all'
 
   constructor(
     private actions$: Actions,

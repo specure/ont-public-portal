@@ -107,9 +107,13 @@ export class MunicipalityComponent implements OnDestroy {
       .pipe(
         withLatestFrom(this.store.select(getStatisticsState)),
         tap(([tech, state]) => {
+          const country =
+            tech === this.providerTypes[0].value
+              ? environment.mapServer.country
+              : `${environment.mapServer.country}_isp`
           this.setOperatorColumnName(tech)
           this.store.dispatch(
-            loadNationalTable({ filters: { ...state.filters, tech } })
+            loadNationalTable({ filters: { ...state.filters, country } })
           )
         })
       )
