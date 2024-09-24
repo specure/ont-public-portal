@@ -53,6 +53,10 @@
     font-weight: bold;
     font-size: rem(11);
     padding: rem(11) rem(20);
+
+    @media print {
+      font-size: rem(20) !important;
+    }
   }
 
   &__body {

@@ -13,7 +13,7 @@
               <header class="nt-history__heading">
                 <span>{{ getHeading(history.totalElements) }}</span>
                 <button
-                  *ngIf="!project.enable_cookie_widget"
+                  *ngIf="project.slug === 'nt' || project.slug === 'no'"
                   mat-flat-button
                   color="primary"
                   class="nt-export-button"

@@ -11,6 +11,10 @@
   padding: rem(20) rem(25);
   font-size: rem(16);
   border-bottom: 1px solid rgba($color__primary, 0.25);
+
+  @media print {
+    font-size: rem(24) !important;
+  }
 }
 
 @include screen-medium {

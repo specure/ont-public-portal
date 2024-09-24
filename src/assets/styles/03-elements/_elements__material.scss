@@ -484,3 +484,27 @@ mat-option,
   white-space: nowrap;
   max-width: fit-content;
 }
+
+@media print {
+  .#{$moq__ns}table {
+    .mat-mdc-cell,
+    .mat-mdc-header-cell,
+    .mat-mdc-cell *,
+    .mat-mdc-header-cell * {
+      font-size: rem(24) !important;
+    }
+    .mat-mdc-cell,
+    .mat-mdc-header-cell {
+      margin: 0;
+      padding: 0 4px;
+    }
+    .mat-sort-header-arrow {
+      display: none;
+    }
+    .mat-column-download,
+    .mat-column-upload,
+    .mat-column-ping {
+      text-align: center !important;
+    }
+  }
+}

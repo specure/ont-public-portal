@@ -192,15 +192,23 @@
 
     &-time,
     &-date {
-      flex: 0 0 rem(100);
+      flex: 0 0 rem(110);
 
       .blue-link {
         color: $color__link;
+      }
+
+      @media print {
+        flex: 0 0 rem(180);
       }
     }
 
     &-time {
       flex-basis: rem(90);
+
+      @media print {
+        flex: 0 0 rem(150);
+      }
     }
 
     &-probeId {
@@ -457,5 +465,17 @@ mat-paginator {
         padding-right: rem(10);
       }
     }
+  }
+}
+
+#{$moq__ns}paginator {
+  @media print {
+    display: none;
+  }
+}
+
+.#{$moq__ns}table__cell--sortable {
+  @media print {
+    padding-right: 0;
   }
 }
