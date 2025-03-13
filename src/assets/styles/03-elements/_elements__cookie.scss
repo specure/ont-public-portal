@@ -4,6 +4,26 @@
 
   .nt-cookie__dialog {
     border-radius: rem(8);
+    height: auto;
+    min-height: 560px;
+  }
+
+  ul,
+  ol,
+  dl {
+    list-style-position: inside;
+    margin-bottom: 1.28em;
+    li:not(:last-of-type) {
+      margin-bottom: 0.5em;
+    }
+  }
+
+  ul {
+    list-style-type: disc;
+  }
+
+  ol {
+    list-style-type: decimal;
   }
 
   .MuiSelect-root {
