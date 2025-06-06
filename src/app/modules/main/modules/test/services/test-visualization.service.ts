@@ -22,8 +22,6 @@ import { environment } from 'src/environments/environment'
 import { MatomoTracker } from 'ngx-matomo-client'
 import { EMatomoEventCategory } from 'src/app/core/enums/matomo-events.enum'
 
-declare const TestState: any
-
 const DRAW_TIMEOUT = 160
 const IDLE_TIMEOUT = 30_000
 
@@ -46,7 +44,7 @@ export class TestVisualizationService {
       result.reduce((acc, detail) => {
         if (detail.direction.includes(direction)) {
           const { bytes, time, thread } = detail
-          const threadInfo = { ...acc[thread] } || {}
+          const threadInfo = { ...acc[thread] }
           threadInfo[direction] = [
             ...(threadInfo[direction] || []),
             { duration: time, bytes },
@@ -59,6 +57,9 @@ export class TestVisualizationService {
   }
 
   static async resultsByProgress(threads: ITestThread[], direction: string) {
+    if (!threads || threads.length === 0) {
+      return []
+    }
     const rmbtws = await (environment.production
       ? import('rmbtws')
       : import('rmbtws/dist/rmbtws.js'))
@@ -66,6 +67,9 @@ export class TestVisualizationService {
       (a, b) => b[direction].length - a[direction].length
     )[0]
     const result: { [key: string]: number } = {}
+    if (!longestThead || !longestThead[direction]) {
+      return []
+    }
     for (let i = 0; i <= longestThead[direction].length; i++) {
       const threadChunk: ITestThread[] = threads.map((t: any) => ({
         [direction]: t[direction].slice(0, i),
@@ -117,9 +121,9 @@ export class TestVisualizationService {
       (result.progress === this.lastProgress &&
         this.lastProgress !== 1 &&
         this.lastStatus === status &&
-        this.lastStatus !== TestState.QOS_TEST_RUNNING &&
-        this.lastStatus !== TestState.QOS_END &&
-        this.lastStatus !== TestState.SPEEDTEST_END)
+        this.lastStatus !== 'QOS_TEST_RUNNING' &&
+        this.lastStatus !== 'QOS_END' &&
+        this.lastStatus !== 'SPEEDTEST_END')
     ) {
       this.redrawLoop = setTimeout(this.draw, DRAW_TIMEOUT)
       return

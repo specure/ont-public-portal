@@ -54,6 +54,7 @@ import { Router } from '@angular/router'
 import { ERoutes } from 'src/app/core/enums/routes.enum'
 import { TranslocoService } from '@ngneat/transloco'
 import { NTCookieService } from '@nettest/cookie-widget'
+import { IMainProject } from '../../../interfaces/main-project.interface'
 
 dayjs.extend(utc)
 dayjs.extend(tz)
@@ -104,73 +105,98 @@ export class TestService {
     return this.store.select(getMainState).pipe(
       withLatestFrom(
         this.store.select(getHistoryState),
-        this.store.select(getTestState)
+        this.store.select(getTestState),
+        from(NTCookieService.I.isCookieAccepted('functional') ?? of(false))
       ),
       take(1),
-      switchMap(([{ project, server }, { uuid }, { measurementRetries }]) => {
-        return from(
-          NTCookieService.I.isCookieAccepted('functional') ?? of(false)
-        ).pipe(
-          switchMap((isCookieAccepted) => {
-            this.testServer = server
-            this.store.dispatch(
-              addTriedServer({
-                server,
-                measurementRetries: !!measurementRetries
-                  ? measurementRetries - 1
-                  : project?.measurement_retries,
+      switchMap(
+        ([
+          { project, server },
+          { uuid },
+          { measurementRetries },
+          isCookieAccepted,
+        ]) => {
+          const combined = {
+            project,
+            server,
+            uuid,
+            measurementRetries,
+            isCookieAccepted,
+          }
+          if (!server) {
+            return this.getTestServerFromApi().pipe(
+              switchMap((testServer) => {
+                if (!testServer) {
+                  throw new Error('No test server available')
+                }
+                this.setServer(testServer)
+                return of(combined)
               })
             )
-            if (project?.enable_cookie_widget) {
-              this.isHistoryAllowed = !!isCookieAccepted
-            } else {
-              this.isHistoryAllowed = true
-            }
-            if (project?.enable_cookie_widget && isCookieAccepted) {
-              this.store.dispatch(storeUuidOnDisk({ uuid }))
-            } else {
-              this.store.dispatch(storeUuidInMemory({ uuid }))
-            }
-            return this.getUserSettings(uuid)
-          }),
-          tap(() => {
-            if (!this.rmbtws) {
-              return
-            }
-            this.ngZone.runOutsideAngular(() => {
-              this.rmbtws.TestEnvironment.init(this.visualizator, null)
-              const config = new this.rmbtws.RMBTTestConfig(
-                'en',
-                environment.controlServer.url,
-                ''
-              )
-              config.uuid = uuid
-              config.timezone = dayjs.tz.guess()
-              config.additionalSubmissionParameters = { network_type: 0 }
-              config.additionalRegistrationParameters = {
-                uuid_permission_granted: this.isHistoryAllowed,
-                app_version: project?.version,
-              }
-              const ctrl = new this.rmbtws.RMBTControlServerCommunication(
-                config,
-                environment.controlServer.headers,
-                this.testServer
-              )
-              const websocketTest = new this.rmbtws.RMBTTest(config, ctrl)
-              this.rmbtws.TestEnvironment.getTestVisualization().setRMBTTest(
-                websocketTest
-              )
-              websocketTest.startTest()
-              this.rmbtws.TestEnvironment.getTestVisualization().startTest() // start the visualization
+          }
+          return of(combined)
+        }
+      ),
+      switchMap(
+        ({ server, project, uuid, measurementRetries, isCookieAccepted }) => {
+          this.testServer = server
+          this.store.dispatch(
+            addTriedServer({
+              server,
+              measurementRetries: !!measurementRetries
+                ? measurementRetries - 1
+                : project?.measurement_retries,
             })
-          }),
-          catchError((error) => {
-            console.log(error)
-            this.store.dispatch(loadingError({ error }))
-            this.router.navigate([this.transloco.getActiveLang(), ERoutes.TEST])
-            return of(null)
-          })
-        )
+          )
+          if (project?.enable_cookie_widget) {
+            this.isHistoryAllowed = !!isCookieAccepted
+          } else {
+            this.isHistoryAllowed = true
+          }
+          if (project?.enable_cookie_widget && isCookieAccepted) {
+            this.store.dispatch(storeUuidOnDisk({ uuid }))
+          } else {
+            this.store.dispatch(storeUuidInMemory({ uuid }))
+          }
+          return this.getUserSettings(uuid, project)
+        }
+      ),
+      tap(({ uuid, app_version }) => {
+        if (!this.rmbtws) {
+          return
+        }
+        this.ngZone.runOutsideAngular(() => {
+          this.rmbtws.TestEnvironment.init(this.visualizator, null)
+          const config = new this.rmbtws.RMBTTestConfig(
+            'en',
+            environment.controlServer.url,
+            ''
+          )
+          config.uuid = uuid
+          config.timezone = dayjs.tz.guess()
+          config.additionalSubmissionParameters = { network_type: 0 }
+          config.additionalRegistrationParameters = {
+            uuid_permission_granted: this.isHistoryAllowed,
+            app_version,
+          }
+          const ctrl = new this.rmbtws.RMBTControlServerCommunication(
+            config,
+            environment.controlServer.headers,
+            this.testServer
+          )
+          const websocketTest = new this.rmbtws.RMBTTest(config, ctrl)
+          this.rmbtws.TestEnvironment.getTestVisualization().setRMBTTest(
+            websocketTest
+          )
+          websocketTest.startTest()
+          this.rmbtws.TestEnvironment.getTestVisualization().startTest() // start the visualization
+        })
+      }),
+      catchError((error) => {
+        console.log(error)
+        this.store.dispatch(loadingError({ error }))
+        this.router.navigate([this.transloco.getActiveLang(), ERoutes.TEST])
+        return of(null)
       })
     )
   }
@@ -348,7 +374,7 @@ export class TestService {
     )
   }
 
-  private getUserSettings(uuid: string) {
+  private getUserSettings(uuid: string, project: IMainProject) {
     const body = new UserSettingsRequest()
     body.uuid = uuid
     return this.http
@@ -364,7 +390,9 @@ export class TestService {
           }
         }),
         map((resp) =>
-          resp.settings && resp.settings.length ? resp.settings[0] : null
+          resp.settings && resp.settings.length
+            ? { ...resp.settings[0], app_version: project?.version }
+            : null
         )
       )
   }
