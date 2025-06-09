@@ -116,13 +116,6 @@ export class TestService {
           { measurementRetries },
           isCookieAccepted,
         ]) => {
-          const combined = {
-            project,
-            server,
-            uuid,
-            measurementRetries,
-            isCookieAccepted,
-          }
           if (!server) {
             return this.getTestServerFromApi().pipe(
               switchMap((testServer) => {
@@ -130,11 +123,23 @@ export class TestService {
                   throw new Error('No test server available')
                 }
                 this.setServer(testServer)
-                return of(combined)
+                return of({
+                  project,
+                  server: testServer,
+                  uuid,
+                  measurementRetries,
+                  isCookieAccepted,
+                })
               })
             )
           }
-          return of(combined)
+          return of({
+            project,
+            server,
+            uuid,
+            measurementRetries,
+            isCookieAccepted,
+          })
         }
       ),
       switchMap(

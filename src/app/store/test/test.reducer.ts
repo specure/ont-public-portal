@@ -148,11 +148,15 @@ export const testReducer = createReducer(
     visualization,
   })),
   on(visualReset, () => new TestState()),
-  on(addTriedServer, (state, { server, measurementRetries }) => ({
-    ...new TestState(),
-    triedServersIds: new Set([...state.triedServersIds, server.id]),
-    measurementRetries,
-  }))
+  on(addTriedServer, (state, { server, measurementRetries }) =>
+    server?.id
+      ? {
+          ...new TestState(),
+          triedServersIds: new Set([...state.triedServersIds, server.id]),
+          measurementRetries,
+        }
+      : { ...new TestState(), measurementRetries }
+  )
 )
 
 export const getTestState = (state: IAppState) => state.test
