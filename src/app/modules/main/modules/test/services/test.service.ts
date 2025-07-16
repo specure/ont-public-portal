@@ -102,19 +102,20 @@ export class TestService {
       ERoutes.TEST_PROGRESS,
     ])
     this.store.dispatch(visualInit())
-    return this.store.select(getMainState).pipe(
+
+    return from(NTCookieService.I.isCookieAccepted('functional')).pipe(
       withLatestFrom(
+        this.store.select(getMainState),
         this.store.select(getHistoryState),
-        this.store.select(getTestState),
-        from(NTCookieService.I.isCookieAccepted('functional') ?? of(false))
+        this.store.select(getTestState)
       ),
       take(1),
       switchMap(
         ([
+          isCookieAccepted,
           { project, server },
           { uuid },
           { measurementRetries },
-          isCookieAccepted,
         ]) => {
           if (!server) {
             return this.getTestServerFromApi().pipe(
