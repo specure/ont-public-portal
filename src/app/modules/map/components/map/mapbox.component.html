@@ -1,3 +1,6 @@
+<div class="nt-map__loading" *ngIf="mapIsLoading()">
+  <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+</div>
 <section class="nt-map__wrapper" [style.height.px]="screenHeight" [style.padding-top.px]="topPadding">
   <div class="nt-map__container">
     <section id="map" class="nt-map" [style.height.px]="screenHeight"></section>

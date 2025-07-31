@@ -12,6 +12,7 @@ import { CommonModule } from '@angular/common'
 import { TimelineComponent } from './components/timeline/timeline.component'
 import { MobileTimelineComponent } from './components/mobile-timeline/mobile-timeline.component'
 import { NgxMapLibreGLModule } from '@maplibre/ngx-maplibre-gl'
+import { MatProgressBarModule } from '@angular/material/progress-bar'
 
 @NgModule({
   declarations: [
@@ -30,6 +31,7 @@ import { NgxMapLibreGLModule } from '@maplibre/ngx-maplibre-gl'
     FormsModule,
     ReactiveFormsModule,
     MatExpansionModule,
+    MatProgressBarModule,
     NgxMapLibreGLModule,
   ],
 })

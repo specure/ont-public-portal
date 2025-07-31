@@ -6,6 +6,7 @@ import {
   NgZone,
   OnDestroy,
   Output,
+  signal,
 } from '@angular/core'
 import { environment } from 'src/environments/environment'
 import { fromEvent, lastValueFrom, Observable, Subscription, timer } from 'rxjs'
@@ -37,6 +38,7 @@ export class MapboxComponent implements OnDestroy, AfterViewInit {
   @Output()
   afterMapInit = new EventEmitter<maplibregl.Map>()
 
+  mapIsLoading = signal(true)
   screenHeight = globalThis.innerHeight
   width = globalThis.innerWidth
 
@@ -110,7 +112,10 @@ export class MapboxComponent implements OnDestroy, AfterViewInit {
     this.mapDataSub = this.mapDataLoaded
       .pipe(
         debounceTime(500), // event fired for each tile update so we need to wait for some time between updates
-        concatMap(() => this.popupper.editPopup(this.map, this.currentLayer))
+        concatMap(() => this.popupper.editPopup(this.map, this.currentLayer)),
+        tap(() => {
+          this.mapIsLoading.set(false)
+        })
       )
       .subscribe()
     this.toggleBounceScroll(true)
