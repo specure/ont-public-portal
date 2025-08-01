@@ -4,7 +4,7 @@
     [class.nt-filters--expanded]="expansionPanel?.expanded"
     *transloco="let t"
   >
-    <section class="nt-filters__sec">
+    <section class="nt-filters__sec nt-filters__sec--tech">
       <a
         *ngIf="!disableProviderFilter"
         class="nt-panel-toggle"
@@ -14,7 +14,7 @@
         <mat-icon>keyboard_arrow_up</mat-icon>
       </a>
       <ng-container
-        *ngIf="selectedProviderType.value === 'mno'; else ispTechnologiesTpl"
+        *ngIf="selectedProviderType.value === 'mno'"
       >
         <ng-container *ngFor="let tech of mnoTechnologies">
           <a
@@ -106,11 +106,3 @@
     </section>
   </div>
 </ng-container>
-
-<ng-template #ispTechnologiesTpl>
-  <ng-container *ngFor="let tech of ispTechnologies">
-    <a [class]="tech.class" class="nt-filters__technology-filter-button">{{
-      tech.label
-    }}</a>
-  </ng-container>
-</ng-template>

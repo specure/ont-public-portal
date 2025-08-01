@@ -71,6 +71,12 @@
         }
       }
     }
+
+    &--tech {
+      align-items: center;
+      display: flex;
+      height: rem(72);
+    }
   }
 
   &__disclaimer {
