@@ -106,7 +106,7 @@ export class TestService {
     return from(NTCookieService.I.isCookieAccepted('functional')).pipe(
       withLatestFrom(
         this.store.select(getMainState),
-        this.store.select(getHistoryState),
+        this.store.select(getHistoryState).pipe(take(1)),
         this.store.select(getTestState)
       ),
       take(1),
@@ -168,6 +168,7 @@ export class TestService {
         }
       ),
       tap(({ uuid, app_version }) => {
+        console.log('Starting test with UUID:', uuid)
         if (!this.rmbtws) {
           return
         }
@@ -397,7 +398,7 @@ export class TestService {
         }),
         map((resp) =>
           resp.settings && resp.settings.length
-            ? { ...resp.settings[0], app_version: project?.version }
+            ? { ...resp.settings[0], app_version: project?.version, uuid }
             : null
         )
       )
