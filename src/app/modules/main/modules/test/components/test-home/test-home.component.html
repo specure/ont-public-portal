@@ -84,10 +84,12 @@
 <ng-template #progressState let-testState>
   <ng-container *transloco="let t">
     <!-- PROGRESS BAR AND TIME -->
-    <nt-test-header
-      *ngIf="testState.visualization && testState.showProgress"
-      class="nt-test-progress"
-    ></nt-test-header>
+    <ng-container *ngIf="testState.visualization && testState.showProgress">
+      <nt-test-header class="nt-test-progress"></nt-test-header>
+      <h2 class="nt-test-header nt-test-header--print">
+        {{ getTitle(testState, t) }}
+      </h2>
+    </ng-container>
     <h2
       *ngIf="testState.visualization && !testState.showProgress"
       class="nt-test-header"

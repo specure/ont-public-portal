@@ -133,11 +133,25 @@ $run-again-btn-width: rem(190);
           margin-bottom: rem(24);
           padding-top: rem(30);
         }
+
+        &--print {
+          display: none;
+        }
+
+        @media print {
+          &--print {
+            display: block;
+          }
+        }
       }
 
       &-progress {
         width: 100%;
         padding: 0 rem(20);
+
+        @media print {
+          display: none;
+        }
       }
     }
 
