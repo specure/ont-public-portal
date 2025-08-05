@@ -54,6 +54,7 @@
     "@angular/platform-server": "^17.3.0",
     "@angular/router": "^17.3.0",
     "@angular/ssr": "^17.3.0",
+    "@googlemaps/js-api-loader": "^1.16.10",
     "@mapbox/mapbox-gl-geocoder": "^4.7.0",
     "@maplibre/ngx-maplibre-gl": "^17.4.2",
     "@nettest/cookie-widget": "git+https://read-cookie-widget:M7HqCJnj6dc9qek2nwWt@gitlab.martes-specure.com/nettest/cookie-widget.git#master",
