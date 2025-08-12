@@ -29,7 +29,7 @@ export class GooglePlacesService implements IGeocodingService {
       concatMap(({ Place }) => {
         const request = {
           textQuery: address,
-          fields: ['displayName', 'location'],
+          fields: ['displayName', 'location', 'viewport'],
           includedType: '', // Restrict query to a specific type (leave blank for any).
           useStrictTypeFiltering: true,
           language: this.transloco.getActiveLang().replace(/_[A-Z]+/, ''), // sr_ME-Latn is not supported by Google Places API
@@ -39,12 +39,13 @@ export class GooglePlacesService implements IGeocodingService {
         }
         return from(Place.searchByText(request))
       }),
-      tap(console.log),
       map(({ places }) => {
         if (!places || places.length === 0) {
           return null
         }
         return places.map((place) => {
+          const northEast = place.viewport.getNorthEast()
+          const southWest = place.viewport.getSouthWest()
           return {
             id: place.id,
             title: place.displayName,
@@ -52,11 +53,20 @@ export class GooglePlacesService implements IGeocodingService {
               lat: place.location.lat(),
               lng: place.location.lng(),
             },
+            mapView: {
+              north: northEast.lat(),
+              east: northEast.lng(),
+              south: southWest.lat(),
+              west: southWest.lng(),
+            },
             resultType: 'locality',
           }
         })
       }),
-      catchError(() => of(null))
+      catchError((e) => {
+        console.error('Error occurred while fetching locations:', e)
+        return of(null)
+      })
     )
   }
 }
