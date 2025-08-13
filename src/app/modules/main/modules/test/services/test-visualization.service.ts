@@ -153,6 +153,7 @@ export class TestVisualizationService {
   /**
    * Used by RMBTws, do not remove
    */
+  setLocation() {}
   updateInfo(
     serverName: string,
     remoteIp: string,
