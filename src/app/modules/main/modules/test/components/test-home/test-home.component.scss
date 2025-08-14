@@ -439,6 +439,7 @@ $run-again-btn-width: rem(190);
   @include screen-small {
     &#run-test {
       .#{$moq__ns}indicators {
+        flex-direction: column;
         margin-top: 0;
       }
     }
@@ -449,6 +450,7 @@ $run-again-btn-width: rem(190);
   display: flex;
   justify-content: space-around;
   list-style: none;
+  margin-bottom: rem(24);
   margin-top: rem(24);
   width: $run-again-btn-width;
 

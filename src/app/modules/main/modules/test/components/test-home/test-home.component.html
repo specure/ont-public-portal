@@ -27,10 +27,7 @@
     <div
       class="nt-container__row"
       id="test-charts"
-      *ngIf="
-        !isMobile &&
-        (getPreparedEstimation(testState) || testState.visualization)
-      "
+      *ngIf="getPreparedEstimation(testState) || testState.visualization"
     >
       <nt-general-card title="{{ t('test.download.label') }}">
         <nt-test-chart

@@ -67,11 +67,6 @@
     }
   }
 
-  .#{$moq__ns}container__row,
-  .#{$moq__ns}footer--ratel .#{$moq__ns}list {
-    flex-direction: row !important;
-  }
-
   #test-charts {
     flex-direction: column !important;
 
@@ -117,8 +112,6 @@
         margin: auto 4px !important;
       }
       .#{$moq__ns}test-info {
-        margin-top: 0 !important;
-
         section:last-of-type {
           margin-bottom: 0 !important;
         }
