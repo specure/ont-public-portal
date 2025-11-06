@@ -55,6 +55,7 @@ import { ERoutes } from 'src/app/core/enums/routes.enum'
 import { TranslocoService } from '@ngneat/transloco'
 import { NTCookieService } from '@nettest/cookie-widget'
 import { IMainProject } from '../../../interfaces/main-project.interface'
+import { ISpeedCurveResponse } from '../interfaces/speed-curve-item.interface'
 
 dayjs.extend(utc)
 dayjs.extend(tz)
@@ -229,6 +230,13 @@ export class TestService {
   getTestResults(id: string): Observable<ITestResult> {
     return this.http.get<ITestResult>(
       `${environment.controlServer.url}${environment.controlServer.routes.result}/${id}`,
+      { headers: this.headers }
+    )
+  }
+
+  getSpeedCurve(id: string): Observable<ISpeedCurveResponse> {
+    return this.http.get<ISpeedCurveResponse>(
+      `${environment.controlServer.url}${environment.controlServer.routes.speedCurve}/${id}`,
       { headers: this.headers }
     )
   }

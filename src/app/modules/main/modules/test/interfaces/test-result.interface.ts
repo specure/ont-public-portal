@@ -35,11 +35,11 @@ export interface ITestResult {
   product: string
   signal_strength: number
   signals: string
-  speed_detail: {
-    bytes: number,
-    direction: 'download' | 'upload',
-    thread: number,
-    time: number,
+  speed_detail?: {
+    bytes: number
+    direction: 'download' | 'upload'
+    thread: number
+    time: number
   }[]
   speed_download: number
   speed_upload: number

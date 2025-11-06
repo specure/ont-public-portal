@@ -1,15 +1,8 @@
 import { Action, Store } from '@ngrx/store'
 import { Actions, createEffect, ofType } from '@ngrx/effects'
-import {
-  catchError,
-  distinctUntilKeyChanged,
-  map,
-  switchMap,
-  tap,
-  withLatestFrom,
-} from 'rxjs/operators'
+import { catchError, map, switchMap, tap, withLatestFrom } from 'rxjs/operators'
 import { Injectable } from '@angular/core'
-import { lastValueFrom, of } from 'rxjs'
+import { forkJoin, lastValueFrom, of } from 'rxjs'
 
 import { IAppState } from '..'
 import { loading, loadingError } from '../common/common.action'
@@ -69,14 +62,18 @@ export class TestEffects {
       tap(() => this.store.dispatch(loading())),
       withLatestFrom(this.store.select(getTestState)),
       switchMap(([{ id, route }, state]) => {
-        return this.testService.getTestResults(id).pipe(
-          map((data) => {
-            TestVisualizationStateFinalResult.from(
-              state.visualization,
-              data
-            ).then((visualization) => {
-              this.store.dispatch(visualResultEnd({ data, visualization }))
-            })
+        return forkJoin([
+          this.testService.getTestResults(id),
+          this.testService.getSpeedCurve(id),
+        ]).pipe(
+          map(([data, speedCurve]) => {
+            const visualization =
+              TestVisualizationStateFinalResult.withSpeedCurve(
+                state.visualization,
+                data,
+                speedCurve
+              )
+            this.store.dispatch(visualResultEnd({ data, visualization }))
             return loadPage({ route })
           }),
           catchError((error) => {

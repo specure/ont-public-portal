@@ -36,6 +36,7 @@ export class TestVisualizationService {
   private rmbtTest: any
   private testUUID: string
 
+  /** Deprecated */
   static threadsFromResult(
     result: ITestResult['speed_detail'],
     direction: string
@@ -56,6 +57,7 @@ export class TestVisualizationService {
     )
   }
 
+  /** Deprecated */
   static async resultsByProgress(threads: ITestThread[], direction: string) {
     if (!threads || threads.length === 0) {
       return []
