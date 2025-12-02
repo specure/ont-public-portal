@@ -5,9 +5,10 @@ import { TestService } from '../../../test/services/test.service'
 import { NTCookieService } from '@nettest/cookie-widget'
 
 @Component({
-  selector: 'nt-functional-cookie',
-  templateUrl: './functional-cookie.component.html',
-  styleUrls: ['./functional-cookie.component.scss'],
+    selector: 'nt-functional-cookie',
+    templateUrl: './functional-cookie.component.html',
+    styleUrls: ['./functional-cookie.component.scss'],
+    standalone: false
 })
 export class FunctionalCookieComponent {
   @Input() functionalCookiesEnabled = false
@@ -25,7 +26,6 @@ export class FunctionalCookieComponent {
   }
 
   runTest() {
-    this.router.navigate([this.language, ERoutes.TEST])
-    this.testService.launchTest().subscribe()
+    this.testService.goToTest()
   }
 }

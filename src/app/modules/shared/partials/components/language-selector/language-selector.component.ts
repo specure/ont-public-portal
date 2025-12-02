@@ -5,9 +5,10 @@ import { environment } from 'src/environments/environment'
 import { ILocale } from 'src/app/core/interfaces/locale.interface'
 
 @Component({
-  selector: 'nt-language-selector',
-  templateUrl: './language-selector.component.html',
-  styleUrls: ['./language-selector.component.scss'],
+    selector: 'nt-language-selector',
+    templateUrl: './language-selector.component.html',
+    styleUrls: ['./language-selector.component.scss'],
+    standalone: false
 })
 export class LanguageSelectorComponent implements OnInit {
   @Input() className: string

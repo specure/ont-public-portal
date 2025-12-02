@@ -1,0 +1,36 @@
+@import 'core';
+
+.#{$moq__ns}container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: rem(8) rem(24);
+}
+
+.#{$moq__ns}dl {
+  margin: rem(16) 0;
+}
+
+.#{$moq__ns}dt {
+  margin-bottom: rem(8);
+}
+
+.#{$moq__ns}button {
+  margin-top: rem(12);
+}
+.#{$moq__ns}searching {
+  align-items: center;
+  color: $main__text-color--pale;
+  display: flex;
+  font-size: rem(14);
+  justify-content: space-between;
+  margin-top: rem(20);
+
+  &__progress {
+    margin-right: rem(8);
+  }
+}
+
+.#{$moq__ns}footer {
+  padding: rem(8) rem(24) rem(24);
+}

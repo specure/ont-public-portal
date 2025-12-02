@@ -2,7 +2,8 @@ import { Directive, ElementRef, Input, OnChanges } from '@angular/core'
 import { ERoutes } from 'src/app/core/enums/routes.enum'
 
 @Directive({
-  selector: '[ntLinkRel]'
+    selector: '[ntLinkRel]',
+    standalone: false
 })
 export class LinkRelDirective implements OnChanges {
   @Input() ntLinkRel: string

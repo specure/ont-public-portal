@@ -1,26 +1,25 @@
-<ng-container *ngIf="project$ | async as project">
-  <ng-container *ngIf="history$ | async as history">
+@if (project$ | async; as project) {
+  @if (history$ | async; as history) {
     <ng-container *transloco="let t">
-      <ng-container
-        *ngIf="
-          (isHistoryAllowed$ | async) === true && history.totalElements > 0
-        "
-      >
+      @if (
+        (isHistoryAllowed$ | async) === true && history.totalElements > 0
+        ) {
         <nt-export-warning [project]="project"></nt-export-warning>
         <div class="nt-container__row" id="history">
           <nt-general-card [title]="title$ | async" appearance="full-width">
             <article class="nt-container transparent">
               <header class="nt-history__heading">
                 <span>{{ getHeading(history.totalElements) }}</span>
-                <button
-                  *ngIf="project.slug === 'nt' || project.slug === 'no'"
-                  mat-flat-button
-                  color="primary"
-                  class="nt-export-button"
-                  (click)="print()"
-                >
-                  {{ t('test.export_as_pdf') }}
-                </button>
+                @if (project.slug === 'nt' || project.slug === 'no') {
+                  <button
+                    mat-flat-button
+                    color="primary"
+                    class="nt-export-button"
+                    (click)="print()"
+                    >
+                    {{ t('test.export_as_pdf') }}
+                  </button>
+                }
               </header>
               <nt-table
                 [action]="action"
@@ -29,25 +28,27 @@
                 [data]="history"
                 [paginator]="paginator"
                 [sort]="sort"
-              >
+                >
               </nt-table>
             </article>
           </nt-general-card>
         </div>
-      </ng-container>
-      <nt-functional-cookie
-        *ngIf="
-          (isHistoryAllowed$ | async) === true && history.totalElements === 0
-        "
-        [language]="language$ | async"
-        [functionalCookiesEnabled]="true"
-        [cookieWidgetEnabled]="project.enable_cookie_widget"
-      ></nt-functional-cookie>
-      <nt-functional-cookie
-        *ngIf="(isHistoryAllowed$ | async) === false"
-        [language]="language$ | async"
-        [functionalCookiesEnabled]="false"
-      ></nt-functional-cookie>
+      }
+      @if (
+        (isHistoryAllowed$ | async) === true && history.totalElements === 0
+        ) {
+        <nt-functional-cookie
+          [language]="language$ | async"
+          [functionalCookiesEnabled]="true"
+          [cookieWidgetEnabled]="project.enable_cookie_widget"
+        ></nt-functional-cookie>
+      }
+      @if ((isHistoryAllowed$ | async) === false) {
+        <nt-functional-cookie
+          [language]="language$ | async"
+          [functionalCookiesEnabled]="false"
+        ></nt-functional-cookie>
+      }
     </ng-container>
-  </ng-container>
-</ng-container>
+  }
+}

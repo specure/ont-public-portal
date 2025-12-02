@@ -13,9 +13,10 @@ import { IArticle } from '../../interfaces/article.interface'
 export const ARTICLES_PAGINATOR_SIZE = 6
 
 @Component({
-  selector: 'nt-articles-list',
-  templateUrl: './articles-list.component.html',
-  styleUrls: ['./articles-list.component.scss'],
+    selector: 'nt-articles-list',
+    templateUrl: './articles-list.component.html',
+    styleUrls: ['./articles-list.component.scss'],
+    standalone: false
 })
 export class ArticlesListComponent {
   articles$ = this.store.select(getArticlesState).pipe(

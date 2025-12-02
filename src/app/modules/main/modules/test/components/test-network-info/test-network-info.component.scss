@@ -1,0 +1,107 @@
+@import 'src/assets/styles/core';
+
+$run-again-btn-width: rem(190);
+
+.#{$moq__ns}container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  min-height: rem(450);
+  overflow: visible;
+  padding-top: rem(24);
+  width: 100%;
+
+  &__col {
+    display: flex;
+    flex-direction: column;
+    font-size: rem(16);
+
+    .#{$moq__ns}aside__header {
+      margin-bottom: rem(-2);
+      margin-left: 0;
+      text-transform: capitalize;
+      color: scale-color($color: $main__text-color, $alpha: -50%);
+      font-size: rem(14);
+      font-weight: 700;
+    }
+
+    section:not(:last-of-type) {
+      margin-bottom: rem(4);
+    }
+  }
+}
+
+.#{$moq__ns}test-info {
+  margin-left: rem(84);
+
+  @include screen-medium {
+    flex-direction: row;
+    justify-content: center;
+    margin-left: 0;
+    margin-top: rem(40);
+
+    .#{$moq__ns}container__col {
+      flex: 0 0 rem(152);
+      justify-content: flex-start;
+      padding: 0 rem(10);
+    }
+  }
+
+  @include screen-small {
+    align-items: center;
+    flex-direction: column;
+  }
+}
+
+.#{$moq__ns}run-again {
+  color: white;
+  margin-top: rem(32);
+  width: $run-again-btn-width;
+}
+
+.#{$moq__ns}share {
+  display: flex;
+  justify-content: space-around;
+  list-style: none;
+  margin-bottom: rem(24);
+  margin-top: rem(24);
+  width: $run-again-btn-width;
+
+  &__item {
+    flex: 0 0 rem(24);
+    height: rem(24);
+  }
+
+  &__link {
+    &::after {
+      display: none !important;
+    }
+  }
+
+  &__icon {
+    background-image: url('/assets/images/icons/social-icons-map.svg');
+    background-repeat: no-repeat;
+    display: block;
+    height: 100%;
+    -ms-interpolation-mode: nearest-neighbor;
+    image-rendering: pixelated;
+    width: 100%;
+
+    &--twitter {
+      background-position: rem(2) rem(1);
+    }
+
+    &--facebook {
+      background-position: rem(-27) rem(1);
+    }
+
+    &--whatsapp {
+      background-position: rem(-55) rem(2);
+    }
+
+    &--linkedin {
+      background-position: rem(-83) rem(1);
+    }
+  }
+}

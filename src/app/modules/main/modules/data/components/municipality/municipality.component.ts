@@ -22,9 +22,10 @@ import { StatisticsService } from '../../services/statistics.service'
 import { NATIONAL_TABLE_COLS } from '../statistics/statistics.component'
 
 @Component({
-  selector: 'nt-municipality',
-  templateUrl: './municipality.component.html',
-  styleUrls: ['./municipality.component.scss'],
+    selector: 'nt-municipality',
+    templateUrl: './municipality.component.html',
+    styleUrls: ['./municipality.component.scss'],
+    standalone: false
 })
 export class MunicipalityComponent implements OnDestroy {
   action = loadNationalTable

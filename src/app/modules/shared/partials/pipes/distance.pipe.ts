@@ -1,7 +1,8 @@
 import { Pipe, PipeTransform } from '@angular/core'
 
 @Pipe({
-  name: 'distance'
+    name: 'distance',
+    standalone: false
 })
 export class DistancePipe implements PipeTransform {
 

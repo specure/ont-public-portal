@@ -10,10 +10,11 @@ enum ECardAppearance {
 }
 
 @Component({
-  selector: 'nt-general-card',
-  templateUrl: './general-card.component.html',
-  styleUrls: ['./general-card.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'nt-general-card',
+    templateUrl: './general-card.component.html',
+    styleUrls: ['./general-card.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class GeneralCardComponent {
   @Input() appearance: ECardAppearance

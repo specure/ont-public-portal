@@ -1,0 +1,55 @@
+<ng-container *transloco="let t">
+  @if (testState$ | async; as testState) {
+  <!-- PROGRESS BAR AND TIME -->
+  @if (testState.visualization && testState.showProgress) {
+  <nt-test-header class="nt-test-progress"></nt-test-header>
+  <h2 class="nt-test-header nt-test-header--print">
+    {{ getTitle(testState, t) }}
+  </h2>
+  } @if (testState.visualization && !testState.showProgress) {
+  <h2 class="nt-test-header">
+    {{ getTitle(testState, t) }}
+  </h2>
+  }
+  <!-- END PROGRESS BAR AND TIME -->
+
+  <!-- BOXES -->
+  @if (getVisualizationPing(testState)) { @if (testState.visualization; as
+  visualization) {
+  <div class="nt-container__row nt-indicators">
+    <section class="nt-container__col">
+      <div class="nt-container__row">
+        <nt-test-indicator
+          id="ping_indicator"
+          class="nt-test-indicator"
+          [data]="visualization.ping"
+        ></nt-test-indicator>
+        <nt-test-indicator
+          id="download_indicator"
+          class="nt-test-indicator"
+          [data]="visualization.download"
+        ></nt-test-indicator>
+        <nt-test-indicator
+          id="upload_indicator"
+          class="nt-test-indicator"
+          [data]="visualization.upload"
+        ></nt-test-indicator>
+      </div>
+    </section>
+    <nt-test-network-info [testState]="testState"></nt-test-network-info>
+  </div>
+  } }
+  <!-- END BOXES -->
+
+  @if (testState.stage === testStages.RESULT) {
+  <nt-export-warning [project]="project()"></nt-export-warning>
+  } @if (isNullOrUndefined(testState.info) && testState.preparing) {
+  <p class="gap-text">
+    {{ t('test.secure_connection') }}
+  </p>
+  } @if (getPreparedEstimation(testState)) {
+  <p class="gap-text">
+    {{ t('test.estimating_connections') }}
+  </p>
+  } }
+</ng-container>

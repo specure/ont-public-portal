@@ -4,7 +4,7 @@ import { ArticleComponent } from './article.component'
 import { ScrollTopComponent } from './components/scroll-top/scroll-top.component'
 import { PartialsModule } from '../partials/partials.module'
 import { TranslocoModule } from '@ngneat/transloco'
-import { MarkdownModule, MarkdownService, SECURITY_CONTEXT } from 'ngx-markdown'
+import { MarkdownModule, MarkdownService, SANITIZE } from 'ngx-markdown'
 import { MatIconModule } from '@angular/material/icon'
 
 @NgModule({
@@ -19,7 +19,7 @@ import { MatIconModule } from '@angular/material/icon'
   exports: [ArticleComponent],
   providers: [
     MarkdownService,
-    { provide: SECURITY_CONTEXT, useValue: SecurityContext.NONE },
+    { provide: SANITIZE, useValue: SecurityContext.NONE },
   ],
 })
 export class ArticleModule {}

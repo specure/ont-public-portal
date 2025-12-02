@@ -1,12 +1,12 @@
 <nav class="nt-menu {{ className }}" role="menubar">
-  <ng-container *ngFor="let item of menu; trackBy: useMenuItemId">
-    <nt-main-menu-item
-      *ngIf="!hasChildren(item)"
-      [item]="item"
-      (menuClick)="item.action && item.action($event)"
-    ></nt-main-menu-item>
-
-    <ng-container *ngIf="hasChildren(item)">
+  @for (item of menu; track useMenuItemId($index, item)) {
+    @if (!hasChildren(item)) {
+      <nt-main-menu-item
+        [item]="item"
+        (menuClick)="item.action && item.action($event)"
+      ></nt-main-menu-item>
+    }
+    @if (hasChildren(item)) {
       <a
         class="nt-menu__item {{ item.className }} {{
           isRouterLinkActive(item) ? 'nt-menu__item--active' : ''
@@ -15,17 +15,20 @@
         [matMenuTriggerFor]="menu"
         (click)="item.action && item.action($event)"
         role="menuitem"
-      >
-        <mat-icon *ngIf="item.icon">{{ item.icon }}</mat-icon>
+        >
+        @if (item.icon) {
+          <mat-icon>{{ item.icon }}</mat-icon>
+        }
         <span>{{ item | translate: 'label' }}</span>
       </a>
       <mat-menu #menu="matMenu" class="nt-menu__dropdown {{ className }}">
-        <nt-main-menu-item
-          *ngFor="let child of item.children"
-          [item]="child"
-          (menuClick)="child.action && child.action($event)"
-        ></nt-main-menu-item>
+        @for (child of item.children; track child) {
+          <nt-main-menu-item
+            [item]="child"
+            (menuClick)="child.action && child.action($event)"
+          ></nt-main-menu-item>
+        }
       </mat-menu>
-    </ng-container>
-  </ng-container>
+    }
+  }
 </nav>

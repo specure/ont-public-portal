@@ -14,9 +14,10 @@ import {
 } from 'src/app/core/helpers/parse-custom-tags'
 
 @Component({
-  selector: 'nt-full-article',
-  templateUrl: './full-article.component.html',
-  styleUrls: ['./full-article.component.scss'],
+    selector: 'nt-full-article',
+    templateUrl: './full-article.component.html',
+    styleUrls: ['./full-article.component.scss'],
+    standalone: false
 })
 export class FullArticleComponent {
   article$ = this.store.select(getArticlesState).pipe(

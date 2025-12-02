@@ -13,9 +13,10 @@ import { TranslocoService } from '@ngneat/transloco'
 import { Observable } from 'rxjs'
 
 @Component({
-  selector: 'nt-export-snackbar',
-  templateUrl: './export-snackbar.component.html',
-  styleUrls: ['./export-snackbar.component.scss'],
+    selector: 'nt-export-snackbar',
+    templateUrl: './export-snackbar.component.html',
+    styleUrls: ['./export-snackbar.component.scss'],
+    standalone: false
 })
 export class ExportSnackbarComponent {
   reports$ = this.store

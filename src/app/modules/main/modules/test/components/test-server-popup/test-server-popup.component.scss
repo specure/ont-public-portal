@@ -1,0 +1,25 @@
+@import 'core';
+
+.app-container {
+  display: none;
+}
+.app-th {
+  color: $main__text-color--pale;
+  text-align: left;
+}
+.app-th,
+.app-td {
+  font-size: small;
+  padding: rem(4) rem(12);
+}
+.app-button {
+  margin: rem(16) rem(12) 0;
+  padding: rem(8) rem(16);
+}
+.app-popup-content {
+  padding: rem(24) rem(16);
+}
+.app-popup-actions {
+  display: flex;
+  justify-content: flex-end;
+}

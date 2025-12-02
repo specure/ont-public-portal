@@ -2,9 +2,10 @@ import { Component, EventEmitter, Input, Output } from '@angular/core'
 import { IMainMenuItem } from '../../interfaces/main-menu-item.interface'
 
 @Component({
-  selector: 'nt-main-nav',
-  templateUrl: './main-nav.component.html',
-  styleUrls: ['./main-nav.component.scss'],
+    selector: 'nt-main-nav',
+    templateUrl: './main-nav.component.html',
+    styleUrls: ['./main-nav.component.scss'],
+    standalone: false
 })
 export class MainNavComponent {
   @Input() className: string

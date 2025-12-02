@@ -13,9 +13,10 @@ import { environment } from 'src/environments/environment'
 import { NTCookieService } from '@nettest/cookie-widget'
 
 @Component({
-  selector: 'nt-main-footer',
-  templateUrl: './main-footer.component.html',
-  styleUrls: ['./main-footer.component.scss'],
+    selector: 'nt-main-footer',
+    templateUrl: './main-footer.component.html',
+    styleUrls: ['./main-footer.component.scss'],
+    standalone: false
 })
 export class MainFooterComponent {
   cookieWidgetOpener =

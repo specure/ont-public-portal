@@ -17,6 +17,12 @@ import {
   visualInitDown,
   setShowProgress,
   addTriedServer,
+  setCloudServers,
+  setMeasurementServer,
+  setLocalServers,
+  setSearchingLocalServers,
+  setAbortServerSearch,
+  setSearchProgress,
 } from './test.action'
 import { TestVisualizationStateInit } from 'src/app/modules/main/modules/test/classes/test-visualization-state-init.class'
 import { TestVisualizationStatePing } from 'src/app/modules/main/modules/test/classes/test-visualization-state-ping.class'
@@ -28,6 +34,7 @@ import { TestVisualizationStateEnd } from 'src/app/modules/main/modules/test/cla
 import { ITestInfo } from 'src/app/modules/main/modules/test/interfaces/test-info.interface'
 import { ITestState } from 'src/app/modules/main/modules/test/interfaces/test-state.interface'
 import { ETestStages } from 'src/app/modules/main/modules/test/enums/test-stages.enum'
+import { TestServer } from 'src/app/modules/main/modules/test/classes/test-server.class'
 
 export class TestState implements ITestState {
   info: ITestInfo
@@ -40,10 +47,46 @@ export class TestState implements ITestState {
   stage: ETestStages
   triedServersIds: Set<number> = new Set()
   measurementRetries: number
+  cloudServers: TestServer[] = []
+  localServers: TestServer[] = []
+  selectedServer: TestServer
+  searchingLocalServers = false
+  abortServerSearch = false
+  searchProgress = 0
 }
 
 export const testReducer = createReducer(
   new TestState(),
+  on(setCloudServers, (state, { cloudServers }) => ({
+    ...state,
+    cloudServers,
+  })),
+  on(setSearchingLocalServers, (state, { searchingLocalServers }) => ({
+    ...state,
+    searchingLocalServers,
+    searchProgress: 0,
+  })),
+  on(setAbortServerSearch, (state, { abortServerSearch }) => ({
+    ...state,
+    abortServerSearch,
+    searchingLocalServers: abortServerSearch
+      ? false
+      : state.searchingLocalServers,
+  })),
+  on(setSearchProgress, (state, { searchProgress }) => ({
+    ...state,
+    searchProgress,
+  })),
+  on(setLocalServers, (state, { localServers }) => ({
+    ...state,
+    localServers,
+  })),
+  on(setMeasurementServer, (state, { server }) => {
+    return {
+      ...state,
+      selectedServer: server,
+    }
+  }),
   on(setLocation, (state, { location }) => ({ ...state, location })),
   on(setTestInfo, (state, { info }) => ({ ...state, info })),
   on(setShowProgress, (state, { showProgress }) => ({
@@ -147,15 +190,26 @@ export const testReducer = createReducer(
       : null,
     visualization,
   })),
-  on(visualReset, () => new TestState()),
+  on(visualReset, (state) => ({
+    ...new TestState(),
+    cloudServers: state.cloudServers,
+    selectedServer: state.selectedServer,
+  })),
   on(addTriedServer, (state, { server, measurementRetries }) =>
     server?.id
       ? {
           ...new TestState(),
+          cloudServers: state.cloudServers,
+          selectedServer: state.selectedServer,
           triedServersIds: new Set([...state.triedServersIds, server.id]),
           measurementRetries,
         }
-      : { ...new TestState(), measurementRetries }
+      : {
+          ...new TestState(),
+          cloudServers: state.cloudServers,
+          selectedServer: state.selectedServer,
+          measurementRetries,
+        }
   )
 )
 

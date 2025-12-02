@@ -1,0 +1,33 @@
+@import 'core';
+
+#store-links {
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-top: rem(20);
+  width: 100%;
+
+  & > * {
+    width: 100%;
+  }
+
+  a {
+    display: block;
+    height: rem(60);
+    margin: 0 rem(12);
+    width: rem(204);
+
+    img {
+      height: 100%;
+    }
+  }
+
+  @include screen-medium {
+    flex-direction: column;
+    margin-top: rem(40);
+
+    a {
+      margin-bottom: rem(24);
+    }
+  }
+}

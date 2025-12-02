@@ -22,9 +22,10 @@ const CHART_MAX_OPTIONS = [
 ]
 
 @Component({
-  selector: 'nt-statistics-chart',
-  templateUrl: './statistics-chart.component.html',
-  styleUrls: ['./statistics-chart.component.scss'],
+    selector: 'nt-statistics-chart',
+    templateUrl: './statistics-chart.component.html',
+    styleUrls: ['./statistics-chart.component.scss'],
+    standalone: false
 })
 export class StatisticsChartComponent
   implements AfterViewInit, OnChanges, OnDestroy

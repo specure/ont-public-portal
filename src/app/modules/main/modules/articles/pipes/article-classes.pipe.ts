@@ -1,7 +1,8 @@
 import { Pipe, PipeTransform } from '@angular/core'
 
 @Pipe({
-  name: 'articleClasses',
+    name: 'articleClasses',
+    standalone: false
 })
 export class ArticleClassesPipe implements PipeTransform {
   transform(index: number): string[] {

@@ -8,7 +8,7 @@ import {
 import { TranslocoService } from '@ngneat/transloco'
 import { Observable } from 'rxjs'
 import { ERoutes } from '../enums/routes.enum'
-import * as Sentry from '@sentry/angular-ivy'
+import * as Sentry from '@sentry/angular'
 
 @Injectable({
   providedIn: 'root',

@@ -15,9 +15,10 @@ import { TranslocoService } from '@ngneat/transloco'
 import { ERoutes } from 'src/app/core/enums/routes.enum'
 
 @Component({
-  selector: 'nt-main-header',
-  templateUrl: './main-header.component.html',
-  styleUrls: ['./main-header.component.scss'],
+    selector: 'nt-main-header',
+    templateUrl: './main-header.component.html',
+    styleUrls: ['./main-header.component.scss'],
+    standalone: false
 })
 export class MainHeaderComponent {
   @Input() sidenav?: MatSidenav

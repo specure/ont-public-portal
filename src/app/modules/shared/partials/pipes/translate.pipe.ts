@@ -5,7 +5,8 @@ import { MarkdownService } from 'ngx-markdown'
 import { markExternalLinks } from 'src/app/core/helpers/mark-external-links'
 
 @Pipe({
-  name: 'translate',
+    name: 'translate',
+    standalone: false
 })
 export class TranslatePipe implements PipeTransform {
   constructor(

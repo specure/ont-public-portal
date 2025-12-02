@@ -1,28 +1,30 @@
-<ng-container *ngIf="(date$ | async) as date">
+@if ((date$ | async); as date) {
     <button [ngClass]="{
         'nt-btn': true,
         'nt-timeline-toggle': true
     }" (click)="timelinePanel.toggle()">
-        <span class="nt-panel-toggle"><mat-icon>keyboard_arrow_up</mat-icon></span>
-        <span>{{ date.fullMonthAndYear }}</span>
-    </button>
-    <mat-expansion-panel class="nt-timeline" #timelinePanel expanded="false">
-        <header class="nt-timeline__header">
-            <button class="nt-btn" (click)="timelinePanel.toggle()">
-                <span class="nt-panel-toggle nt-panel-toggle--switched"><mat-icon>keyboard_arrow_up</mat-icon></span>
-            </button>
-        </header>
-        <section class="nt-list__wrapper">
-            <ul class="nt-list">
-                <ng-container *ngFor="let step of sortedSteps">
-                    <li *ngIf="!step.disabled"
-                        class="nt-list__item"
-                        [class.nt-list__item--selected]="date === step"
-                    >
-                        <button class="nt-btn" (click)="setDate(step)">{{ step.fullMonthAndYear }}</button>
-                    </li>
-                </ng-container>
-            </ul>
-        </section>
-    </mat-expansion-panel>
-</ng-container>
+    <span class="nt-panel-toggle"><mat-icon>keyboard_arrow_up</mat-icon></span>
+    <span>{{ date.fullMonthAndYear }}</span>
+  </button>
+  <mat-expansion-panel class="nt-timeline" #timelinePanel expanded="false">
+    <header class="nt-timeline__header">
+      <button class="nt-btn" (click)="timelinePanel.toggle()">
+        <span class="nt-panel-toggle nt-panel-toggle--switched"><mat-icon>keyboard_arrow_up</mat-icon></span>
+      </button>
+    </header>
+    <section class="nt-list__wrapper">
+      <ul class="nt-list">
+        @for (step of sortedSteps; track step) {
+          @if (!step.disabled) {
+            <li
+              class="nt-list__item"
+              [class.nt-list__item--selected]="date === step"
+              >
+              <button class="nt-btn" (click)="setDate(step)">{{ step.fullMonthAndYear }}</button>
+            </li>
+          }
+        }
+      </ul>
+    </section>
+  </mat-expansion-panel>
+}

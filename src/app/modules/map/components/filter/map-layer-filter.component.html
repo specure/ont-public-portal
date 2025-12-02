@@ -1,108 +1,115 @@
-<ng-container *ngIf="project$ | async as project">
+@if (project$ | async; as project) {
   <div
     class="nt-filters"
     [class.nt-filters--expanded]="expansionPanel?.expanded"
     *transloco="let t"
-  >
+    >
     <section class="nt-filters__sec nt-filters__sec--tech">
-      <a
-        *ngIf="!disableProviderFilter"
-        class="nt-panel-toggle"
-        [class.nt-panel-toggle--switched]="!expansionPanel?.expanded"
-        (click)="expansionPanel?.toggle(); shortExpansionPanel?.toggle()"
-      >
-        <mat-icon>keyboard_arrow_up</mat-icon>
-      </a>
-      <ng-container
-        *ngIf="selectedProviderType.value === 'mno'"
-      >
-        <ng-container *ngFor="let tech of mnoTechnologies">
-          <a
-            *ngIf="shouldShowTechButton(tech)"
-            (click)="technologyChanged(tech)"
+      @if (!disableProviderFilter) {
+        <a
+          class="nt-panel-toggle"
+          [class.nt-panel-toggle--switched]="!expansionPanel?.expanded"
+          (click)="expansionPanel?.toggle(); shortExpansionPanel?.toggle()"
+          >
+          <mat-icon>keyboard_arrow_up</mat-icon>
+        </a>
+      }
+      @if (selectedProviderType.value === 'mno') {
+        @for (tech of mnoTechnologies; track tech) {
+          @if (shouldShowTechButton(tech)) {
+            <a
+              (click)="technologyChanged(tech)"
             [class]="
               technology === tech ? tech.class : 'nt-disabled-button-background'
             "
-            class="nt-filters__technology-filter-button"
-            >{{ t(tech.label) }}</a
+              class="nt-filters__technology-filter-button"
+              >{{ t(tech.label) }}</a
+              >
+            }
+          }
+        }
+        @if (isMobile && !expansionPanel?.expanded) {
+          <div
+            class="nt-filters__mobile-operators"
+            >
+            {{ operatorsSelect?.triggerValue }}
+          </div>
+        }
+      </section>
+      @if (!disableProviderFilter) {
+        <section
+          class="nt-filters__sec nt-filters__sec--operators"
+          [class.nt-filters__sec--expanded]="isExpanded"
+          [class.nt-filters__sec--collapsed]="!isExpanded"
           >
-        </ng-container>
-      </ng-container>
-      <div
-        *ngIf="isMobile && !expansionPanel?.expanded"
-        class="nt-filters__mobile-operators"
-      >
-        {{ operatorsSelect?.triggerValue }}
-      </div>
-    </section>
-    <section
-      *ngIf="!disableProviderFilter"
-      class="nt-filters__sec nt-filters__sec--operators"
-      [class.nt-filters__sec--expanded]="isExpanded"
-      [class.nt-filters__sec--collapsed]="!isExpanded"
-    >
-      <mat-expansion-panel
-        #shortExpansionPanel
-        expanded="false"
-        class="mat-elevation-z0"
-      >
-        <div
-          class="nt-filters__mobile-operators nt-filters__mobile-operators--collapsed"
-        >
-          {{
-            (project.enable_map_mno_isp_switch === true
+          <mat-expansion-panel
+            #shortExpansionPanel
+            expanded="false"
+            class="mat-elevation-z0"
+            >
+            <div
+              class="nt-filters__mobile-operators nt-filters__mobile-operators--collapsed"
+              >
+              {{
+              (project.enable_map_mno_isp_switch === true
               ? t(selectedProviderType.label)
               : (t('map.filter.operators') | titlecase)) +
               ': ' +
               operatorsSelect?.triggerValue
-          }}
-        </div>
-      </mat-expansion-panel>
-      <mat-expansion-panel
-        #expansionPanel
-        expanded="true"
-        class="mat-elevation-z0"
-      >
-        <div
-          class="nt-filters__mobile-operators nt-filters__mobile-operators--expanded"
-        >
-          <ng-container *ngIf="project.enable_map_mno_isp_switch !== true">{{
-            t('map.filter.operators') | titlecase
-          }}</ng-container>
-          <form
-            *ngIf="project.enable_map_mno_isp_switch === true"
-            [formGroup]="providerTypesForm"
-          >
-            <mat-radio-group formControlName="providerType">
-              <mat-radio-button
-                *ngFor="let providerType of providerTypes"
-                [value]="providerType.value"
-                style="display: block"
-              >
-                {{ t(providerType.label) }}
-              </mat-radio-button>
-            </mat-radio-group>
-          </form>
-          <mat-form-field>
-            <mat-select
-              disableOptionCentering
-              #operatorsSelect
-              [value]="networkOperator"
-              (selectionChange)="operatorChanged($event)"
+              }}
+            </div>
+          </mat-expansion-panel>
+          <mat-expansion-panel
+            #expansionPanel
+            expanded="true"
+            class="mat-elevation-z0"
             >
-              <mat-option
-                *ngFor="let operator of networkOperators$ | async"
-                class="nt-select-option"
-                [value]="getOperatorMapKey(operator)"
-                >{{ t(operator) }}</mat-option
+            <div
+              class="nt-filters__mobile-operators nt-filters__mobile-operators--expanded"
               >
-            </mat-select>
-          </mat-form-field>
-        </div>
-      </mat-expansion-panel>
-    </section>
-    <section class="nt-filters__disclaimer">
-      {{ t('map.filter.disclaimer') }}
-    </section>
-  </div>
-</ng-container>
+              @if (project.enable_map_mno_isp_switch !== true) {
+                {{
+                t('map.filter.operators') | titlecase
+                }}
+              }
+              @if (project.enable_map_mno_isp_switch === true) {
+                <form
+                  [formGroup]="providerTypesForm"
+                  >
+                  <mat-radio-group formControlName="providerType">
+                    @for (providerType of providerTypes; track providerType) {
+                      <mat-radio-button
+                        [value]="providerType.value"
+                        style="display: block"
+                        >
+                        {{ t(providerType.label) }}
+                      </mat-radio-button>
+                    }
+                  </mat-radio-group>
+                </form>
+              }
+              <mat-form-field>
+                <mat-select
+                  disableOptionCentering
+                  #operatorsSelect
+                  [value]="networkOperator"
+                  (selectionChange)="operatorChanged($event)"
+                  >
+                  @for (operator of networkOperators$ | async; track operator) {
+                    <mat-option
+                      class="nt-select-option"
+                      [value]="getOperatorMapKey(operator)"
+                      >{{ t(operator) }}</mat-option
+                      >
+                    }
+                  </mat-select>
+                </mat-form-field>
+              </div>
+            </mat-expansion-panel>
+          </section>
+        }
+        <section class="nt-filters__disclaimer">
+          {{ t('map.filter.disclaimer') }}
+        </section>
+      </div>
+    }

@@ -25,7 +25,8 @@
               "get-doc",
               "object-assign",
               "ua-parser-js",
-              "component-query"
+              "component-query",
+              "localforage"
             ],
             "outputPath": "dist/nettest/browser",
             "index": "src/index.html",
@@ -46,7 +47,10 @@
             "buildOptimizer": false,
             "sourceMap": true,
             "optimization": false,
-            "namedChunks": true
+            "namedChunks": true,
+            "stylePreprocessorOptions": {
+              "includePaths": ["src/assets/styles"]
+            }
           },
           "configurations": {
             "dev": {
@@ -300,5 +304,31 @@
   "cli": {
     "schematicCollections": ["@angular-eslint/schematics"],
     "analytics": false
+  },
+  "schematics": {
+    "@schematics/angular:component": {
+      "type": "component"
+    },
+    "@schematics/angular:directive": {
+      "type": "directive"
+    },
+    "@schematics/angular:service": {
+      "type": "service"
+    },
+    "@schematics/angular:guard": {
+      "typeSeparator": "."
+    },
+    "@schematics/angular:interceptor": {
+      "typeSeparator": "."
+    },
+    "@schematics/angular:module": {
+      "typeSeparator": "."
+    },
+    "@schematics/angular:pipe": {
+      "typeSeparator": "."
+    },
+    "@schematics/angular:resolver": {
+      "typeSeparator": "."
+    }
   }
 }

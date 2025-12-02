@@ -1,0 +1,90 @@
+@import 'core';
+
+#information {
+  width: 100%;
+
+  & > * {
+    width: 100%;
+  }
+
+  .#{$moq__ns}container__col {
+    margin-right: rem(24);
+    flex: none;
+    width: auto;
+
+    img,
+    pre,
+    div {
+      height: auto;
+      max-width: 100%;
+      overflow: hidden;
+    }
+  }
+
+  .#{$moq__ns}container {
+    display: flex;
+    justify-content: center;
+    padding: rem(40) rem(22);
+    width: 100%;
+
+    .#{$moq__ns}beta {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      &__image {
+        min-width: rem(220);
+        @include screen-small {
+          display: none;
+        }
+      }
+      &__badge {
+        img {
+          max-width: rem(128);
+        }
+        @include screen-small {
+          display: none;
+        }
+      }
+      &__panel {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        align-items: flex-start;
+        margin: 0 rem(45);
+        @include screen-small {
+          margin-left: 0;
+        }
+        .#{$moq__ns}link {
+          .mat-icon {
+            margin-right: rem(9);
+            vertical-align: middle;
+          }
+        }
+      }
+      &-title {
+        font-size: rem(24);
+        margin-bottom: rem(8);
+      }
+      &-subtitle {
+        font-size: rem(16);
+        margin-bottom: rem(20);
+      }
+    }
+  }
+
+  @include screen-medium {
+    .#{$moq__ns}container__col {
+      width: 100%;
+
+      &:first-child {
+        padding-bottom: 1em;
+      }
+    }
+
+    .#{$moq__ns}container {
+      align-items: flex-start;
+      flex-direction: column;
+      padding: rem(17) 0 rem(24);
+    }
+  }
+}

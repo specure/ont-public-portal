@@ -1,0 +1,80 @@
+@if (testState(); as testState) { @if (project$ | async; as project) {
+<section class="nt-container__col nt-test-info">
+  <div class="nt-container__col">
+    @if (testState.info.serverName) {
+    <section class="server-selector">
+      <h4 class="nt-aside__header">
+        {{ 'test.server_name' | transloco }}
+      </h4>
+      @if (!project?.can_choose_server || (selectedServer$ | async) === null) {
+      <p>
+        {{ testState.info.serverName || '-' }}
+      </p>
+      } @if (project?.can_choose_server && servers$ | async; as servers) { @if
+      (selectedServer$ | async; as selectedServer) {
+      <mat-select
+        class="nt-test-invite__server-select"
+        (selectionChange)="changeServer($event)"
+        [value]="selectedServer"
+        [class.disabledSelector]="testState.stage !== 'RESULT'"
+        [disabled]="testState.stage !== 'RESULT'"
+        [panelWidth]="null"
+      >
+        <mat-select-trigger>
+          <p>{{ selectedServer?.title }}</p>
+        </mat-select-trigger>
+        @for (server of servers; track server.id) {
+        <mat-option [value]="server">
+          {{ server.distance | distance }}{{ server.title }}
+        </mat-option>
+        }
+      </mat-select>
+      } }
+    </section>
+    }
+    <section>
+      <h4 class="nt-aside__header">{{ 'test.ip_address' | transloco }}</h4>
+      <p>{{ testState.info.remoteIp || '-' }}</p>
+    </section>
+    <section>
+      <h4 class="nt-aside__header">{{ 'test.provider' | transloco }}</h4>
+      <p>{{ testState.info.providerName || '-' }}</p>
+    </section>
+  </div>
+  @if (testState.finished) {
+  <div class="nt-container__col">
+    <button
+      mat-flat-button
+      (click)="launchTest()"
+      color="primary"
+      class="nt-run-again"
+    >
+      {{ 'test.run_test_again' | transloco }}
+    </button>
+    <button
+      mat-flat-button
+      (click)="print()"
+      color="primary"
+      class="nt-run-again"
+      style="margin-top: 10px"
+    >
+      {{ 'test.export_as_pdf' | transloco }}
+    </button>
+    <ul class="nt-share">
+      @for (btn of shareButtons; track $index) {
+      <li class="nt-share__item">
+        <a
+          [href]="btn.url"
+          class="nt-share__link"
+          target="_blank"
+          [matTooltip]="'test.share.' + btn.className | transloco"
+        >
+          <i class="nt-share__icon nt-share__icon--{{ btn.className }}"></i>
+        </a>
+      </li>
+      }
+    </ul>
+  </div>
+  }
+</section>
+} }

@@ -1,10 +1,40 @@
 import { HttpErrorResponse } from '@angular/common/http'
 import { createAction, props } from '@ngrx/store'
+import { TestServer } from 'src/app/modules/main/modules/test/classes/test-server.class'
 import { ITestInfo } from 'src/app/modules/main/modules/test/interfaces/test-info.interface'
 import { ITestResult } from 'src/app/modules/main/modules/test/interfaces/test-result.interface'
 import { ITestServer } from 'src/app/modules/main/modules/test/interfaces/test-server.interface'
 import { ITestVisualizationState } from 'src/app/modules/main/modules/test/interfaces/test-visualization-state.interface'
 
+export const setCloudServers = createAction(
+  '[TEST] Setting cloud servers...',
+  props<{ cloudServers: TestServer[] }>()
+)
+
+export const setSearchingLocalServers = createAction(
+  '[TEST] Setting searching local servers...',
+  props<{ searchingLocalServers: boolean }>()
+)
+
+export const setAbortServerSearch = createAction(
+  '[TEST] Setting abort server search...',
+  props<{ abortServerSearch: boolean }>()
+)
+
+export const setSearchProgress = createAction(
+  '[TEST] Setting search progress...',
+  props<{ searchProgress: number }>()
+)
+
+export const setLocalServers = createAction(
+  '[TEST] Setting local servers...',
+  props<{ localServers: TestServer[] }>()
+)
+
+export const setMeasurementServer = createAction(
+  '[TEST] Setting server...',
+  props<{ server: TestServer }>()
+)
 export const setLocation = createAction(
   '[TEST] Setting location...',
   props<{ location: { longitude: number; latitude: number } }>()

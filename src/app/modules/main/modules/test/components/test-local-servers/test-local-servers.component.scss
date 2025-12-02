@@ -1,0 +1,28 @@
+@import 'core';
+
+.#{$moq__ns}container {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin: 0;
+  width: 100%;
+}
+
+.#{$moq__ns}button {
+  align-items: center;
+  border-radius: rem(30);
+  display: inline-flex;
+  font-size: rem(16);
+  height: rem(48);
+  min-width: rem(120);
+  padding: 0 rem(16);
+}
+
+.#{$moq__ns}info {
+  margin: rem(24) 0;
+  width: auto;
+  & > * {
+    font-weight: normal;
+  }
+}

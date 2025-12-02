@@ -1,0 +1,17 @@
+<div class="nt-container">
+  <button
+    mat-flat-button
+    color="primary"
+    type="button"
+    class="nt-button"
+    (click)="search()"
+    [disabled]="searching$ | async"
+  >
+    {{ 'Find local server' | transloco }}
+  </button>
+  <p class="nt-info">
+    <a href="https://github.com/specure/nettest">{{
+      'Learn more on GitHub' | transloco
+    }}</a>
+  </p>
+</div>

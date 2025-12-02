@@ -1,8 +1,5 @@
-<mat-form-field
-  *ngIf="locales && locales.length > 1"
-  appearance="outline"
-  [class]="className"
->
+@if (locales && locales.length > 1) {
+<div [className]="className">
   <mat-select
     disableOptionCentering
     [(ngModel)]="selectedLocale"
@@ -14,12 +11,11 @@
         <mat-icon>language</mat-icon><span>{{ selectedLocale?.name }}</span>
       </div>
     </mat-select-trigger>
-    <mat-option
-      class="nt-language-selector"
-      *ngFor="let locale of locales"
-      [value]="locale"
-    >
+    @for (locale of locales; track locale) {
+    <mat-option class="nt-language-selector" [value]="locale">
       <div class="nt-language-selector__language-name">{{ locale.name }}</div>
     </mat-option>
+    }
   </mat-select>
-</mat-form-field>
+</div>
+}

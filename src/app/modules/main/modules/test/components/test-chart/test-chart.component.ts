@@ -18,10 +18,11 @@ import { TestVisualizationStateUp } from '../../classes/test-visualization-state
 import { TestVisualizationStatePing } from '../../classes/test-visualization-state-ping.class'
 
 @Component({
-  selector: 'nt-test-chart',
-  templateUrl: './test-chart.component.html',
-  styleUrls: ['./test-chart.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'nt-test-chart',
+    templateUrl: './test-chart.component.html',
+    styleUrls: ['./test-chart.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class TestChartComponent implements OnInit {
   @Input() direction: 'download' | 'upload'

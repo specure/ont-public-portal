@@ -1,8 +1,7 @@
-import { ActionCreator, Store } from '@ngrx/store'
+import { Action, ActionCreator, Store } from '@ngrx/store'
 import { Injectable } from '@angular/core'
 import { MatSort } from '@angular/material/sort'
 import { PageEvent } from '@angular/material/paginator'
-import { TypedAction } from '@ngrx/store/src/models'
 
 import { ERoutes } from '../enums/routes.enum'
 import { IAppState } from 'src/app/store'
@@ -19,7 +18,7 @@ export class TableSortService {
     newSort: MatSort,
     action: ActionCreator<
       string,
-      (props: { request: IBasicRequest }) => IBasicRequest & TypedAction<string>
+      (props: { request: IBasicRequest }) => IBasicRequest & Action<string>
     >
   ) {
     const { active, direction } = newSort
@@ -35,7 +34,7 @@ export class TableSortService {
     page: PageEvent,
     action: ActionCreator<
       string,
-      (props: { request: IBasicRequest }) => IBasicRequest & TypedAction<string>
+      (props: { request: IBasicRequest }) => IBasicRequest & Action<string>
     >
   ) {
     const { pageSize, pageIndex } = page

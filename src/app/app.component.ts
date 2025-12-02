@@ -1,27 +1,35 @@
-import { Component, Inject, OnDestroy, PLATFORM_ID } from '@angular/core'
+/* eslint-disable @angular-eslint/prefer-standalone */
+/* eslint-disable @angular-eslint/prefer-inject */
+import {
+  Component,
+  Inject,
+  OnDestroy,
+  OnInit,
+  PLATFORM_ID,
+} from '@angular/core'
 import { IMainProject } from './modules/main/interfaces/main-project.interface'
-import { from, Observable } from 'rxjs'
+import { Observable } from 'rxjs'
 import { IAppState } from './store'
 import { Store, select } from '@ngrx/store'
 import { getMainState } from './store/main/main.reducer'
-import { concatMap, distinctUntilKeyChanged, map, tap } from 'rxjs/operators'
+import { distinctUntilKeyChanged, map } from 'rxjs/operators'
 import { ErrorService } from './core/services/error.service'
 import { AnalyticsService } from './core/services/analytics.service'
 import { PrivacyService } from './core/services/privacy.service'
 import { NavigationStart, Router } from '@angular/router'
 import { setNavigationEvent } from './store/common/common.action'
 import { isPlatformBrowser } from '@angular/common'
-import { ERoutes } from './core/enums/routes.enum'
 import { TestService } from './modules/main/modules/test/services/test.service'
-import { TranslocoService } from '@ngneat/transloco'
 import { SeoService } from './core/services/seo.service'
+import pack from '../../package.json'
 
 @Component({
   selector: 'nt-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
+  standalone: false,
 })
-export class AppComponent implements OnDestroy {
+export class AppComponent implements OnInit, OnDestroy {
   error$ = this.errorService?.dialogHandler()
   navigationSub = this.router.events.subscribe((e: NavigationStart) => {
     if (e instanceof NavigationStart) {
@@ -51,7 +59,6 @@ export class AppComponent implements OnDestroy {
     private seoService: SeoService,
     private store: Store<IAppState>,
     private testService: TestService,
-    private transloco: TranslocoService,
     @Inject(PLATFORM_ID) private platformId: object
   ) {
     if (globalThis.history && 'scrollRestoration' in globalThis.history) {
@@ -59,13 +66,17 @@ export class AppComponent implements OnDestroy {
     }
 
     globalThis['startTest'] = () => {
-      from(this.router.navigate([this.transloco.getActiveLang(), ERoutes.TEST]))
-        .pipe(
-          concatMap(() => this.testService.launchTest()),
-          tap(() => globalThis.scrollTo(0, 0))
-        )
-        .subscribe()
+      this.testService.goToTest()
     }
+
+    const gitInfo = (pack as any).gitInfo || {}
+    if (gitInfo.branch && gitInfo.hash) {
+      console.log(`${gitInfo.branch}-${gitInfo.hash.slice(0, 8)}`)
+    }
+  }
+
+  ngOnInit(): void {
+    this.testService.setTestServers()
   }
 
   ngOnDestroy(): void {

@@ -35,9 +35,10 @@ import {
 import { postFeedback } from 'src/app/store/main/main.action'
 
 @Component({
-  selector: 'nt-contact',
-  templateUrl: './contact.component.html',
-  styleUrls: ['./contact.component.scss'],
+    selector: 'nt-contact',
+    templateUrl: './contact.component.html',
+    styleUrls: ['./contact.component.scss'],
+    standalone: false
 })
 export class ContactComponent implements OnDestroy {
   @ViewChild(FormGroupDirective) formGroupDirective: FormGroupDirective

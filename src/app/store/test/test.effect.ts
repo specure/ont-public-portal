@@ -6,10 +6,11 @@ import { forkJoin, lastValueFrom, of } from 'rxjs'
 
 import { IAppState } from '..'
 import { loading, loadingError } from '../common/common.action'
-import { loadPage, setMeasurementServer } from '../main/main.action'
+import { loadPage } from '../main/main.action'
 import { TestService } from 'src/app/modules/main/modules/test/services/test.service'
 import {
   handleServerError,
+  setMeasurementServer,
   visualReset,
   visualResult,
   visualResultEnd,
@@ -89,12 +90,9 @@ export class TestEffects {
     () =>
       this.actions$.pipe(
         ofType<Action & { error: HttpErrorResponse }>(handleServerError.type),
-        withLatestFrom(
-          this.store.select(getTestState),
-          this.store.select(getMainState)
-        ),
-        tap(([action, state, mainState]) => {
-          const nextServer = mainState.availableServers.find(
+        withLatestFrom(this.store.select(getTestState)),
+        tap(([action, state]) => {
+          const nextServer = state.cloudServers.find(
             (server) => !state.triedServersIds.has(server.id)
           )
           if (nextServer && state.measurementRetries) {
@@ -107,7 +105,7 @@ export class TestEffects {
               duration: 3000,
             })
             setTimeout(() => {
-              lastValueFrom(this.testService.launchTest()).then()
+              lastValueFrom(this.testService.triggerNextTest()).then()
             }, 300)
           } else {
             this.store.dispatch(loadingError({ error: action.error }))

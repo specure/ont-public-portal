@@ -8,9 +8,10 @@ import { ITimelineStep } from '../../interfaces/timeline-step.interface'
 import { Observable } from 'rxjs'
 
 @Component({
-  selector: 'nt-mobile-timeline',
-  templateUrl: './mobile-timeline.component.html',
-  styleUrls: ['./mobile-timeline.component.scss']
+    selector: 'nt-mobile-timeline',
+    templateUrl: './mobile-timeline.component.html',
+    styleUrls: ['./mobile-timeline.component.scss'],
+    standalone: false
 })
 export class MobileTimelineComponent {
   @Input() steps: ITimelineStep[]

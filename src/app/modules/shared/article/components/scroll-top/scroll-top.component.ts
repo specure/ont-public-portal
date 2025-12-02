@@ -5,9 +5,10 @@ import { IArticleLayout } from '../../interfaces/article-layout.interface'
 import { ActivatedRoute } from '@angular/router'
 
 @Component({
-  selector: 'nt-scroll-top',
-  templateUrl: './scroll-top.component.html',
-  styleUrls: ['./scroll-top.component.scss'],
+    selector: 'nt-scroll-top',
+    templateUrl: './scroll-top.component.html',
+    styleUrls: ['./scroll-top.component.scss'],
+    standalone: false
 })
 export class ScrollTopComponent {
   bottom = 72

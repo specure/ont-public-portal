@@ -1,5 +1,6 @@
 import {
   catchError,
+  concatMap,
   first,
   map,
   switchMap,
@@ -32,14 +33,12 @@ import utc from 'dayjs/esm/plugin/utc'
 import tz from 'dayjs/esm/plugin/timezone'
 import {
   addTriedServer,
+  setCloudServers,
   setLocation,
+  setMeasurementServer,
   visualInit,
 } from 'src/app/store/test/test.action'
 import { getMainState } from '../../../../../store/main/main.reducer'
-import {
-  setAvailableServers,
-  setMeasurementServer,
-} from '../../../../../store/main/main.action'
 import { getTestState } from '../../../../../store/test/test.reducer'
 import { EServerDefinition } from '../enums/server-definition.enum'
 import { isPlatformBrowser } from '@angular/common'
@@ -84,15 +83,24 @@ export class TestService {
   ) {
     if (isPlatformBrowser(this.platformId)) {
       const promise = environment.production
-        ? import('rmbtws')
-        : import('rmbtws/dist/rmbtws.js')
+        ? import('rmbtws/dist/esm/rmbtws.min.js')
+        : import('rmbtws/dist/esm/rmbtws.js')
       promise.then((rmbtws) => {
         this.rmbtws = rmbtws
       })
     }
   }
 
-  launchTest() {
+  goToTest() {
+    from(this.router.navigate([this.transloco.getActiveLang(), ERoutes.TEST]))
+      .pipe(
+        concatMap(() => this.triggerNextTest()),
+        tap(() => globalThis.scrollTo(0, 0))
+      )
+      .subscribe()
+  }
+
+  triggerNextTest() {
     if (!isPlatformBrowser(this.platformId)) {
       return of(null)
     }
@@ -111,39 +119,15 @@ export class TestService {
         this.store.select(getTestState)
       ),
       take(1),
-      switchMap(
-        ([
+      switchMap(([isCookieAccepted, mainState, historyState, testState]) => {
+        return of({
+          project: mainState.project,
+          server: testState.selectedServer ?? this.testServer,
+          uuid: historyState.uuid,
+          measurementRetries: testState.measurementRetries,
           isCookieAccepted,
-          { project, server },
-          { uuid },
-          { measurementRetries },
-        ]) => {
-          if (!server) {
-            return this.getTestServerFromApi().pipe(
-              switchMap((testServer) => {
-                if (!testServer) {
-                  throw new Error('No test server available')
-                }
-                this.setServer(testServer)
-                return of({
-                  project,
-                  server: testServer,
-                  uuid,
-                  measurementRetries,
-                  isCookieAccepted,
-                })
-              })
-            )
-          }
-          return of({
-            project,
-            server,
-            uuid,
-            measurementRetries,
-            isCookieAccepted,
-          })
-        }
-      ),
+        })
+      }),
       switchMap(
         ({ server, project, uuid, measurementRetries, isCookieAccepted }) => {
           this.testServer = server
@@ -186,10 +170,27 @@ export class TestService {
           config.additionalRegistrationParameters = {
             uuid_permission_granted: this.isHistoryAllowed,
             app_version,
+            local_server_settings:
+              this.testServer.address == '127.0.0.1'
+                ? {
+                    test_uuid: crypto.randomUUID(),
+                    test_duration: 5,
+                    test_server_name: this.testServer.name,
+                    test_wait: 0,
+                    test_server_address: this.testServer.address,
+                    test_numthreads: 5,
+                    test_server_port: this.testServer.port,
+                    test_server_encryption: false,
+                    test_numpings: 10,
+                    app_version,
+                    platform: 'UNKNOWN',
+                    error: [],
+                  }
+                : undefined,
           }
           const ctrl = new this.rmbtws.RMBTControlServerCommunication(
             config,
-            environment.controlServer.headers,
+            { headers: this.headers },
             this.testServer
           )
           const websocketTest = new this.rmbtws.RMBTTest(config, ctrl)
@@ -279,83 +280,51 @@ export class TestService {
     })
   }
 
-  getTestServers() {
-    return combineLatest([
-      this.getAllTestServersFromApi(),
-      this.store.select(getMainState),
-      this.store.select(getTestState),
-    ]).pipe(
-      first(),
-      map(([servers, mainState, testState]) => {
-        let serverToUse: TestServer
-        if (mainState.server) {
-          serverToUse = mainState.server
-        } else if (testState.info?.measurement_server_name) {
-          serverToUse =
-            servers?.find(
-              (s) => s.name === testState.info.measurement_server_name
-            ) ?? servers?.[0]
-          this.setServer(serverToUse)
-        } else {
-          serverToUse = servers?.[0]
+  setTestServers() {
+    this.getLocation()
+      .pipe(
+        switchMap((location) => {
+          const params = !location
+            ? new HttpParams({})
+            : new HttpParams({
+                fromObject: {
+                  latitude: location.latitude.toString(),
+                  longitude: location.longitude.toString(),
+                },
+              })
+          return this.http
+            .get<ITestServerResponse[]>(
+              `${environment.controlServer.url}${environment.controlServer.routes.measurementServer}`,
+              {
+                params,
+                headers: this.headers,
+              }
+            )
+            .pipe(
+              map((servers) => {
+                return this.supportedServers(servers)
+              }),
+              catchError((err) => {
+                console.error('Error fetching test servers:', err)
+                return of([])
+              })
+            )
+        })
+      )
+      .subscribe((servers) => {
+        this.store.dispatch(setCloudServers({ cloudServers: servers }))
+        const serverToUse: TestServer = servers?.[0]
+        if (serverToUse) {
           this.setServer(serverToUse)
         }
-        return [serverToUse, servers]
       })
-    )
   }
 
   setServer(server: TestServer): void {
     this.store.dispatch(setMeasurementServer({ server }))
   }
 
-  private getTestServerFromApi(): Observable<TestServer> {
-    return this.http
-      .get<ITestServerResponse[]>(
-        `${environment.controlServer.url}${environment.controlServer.routes.measurementServer}`,
-        {
-          headers: this.headers,
-        }
-      )
-      .pipe(
-        map(this.supportedServers),
-        catchError(() => of([])),
-        map((servers) => servers?.[0])
-      )
-  }
-
-  private getAllTestServersFromApi() {
-    return this.getLocation().pipe(
-      switchMap((location) => {
-        const params = !location
-          ? new HttpParams({})
-          : new HttpParams({
-              fromObject: {
-                latitude: location.latitude.toString(),
-                longitude: location.longitude.toString(),
-              },
-            })
-        return this.http
-          .get<ITestServerResponse[]>(
-            `${environment.controlServer.url}${environment.controlServer.routes.measurementServer}`,
-            {
-              params,
-              headers: this.headers,
-            }
-          )
-          .pipe(
-            map((servers) => {
-              const availableServers = this.supportedServers(servers)
-              this.store.dispatch(setAvailableServers({ availableServers }))
-              return availableServers
-            }),
-            catchError(() => of([]))
-          )
-      })
-    )
-  }
-
-  private supportedServers = (servers) => {
+  private supportedServers = (servers): TestServer[] => {
     if (!servers) {
       return []
     }

@@ -1,0 +1,5 @@
+<section id="map" class="nt-map"></section>
+
+@if (servers$ | async; as servers) { @for (server of servers; track server.id) {
+<nt-test-server-popup [server]="server"></nt-test-server-popup>
+} }

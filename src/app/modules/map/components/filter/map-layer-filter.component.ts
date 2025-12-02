@@ -31,9 +31,10 @@ export enum ENetworkOperator {
 }
 
 @Component({
-  selector: 'nt-map-layer-filter',
-  templateUrl: './map-layer-filter.component.html',
-  styleUrls: ['./map-layer-filter.component.scss'],
+    selector: 'nt-map-layer-filter',
+    templateUrl: './map-layer-filter.component.html',
+    styleUrls: ['./map-layer-filter.component.scss'],
+    standalone: false
 })
 export class MapLayerFilterComponent implements AfterViewChecked, OnDestroy {
   @ViewChild('expansionPanel') expansionPanel: MatExpansionPanel

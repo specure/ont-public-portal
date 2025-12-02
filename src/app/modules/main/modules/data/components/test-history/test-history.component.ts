@@ -79,9 +79,10 @@ export const HISTORY_COLS: ITableColumn<IHistoryTableItem>[] = [
 ]
 
 @Component({
-  selector: 'nt-test-history',
-  templateUrl: './test-history.component.html',
-  styleUrls: ['./test-history.component.scss'],
+    selector: 'nt-test-history',
+    templateUrl: './test-history.component.html',
+    styleUrls: ['./test-history.component.scss'],
+    standalone: false
 })
 export class TestHistoryComponent implements OnDestroy {
   action = loadHistory

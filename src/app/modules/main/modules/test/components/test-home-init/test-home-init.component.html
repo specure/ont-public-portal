@@ -1,108 +1,129 @@
-<ng-container *ngIf="project">
-  <ng-container *ngIf="project.slug !== 'nt'; else initialStateOnt">
-    <div class="nt-test-invite" *transloco="let t">
-      <section class="nt-test-invite__panel">
-        <h1 class="nt-test-title">{{ t('test.title') }}</h1>
-        <button
-          mat-flat-button
-          color="primary"
-          class="nt-run-test-btn"
-          (click)="launchTest.emit($event)"
+@if ((project$ | async)?.slug !== 'nt') {
+<div class="nt-test-invite" *transloco="let t">
+  <section class="nt-test-invite__panel">
+    <h1 class="nt-test-title">{{ t('test.title') }}</h1>
+    <button
+      mat-flat-button
+      color="primary"
+      class="nt-run-test-btn"
+      (click)="launchTest()"
+    >
+      {{ t('test.start_test') }}
+    </button>
+    @if (project?.can_choose_server || !isProd) {
+    <div class="nt-test-invite__server server-selector">
+      @if (servers$ | async; as servers) { @if (selectedServer$ | async; as
+      selectedServer) {
+      <p>{{ t('test.measurement_server') }}&nbsp;&nbsp;</p>
+      <div @openClose>
+        <mat-select
+          class="nt-test-invite__server-select"
+          (selectionChange)="changeServer($event)"
+          [value]="selectedServer"
+          [panelWidth]="null"
         >
-          {{ t('test.start_test') }}
-        </button>
-        <div
-          class="nt-test-invite__server server-selector"
-          *ngIf="project.can_choose_server || !isProd"
-        >
-          <p>{{ t('test.measurement_server') }}&nbsp;&nbsp;</p>
-          <mat-form-field @openClose *ngIf="servers">
-            <mat-select
-              class="nt-test-invite__server-select"
-              (selectionChange)="changeServer($event)"
-              [value]="selectedServer"
-              [compareWith]="objectComparisonFunction"
-              [panelWidth]="null"
-            >
-              <mat-select-trigger>
-                <p>{{ selectedServer?.title }}</p>
-              </mat-select-trigger>
-              <mat-option *ngFor="let server of servers" [value]="server">
-                {{ server.distance | distance }}{{ server.title }}
-              </mat-option>
-            </mat-select>
-          </mat-form-field>
-        </div>
-        <a
-          class="nt-link"
-          [routerLink]="getMethodologyLink(t('test.learn_about_route'))"
-        >
-          <mat-icon>info</mat-icon>
-          <span>{{ t('test.learn_about') }}</span>
-        </a>
-      </section>
-      <section class="nt-test-invite__image">
-        <img
-          @openClose
-          *ngIf="testInviteImg$ | async as testInviteImg"
-          [src]="testInviteImg?.url"
-          [alt]="
-            testInviteImg?.alternativeText ||
-            testInviteImg?.caption ||
-            testInviteImg?.name ||
-            ''
-          "
-          [title]="
-            testInviteImg?.alternativeText ||
-            testInviteImg?.caption ||
-            testInviteImg?.name ||
-            ''
-          "
-          width="280"
-          height="280"
-        />
-      </section>
+          <mat-select-trigger>
+            <p>{{ selectedServer?.title }}</p>
+          </mat-select-trigger>
+          @for (server of servers; track server) {
+          <mat-option [value]="server">
+            {{ server.distance | distance }}{{ server.title }}
+          </mat-option>
+          }
+        </mat-select>
+      </div>
+      } }
     </div>
-  </ng-container>
-</ng-container>
-
-<ng-template #initialStateOnt>
-  <div class="nt-test-invite nt-test-invite--ont" *transloco="let t">
+    }
+    <a
+      class="nt-link"
+      [routerLink]="getMethodologyLink(t('test.learn_about_route'))"
+    >
+      <mat-icon>info</mat-icon>
+      <span>{{ t('test.learn_about') }}</span>
+    </a>
+  </section>
+  <section class="nt-test-invite__image">
+    @if (testInviteImg$ | async; as testInviteImg) {
+    <img
+      @openClose
+      [src]="testInviteImg?.url"
+      alt="{{
+        testInviteImg?.alternativeText ||
+          testInviteImg?.caption ||
+          testInviteImg?.name ||
+          ''
+      }}"
+      [title]="
+        testInviteImg?.alternativeText ||
+        testInviteImg?.caption ||
+        testInviteImg?.name ||
+        ''
+      "
+      width="280"
+      height="280"
+    />
+    }
+  </section>
+</div>
+} @else if (project$ | async; as project) {
+<div
+  class="nt-row nt-row--ont"
+  [style.justify-content]="
+    project?.enable_servers_map ? 'flex-start' : 'center'
+  "
+>
+  <div
+    class="nt-test-invite nt-test-invite--ont"
+    [class.nt-col]="project?.enable_servers_map"
+    *transloco="let t"
+  >
     <section class="nt-test-invite__panel">
       <h1 class="nt-test-title">{{ t('test.title') }}</h1>
       <button
         mat-flat-button
         color="primary"
         class="nt-run-test-btn"
-        (click)="launchTest.emit($event)"
+        (click)="launchTest()"
       >
         {{ t('test.start_test') }}
       </button>
-      <div
-        class="nt-test-invite__server server-selector"
-        *ngIf="project?.can_choose_server || !isProd"
-      >
+      @if (project?.can_choose_server || !isProd) {
+      <div class="nt-test-invite__server server-selector">
         <p>{{ t('test.measurement_server') }}&nbsp;&nbsp;</p>
-        <mat-form-field
-          @openClose
-          *ngIf="isBrowser && servers; else loadingServers"
-        >
-          <mat-select
-            class="nt-test-invite__server-select"
-            (selectionChange)="changeServer($event)"
-            [value]="selectedServer"
-            [compareWith]="objectComparisonFunction"
-            [panelWidth]="null"
+        @if (isBrowser && servers$ | async; as servers) { @if (selectedServer$ |
+        async; as selectedServer) { @if (project?.enable_local_servers) {
+        <p>
+          <button
+            mat-button
+            class="nt-server-select"
+            (click)="showServerDialog()"
           >
-            <mat-select-trigger>
-              <p>{{ selectedServer?.title }}</p>
-            </mat-select-trigger>
-            <mat-option *ngFor="let server of servers" [value]="server">
-              {{ server.distance | distance }}{{ server.title }}
-            </mat-option>
-          </mat-select>
-        </mat-form-field>
+            {{ selectedServer?.title }}
+            <mat-icon iconPositionEnd>expand_more</mat-icon>
+          </button>
+        </p>
+        } @else {
+        <mat-select
+          class="nt-test-invite__server-select"
+          (selectionChange)="changeServer($event)"
+          [value]="selectedServer"
+          [panelWidth]="null"
+        >
+          <mat-select-trigger>
+            <p>{{ selectedServer?.title }}</p>
+          </mat-select-trigger>
+          @for (server of servers; track server) {
+          <mat-option [value]="server">
+            {{ server.distance | distance }}{{ server.title }}
+          </mat-option>
+          }
+        </mat-select>
+        } } } @else {
+        <div class="nt-loading-servers"></div>
+        }
       </div>
+      }
       <a
         class="nt-link"
         [routerLink]="getMethodologyLink(t('test.learn_about_route'))"
@@ -112,8 +133,10 @@
       </a>
     </section>
   </div>
-</ng-template>
-
-<ng-template #loadingServers>
-  <div class="nt-loading-servers"></div>
-</ng-template>
+  @if (project?.enable_servers_map) {
+  <div class="nt-col nt-container nt-container--map">
+    <nt-test-servers-map></nt-test-servers-map>
+  </div>
+  }
+</div>
+}

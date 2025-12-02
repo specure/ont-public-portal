@@ -2,7 +2,8 @@ import { Pipe, PipeTransform } from '@angular/core'
 import { IArticle } from '../interfaces/article.interface'
 
 @Pipe({
-  name: 'articleAuthor',
+    name: 'articleAuthor',
+    standalone: false
 })
 export class ArticleAuthorPipe implements PipeTransform {
   transform(article: IArticle, t: (key: string) => string): string {

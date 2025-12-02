@@ -12,9 +12,10 @@ import { TranslocoService } from '@ngneat/transloco'
 import { combineLatest, Subscription } from 'rxjs'
 
 @Component({
-  selector: 'nt-paginator',
-  templateUrl: './paginator.component.html',
-  styleUrls: ['./paginator.component.scss'],
+    selector: 'nt-paginator',
+    templateUrl: './paginator.component.html',
+    styleUrls: ['./paginator.component.scss'],
+    standalone: false
 })
 export class PaginatorComponent implements AfterViewInit, OnDestroy {
   @Input() length: number

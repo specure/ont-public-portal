@@ -3,7 +3,8 @@ import { ConfigService } from 'src/app/core/services/config.service'
 import { IArticle } from '../interfaces/article.interface'
 
 @Pipe({
-  name: 'articlePicture',
+    name: 'articlePicture',
+    standalone: false
 })
 export class ArticlePicturePipe implements PipeTransform {
   constructor(private config: ConfigService) {}

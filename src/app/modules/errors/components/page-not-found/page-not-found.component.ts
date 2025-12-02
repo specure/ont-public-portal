@@ -7,9 +7,10 @@ import { MainHttpService } from 'src/app/modules/main/services/main-http.service
 import { environment } from 'src/environments/environment'
 
 @Component({
-  selector: 'nt-not-found',
-  templateUrl: './page-not-found.component.html',
-  styleUrls: ['./page-not-found.component.scss'],
+    selector: 'nt-not-found',
+    templateUrl: './page-not-found.component.html',
+    styleUrls: ['./page-not-found.component.scss'],
+    standalone: false
 })
 export class PageNotFoundComponent implements OnInit {
   image$: Observable<IMainAsset> = this.mainHttp.getAssetByName(

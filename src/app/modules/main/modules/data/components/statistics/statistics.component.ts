@@ -65,9 +65,10 @@ export const NATIONAL_TABLE_COLS: ITableColumn<IProviderStats>[] = [
 ]
 
 @Component({
-  selector: 'nt-statistics',
-  templateUrl: './statistics.component.html',
-  styleUrls: ['./statistics.component.scss'],
+    selector: 'nt-statistics',
+    templateUrl: './statistics.component.html',
+    styleUrls: ['./statistics.component.scss'],
+    standalone: false
 })
 export class StatisticsComponent implements OnDestroy {
   action = loadNationalTable

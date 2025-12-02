@@ -6,16 +6,13 @@ import {
   loadProjectEnd,
   loadPageEnd,
   setLanguage,
-  setMeasurementServer,
   storeAsset,
   postFeedbackEnd,
   loadPage,
-  setAvailableServers,
 } from './main.action'
 import { IMainProject } from 'src/app/modules/main/interfaces/main-project.interface'
 import { IMainPage } from 'src/app/modules/main/interfaces/main-page.interface'
 import { ILocale } from 'src/app/core/interfaces/locale.interface'
-import { TestServer } from '../../modules/main/modules/test/classes/test-server.class'
 import { IMainAsset } from 'src/app/modules/main/interfaces/main-asset.interface'
 import { IFeedback } from 'src/app/modules/main/interfaces/feedback.interface'
 import { DefaultFeedback } from 'src/app/modules/main/classes/feedback.class'
@@ -28,8 +25,6 @@ export class MainState {
   languages: ILocale[]
   page: IMainPage
   project: IMainProject
-  server: TestServer
-  availableServers: TestServer[] = []
   assets: { [key: string]: IMainAsset } = {}
   feedback: IFeedback = DefaultFeedback.instance
 }
@@ -41,14 +36,6 @@ export const mainReducer = createReducer(
   on(loadPage, (state) => ({ ...state, page: null })),
   on(loadPageEnd, (state, { page }) => ({ ...state, page })),
   on(setLanguage, (state, { lang }) => ({ ...state, lang })),
-  on(setMeasurementServer, (state, { server }) => ({
-    ...state,
-    server,
-  })),
-  on(setAvailableServers, (state, { availableServers }) => ({
-    ...state,
-    availableServers,
-  })),
   on(storeAsset, (state, { key, asset }) => ({
     ...state,
     assets: { ...state.assets, [key]: asset },

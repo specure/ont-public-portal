@@ -13,9 +13,10 @@ import { firstValueFrom } from 'rxjs'
 const TIMELINE_MONTHS = 23
 
 @Component({
-  selector: 'nt-map',
-  templateUrl: './map.component.html',
-  styleUrls: ['./map.component.scss'],
+    selector: 'nt-map',
+    templateUrl: './map.component.html',
+    styleUrls: ['./map.component.scss'],
+    standalone: false
 })
 export class MapComponent {
   page$ = this.store.select(getMainState).pipe(

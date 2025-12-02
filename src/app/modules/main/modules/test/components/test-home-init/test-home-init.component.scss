@@ -1,5 +1,15 @@
 @import '../test-home/test-home.component.scss';
 
+@keyframes loading-servers {
+  0% {
+    background-color: $color__primary;
+  }
+  50%,
+  100% {
+    background-color: fade-out($color__primary, 0.7);
+  }
+}
+
 $primary-button-gradient: linear-gradient(84.79deg, #0958bd 0%, #00acb1 100%),
   linear-gradient(
     84.79deg,
@@ -37,13 +47,19 @@ $tertiary-button-gradient: linear-gradient(84.79deg, #09bd5e 0%, #ffcc00 100%),
   }
 }
 
+:host {
+  width: 100%;
+}
+
 .#{$moq__ns}test-invite {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
   margin: 0 rem(64);
-  padding-bottom: rem(20);
+  min-height: rem(450);
+  padding-bottom: rem(24);
+  padding-top: rem(24);
 
   h1 {
     font-size: rem(36);
@@ -56,6 +72,7 @@ $tertiary-button-gradient: linear-gradient(84.79deg, #09bd5e 0%, #ffcc00 100%),
     flex-direction: column;
     justify-content: center;
     align-items: flex-start;
+    width: 100%;
     .#{$moq__ns}link {
       .mat-icon {
         margin-right: rem(9);
@@ -95,6 +112,15 @@ $tertiary-button-gradient: linear-gradient(84.79deg, #09bd5e 0%, #ffcc00 100%),
         }
       }
     }
+    @include screen-medium {
+      flex-wrap: wrap;
+    }
+  }
+
+  @include screen-small {
+    flex-direction: column;
+    margin: 0;
+    min-height: 0;
   }
 }
 
@@ -116,10 +142,13 @@ $tertiary-button-gradient: linear-gradient(84.79deg, #09bd5e 0%, #ffcc00 100%),
 
 .#{$moq__ns}test-invite--ont {
   margin: rem(120) 0;
+  padding: 0 rem(24);
 
   .#{$moq__ns}test-title {
     font-size: rem(48);
     font-weight: bold;
+    line-height: 1.1;
+    text-align: center;
   }
 
   .#{$moq__ns}test-invite {
@@ -161,6 +190,10 @@ $tertiary-button-gradient: linear-gradient(84.79deg, #09bd5e 0%, #ffcc00 100%),
         background: $tertiary-button-gradient;
       }
     }
+  }
+
+  @include screen-medium {
+    margin: rem(80) 0 0;
   }
 }
 
@@ -207,12 +240,31 @@ $dot_diameter: 6px;
   top: 0;
 }
 
-@keyframes loading-servers {
-  0% {
-    background-color: $color__primary;
+.#{$moq__ns}row {
+  display: flex;
+  margin-bottom: rem(24);
+  width: 100%;
+
+  .#{$moq__ns}col {
+    border-radius: 0.5rem;
+    flex: 0 0 50%;
   }
-  50%,
-  100% {
-    background-color: fade-out($color__primary, 0.7);
+
+  &--ont {
+    @include screen-medium {
+      flex-direction: column-reverse;
+    }
+  }
+}
+
+.#{$moq__ns}container--map {
+  margin-top: rem(24);
+}
+
+.#{$moq__ns}server-select {
+  font-size: rem($moq__base-font-size);
+
+  &:not(:disabled) {
+    color: $color__link;
   }
 }

@@ -1,0 +1,43 @@
+<div class="nt-container__row" id="beta" *transloco="let t">
+  @if (project().information || project().menu_items?.length) {
+  <nt-general-card>
+    <div class="nt-container" *transloco="let t">
+      <div class="nt-beta">
+        <section class="nt-beta__image">
+          <img
+            src="./assets/images/NKOM-pablita-measurement-cellular.svg"
+            alt="NKOM measurement"
+          />
+        </section>
+        <section class="nt-beta__panel">
+          <h2 class="nt-beta-title">{{ t('beta.title') }}</h2>
+          <p class="nt-beta-subtitle">
+            {{ t('beta.subtitle').split('#')[0] }}
+            @if (project().app_store_beta_link) {
+            <a
+              [href]="project().app_store_beta_link"
+              title="{{ t('beta.app_apple.title') }}"
+              >{{ t('beta.app_apple.title') }}</a
+            >
+            }
+            {{ t('beta.subtitle').split('#')[1] }}
+            @if (project().google_play_beta_link) {
+            <a
+              [href]="project().google_play_beta_link"
+              title="{{ t('beta.app_android.title') }}"
+              >{{ t('beta.app_android.title') }}</a
+            >
+            }
+          </p>
+          <p class="nt-beta-subtitle">
+            {{ t('beta.feedback_title') }}
+            <a href="{{ 'mailto:' + t('beta.feedback_mail') }}" class="nt-link">
+              <span>{{ t('beta.feedback_mail') }}</span>
+            </a>
+          </p>
+        </section>
+      </div>
+    </div>
+  </nt-general-card>
+  }
+</div>

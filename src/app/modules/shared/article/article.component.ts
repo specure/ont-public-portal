@@ -21,22 +21,23 @@ import { openClose } from 'src/app/core/animations/open-close.animation'
 import { TranslocoService } from '@ngneat/transloco'
 
 @Component({
-  selector: 'nt-article',
-  templateUrl: './article.component.html',
-  styleUrls: ['./article.component.scss'],
-  animations: [
-    openClose,
-    trigger('submenuAnimation', [
-      transition(':enter', [
-        style({ transform: 'translateY(-100%)', opacity: 0 }),
-        animate('200ms', style({ transform: 'translateY(0)', opacity: 1 })),
-      ]),
-      transition(':leave', [
-        style({ transform: 'translateY(0)', opacity: 1 }),
-        animate('200ms', style({ transform: 'translateY(-100%)', opacity: 0 })),
-      ]),
-    ]),
-  ],
+    selector: 'nt-article',
+    templateUrl: './article.component.html',
+    styleUrls: ['./article.component.scss'],
+    animations: [
+        openClose,
+        trigger('submenuAnimation', [
+            transition(':enter', [
+                style({ transform: 'translateY(-100%)', opacity: 0 }),
+                animate('200ms', style({ transform: 'translateY(0)', opacity: 1 })),
+            ]),
+            transition(':leave', [
+                style({ transform: 'translateY(0)', opacity: 1 }),
+                animate('200ms', style({ transform: 'translateY(-100%)', opacity: 0 })),
+            ]),
+        ]),
+    ],
+    standalone: false
 })
 export class ArticleComponent {
   expandedTocs: number[] = []

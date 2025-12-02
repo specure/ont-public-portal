@@ -1,0 +1,42 @@
+@import 'core';
+
+#test-charts {
+  flex-direction: row;
+  margin-left: rem(-4);
+  margin-right: rem(-4);
+  width: 100%;
+
+  nt-general-card {
+    margin: 0 rem(4);
+
+    .#{$moq__ns}canvas__wrapper {
+      margin: rem(12) rem(-12) rem(10);
+    }
+  }
+
+  @media screen and (max-width: $moq__container-width--large) {
+    flex-direction: column;
+    margin: 0;
+
+    nt-general-card {
+      margin: 0;
+    }
+
+    .#{$moq__ns}test-chart {
+      width: 100%;
+    }
+  }
+
+  @include screen-medium {
+    flex-direction: column;
+    margin: 0;
+
+    nt-general-card {
+      margin: 0;
+    }
+
+    .#{$moq__ns}test-chart {
+      width: 100%;
+    }
+  }
+}

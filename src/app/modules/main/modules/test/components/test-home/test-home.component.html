@@ -1,345 +1,65 @@
 <ng-container *transloco="let t">
-  <ng-container *ngIf="testSate$ | async as testState">
-    <div class="nt-container__row" id="run-test">
-      <nt-general-card>
-        <div class="nt-container">
-          <ng-container *ngIf="isNullOrUndefined(testState.visualization)">
-            <nt-test-home-init
-              (launchTest)="launchTest()"
-              [selectedServer]="selectedServer"
-              [servers]="servers$ | async"
-              [project]="project$ | async"
-            ></nt-test-home-init>
-          </ng-container>
-          <ng-container *ngIf="!isNullOrUndefined(testState.visualization)">
-            <ng-container
-              *ngTemplateOutlet="
-                progressState;
-                context: { $implicit: testState }
-              "
-            ></ng-container>
-          </ng-container>
-        </div>
-      </nt-general-card>
-    </div>
+  @if (testSate$ | async; as testState) {
+  <div class="nt-container__row" id="run-test">
+    <nt-general-card>
+      @if (isNullOrUndefined(testState.visualization)) {
+      <nt-test-home-init></nt-test-home-init>
+      } @else {
+      <nt-test-home-progress
+        [language]="language"
+        [project]="project$ | async"
+      ></nt-test-home-progress>
+      }
+    </nt-general-card>
+  </div>
 
-    <!-- TEST CHARTS -->
-    <div
-      class="nt-container__row"
-      id="test-charts"
-      *ngIf="getPreparedEstimation(testState) || testState.visualization"
-    >
-      <nt-general-card title="{{ t('test.download.label') }}">
-        <nt-test-chart
-          class="nt-canvas__wrapper"
-          direction="download"
-          [style.height.px]="192"
-          [style.width.px]="chartWidth"
-        ></nt-test-chart>
-      </nt-general-card>
-      <nt-general-card title="{{ t('test.upload.label') }}">
-        <nt-test-chart
-          class="nt-canvas__wrapper"
-          direction="upload"
-          [style.height.px]="192"
-          [style.width.px]="chartWidth"
-        ></nt-test-chart>
-      </nt-general-card>
-    </div>
-    <!-- TEST CHARTS END -->
+  <!-- TEST CHARTS -->
+  @if (progressComponent?.getPreparedEstimation(testState) ||
+  testState.visualization) {
+  <nt-test-charts class="nt-container__row"></nt-test-charts>
+  }
 
-    <ng-container *ngIf="project$ | async as project">
-      <ng-container
-        *ngTemplateOutlet="
-          betaBlock;
-          context: { testState: testState, project: project }
-        "
-      ></ng-container>
-      <ng-container
-        *ngTemplateOutlet="
-          contactsBlock;
-          context: { testState: testState, project: project }
-        "
-      ></ng-container>
-      <ng-container
-        *ngTemplateOutlet="storeLinksBlock; context: { project: project }"
-      ></ng-container>
-      <article
-        *ngIf="
-          isNullOrUndefined(testState.visualization) && page$ | async as page
-        "
-        class="nt-article nt-container__col nt-container__col66 nt-article--fullwidth"
-      >
-        <pre [innerHTML]="page | mainSafeHtml : testStarter"></pre>
-      </article>
-    </ng-container>
-  </ng-container>
+  <!-- AUXILIARY CONTENT BLOCKS -->
+  @if (project$ | async; as project) {
+
+  <!-- LOCAL SERVERS BLOCK -->
+  @if (isNullOrUndefined(testState.visualization) && isLocalServersVisible) {
+  <nt-test-local-servers
+    class="nt-article nt-container__row"
+  ></nt-test-local-servers>
+  }
+
+  <!-- BETA INFO BLOCK -->
+  @if (isNullOrUndefined(testState.visualization) && isBetaBlockVisible) {
+  <nt-test-home-beta-info
+    [project]="project"
+    class="nt-container__row"
+  ></nt-test-home-beta-info>
+  }
+
+  <!-- CONTACTS BLOCK -->
+  @if (isNullOrUndefined(testState.visualization) && isContactsBlockVisible) {
+  <nt-test-home-contacts
+    [project]="project"
+    class="nt-container__row"
+  ></nt-test-home-contacts>
+  }
+
+  <!-- STORE LINKS BLOCK -->
+  @if (isStoreLinksVisible) {
+  <nt-test-home-store-links
+    [project]="project"
+    [language]="language"
+    class="nt-container__row"
+  ></nt-test-home-store-links>
+  }
+
+  <!-- PAGE CONTENT BLOCK -->
+  @if ( isNullOrUndefined(testState.visualization) && page$ | async; as page ) {
+  <article
+    class="nt-article nt-container__col nt-container__col66 nt-article--fullwidth"
+  >
+    <pre [innerHTML]="page | mainSafeHtml : testStarter"></pre>
+  </article>
+  } } }
 </ng-container>
-
-<!-- PROGRESS STATE -->
-
-<ng-template #progressState let-testState>
-  <ng-container *transloco="let t">
-    <!-- PROGRESS BAR AND TIME -->
-    <ng-container *ngIf="testState.visualization && testState.showProgress">
-      <nt-test-header class="nt-test-progress"></nt-test-header>
-      <h2 class="nt-test-header nt-test-header--print">
-        {{ getTitle(testState, t) }}
-      </h2>
-    </ng-container>
-    <h2
-      *ngIf="testState.visualization && !testState.showProgress"
-      class="nt-test-header"
-    >
-      {{ getTitle(testState, t) }}
-    </h2>
-    <!-- END PROGRESS BAR AND TIME -->
-
-    <!-- BOXES -->
-    <ng-container *ngIf="getVisualizationPing(testState)">
-      <div
-        *ngIf="testState.visualization as visualization"
-        class="nt-container__row nt-indicators"
-      >
-        <section class="nt-container__col">
-          <div class="nt-container__row">
-            <nt-test-indicator
-              id="ping_indicator"
-              class="nt-test-indicator"
-              [data]="visualization.ping"
-            ></nt-test-indicator>
-            <nt-test-indicator
-              id="download_indicator"
-              class="nt-test-indicator"
-              [data]="visualization.download"
-            ></nt-test-indicator>
-            <nt-test-indicator
-              id="upload_indicator"
-              class="nt-test-indicator"
-              [data]="visualization.upload"
-            ></nt-test-indicator>
-          </div>
-        </section>
-        <section
-          *ngIf="testState.info as testInfo"
-          class="nt-container__col nt-test-info"
-        >
-          <div class="nt-container__col">
-            <section *ngIf="testInfo.serverName" class="server-selector">
-              <h4 class="nt-aside__header">
-                {{ t('test.server_name') }}
-              </h4>
-              <p
-                *ngIf="
-                  !(project$ | async)?.can_choose_server || !selectedServer
-                "
-              >
-                {{ testInfo.serverName || '-' }}
-              </p>
-              <mat-form-field
-                *ngIf="
-                  (project$ | async)?.can_choose_server &&
-                  (servers$ | async) as servers
-                "
-              >
-                <mat-select
-                  class="nt-test-invite__server-select"
-                  (selectionChange)="changeServer($event)"
-                  [value]="selectedServer"
-                  [compareWith]="objectComparisonFunction"
-                  [class.disabledSelector]="testState.stage !== 'RESULT'"
-                  [disabled]="testState.stage !== 'RESULT'"
-                  [panelWidth]="null"
-                >
-                  <mat-select-trigger>
-                    <p>{{ selectedServer?.title }}</p>
-                  </mat-select-trigger>
-                  <mat-option *ngFor="let server of servers" [value]="server">
-                    {{ server.distance | distance }}{{ server.title }}
-                  </mat-option>
-                </mat-select>
-              </mat-form-field>
-            </section>
-            <section>
-              <h4 class="nt-aside__header">{{ t('test.ip_address') }}</h4>
-              <p>{{ testInfo.remoteIp || '-' }}</p>
-            </section>
-            <section>
-              <h4 class="nt-aside__header">{{ t('test.provider') }}</h4>
-              <p>{{ testInfo.providerName || '-' }}</p>
-            </section>
-          </div>
-          <div *ngIf="testState.finished" class="nt-container__col">
-            <button
-              mat-flat-button
-              (click)="launchTest()"
-              color="primary"
-              class="nt-run-again"
-            >
-              {{ t('test.run_test_again') }}
-            </button>
-            <button
-              mat-flat-button
-              (click)="print()"
-              color="primary"
-              class="nt-run-again"
-              style="margin-top: 10px"
-            >
-              {{ t('test.export_as_pdf') }}
-            </button>
-            <ul class="nt-share">
-              <li *ngFor="let btn of shareButtons" class="nt-share__item">
-                <a
-                  [href]="btn.url"
-                  class="nt-share__link"
-                  target="_blank"
-                  [matTooltip]="t('test.share.' + btn.className)"
-                >
-                  <i
-                    class="nt-share__icon nt-share__icon--{{ btn.className }}"
-                  ></i>
-                </a>
-              </li>
-            </ul>
-          </div>
-        </section>
-      </div>
-    </ng-container>
-    <!-- END BOXES -->
-
-    <nt-export-warning
-      *ngIf="testState.stage === testStages.RESULT"
-      [project]="project$ | async"
-    ></nt-export-warning>
-
-    <p
-      class="gap-text"
-      *ngIf="isNullOrUndefined(testState.info) && testState.preparing"
-    >
-      {{ t('test.secure_connection') }}
-    </p>
-    <p class="gap-text" *ngIf="getPreparedEstimation(testState)">
-      {{ t('test.estimating_connections') }}
-    </p>
-  </ng-container>
-</ng-template>
-
-<!-- BETA BLOCK -->
-
-<ng-template #betaBlock let-testState="testState" let-project="project">
-  <div
-    *ngIf="isNullOrUndefined(testState.visualization) && isBetaBlockVisible"
-    class="nt-container__row"
-    id="beta"
-  >
-    <nt-general-card *ngIf="project.information || project.menu_items?.length">
-      <div class="nt-container" *transloco="let t">
-        <div class="nt-beta">
-          <section class="nt-beta__image">
-            <img
-              src="./assets/images/NKOM-pablita-measurement-cellular.svg"
-              alt="NKOM measurement"
-            />
-          </section>
-          <section class="nt-beta__panel">
-            <h2 class="nt-beta-title">{{ t('beta.title') }}</h2>
-            <p class="nt-beta-subtitle">
-              {{ t('beta.subtitle').split('#')[0] }}
-              <a
-                *ngIf="project.app_store_beta_link"
-                [href]="project.app_store_beta_link"
-                title="{{ t('beta.app_apple.title') }}"
-                >{{ t('beta.app_apple.title') }}</a
-              >
-              {{ t('beta.subtitle').split('#')[1] }}
-              <a
-                *ngIf="project.google_play_beta_link"
-                [href]="project.google_play_beta_link"
-                title="{{ t('beta.app_android.title') }}"
-                >{{ t('beta.app_android.title') }}</a
-              >
-            </p>
-            <p class="nt-beta-subtitle">
-              {{ t('beta.feedback_title') }}
-              <a
-                href="{{ 'mailto:' + t('beta.feedback_mail') }}"
-                class="nt-link"
-              >
-                <span>{{ t('beta.feedback_mail') }}</span>
-              </a>
-            </p>
-          </section>
-        </div>
-      </div>
-    </nt-general-card>
-  </div>
-</ng-template>
-
-<!-- CONTACTS BLOCK -->
-
-<ng-template #contactsBlock let-testState="testState" let-project="project">
-  <div
-    *ngIf="isNullOrUndefined(testState.visualization) && isContactsBlockVisible"
-    class="nt-container__row"
-    id="information"
-  >
-    <nt-general-card *ngIf="project.information || project.menu_items?.length">
-      <div class="nt-container">
-        <section class="nt-container__col">
-          <pre *ngIf="project.information">{{
-            project | translate : 'information'
-          }}</pre>
-        </section>
-        <section class="nt-container__col">
-          <ul
-            *ngIf="project.menu_items && project.menu_items.length"
-            class="nt-list"
-          >
-            <li *ngFor="let item of project.menu_items">
-              <a
-                class="nt-link"
-                [href]="item.url"
-                title="{{ item | translate : 'description' }}"
-              >
-                {{ item | translate : 'label' }}
-              </a>
-            </li>
-          </ul>
-        </section>
-      </div>
-    </nt-general-card>
-  </div>
-</ng-template>
-
-<!-- STORE LINKS BLOCK -->
-
-<ng-template #storeLinksBlock let-project="project">
-  <div *ngIf="isStoreLinksVisible" class="nt-container__row" id="store-links">
-    <ng-container *transloco="let t">
-      <a
-        *ngIf="project.app_store_link"
-        [href]="project.app_store_link"
-        title="{{ t('test.app_store_link.title') }}"
-      >
-        <img
-          src="{{ appStoreImg }}"
-          alt="{{ t('test.app_store_link.alt') }}"
-          width="200"
-          height="59"
-        />
-      </a>
-      <a
-        *ngIf="project.google_play_link"
-        [href]="project.google_play_link"
-        title="{{ t('test.google_play_link.title') }}"
-      >
-        <img
-          src="{{ googlePlayImg }}"
-          alt="{{ t('test.google_play_link.alt') }}"
-          width="200"
-          height="59"
-        />
-      </a>
-    </ng-container>
-  </div>
-</ng-template>

@@ -1,18 +1,21 @@
 <div class="nt-dialog" [class.nt-dialog--complex] = "data?.msg?.complexMessage">
-  <ng-container *ngIf="data?.msg?.complexMessage; else simpleDialog">
-    <ng-container *ngFor="let article of data.msg.articles">
-      <h3 *ngIf="article.title" class="nt-dialog__title">{{ article.title }}</h3>
+  @if (data?.msg?.complexMessage) {
+    @for (article of data.msg.articles; track article) {
+      @if (article.title) {
+        <h3 class="nt-dialog__title">{{ article.title }}</h3>
+      }
       <pre class="nt-dialog__text">{{ article.message }}</pre>
-    </ng-container>
+    }
     <div class="nt-dialog__actions" mat-dialog-actions>
       <button mat-raised-button color="primary" (click)="close()">{{ data.msg.closeButton }}</button>
     </div>
-  </ng-container>
-  <ng-template #simpleDialog>
-    <h3 *ngIf="data.title" class="nt-dialog__title">{{ data.title | transloco}}</h3>
+  } @else {
+    @if (data.title) {
+      <h3 class="nt-dialog__title">{{ data.title | transloco}}</h3>
+    }
     <pre class="nt-dialog__text">{{ data.msg | transloco }}</pre>
     <div class="nt-dialog__actions" mat-dialog-actions>
       <button mat-raised-button color="primary" (click)="close()">{{ 'system.controls.acknowledge' | transloco }}</button>
     </div>
-  </ng-template>
+  }
 </div>

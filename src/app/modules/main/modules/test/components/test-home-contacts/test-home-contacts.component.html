@@ -1,0 +1,30 @@
+<div class="nt-container__row" id="information">
+  @if (project().information || project().menu_items?.length) {
+  <nt-general-card>
+    <div class="nt-container">
+      <section class="nt-container__col">
+        @if (project().information) {
+        <pre>{{ project() | translate : 'information' }}</pre>
+        }
+      </section>
+      <section class="nt-container__col">
+        @if (project().menu_items && project().menu_items.length) {
+        <ul class="nt-list">
+          @for (item of project().menu_items; track item) {
+          <li>
+            <a
+              class="nt-link"
+              [href]="item.url"
+              title="{{ item | translate : 'description' }}"
+            >
+              {{ item | translate : 'label' }}
+            </a>
+          </li>
+          }
+        </ul>
+        }
+      </section>
+    </div>
+  </nt-general-card>
+  }
+</div>

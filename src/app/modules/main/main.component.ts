@@ -17,9 +17,10 @@ import { getCommonState } from 'src/app/store/common/common.reducer'
 import { environment } from 'src/environments/environment'
 
 @Component({
-  selector: 'nt-main',
-  templateUrl: './main.component.html',
-  styleUrls: ['./main.component.scss'],
+    selector: 'nt-main',
+    templateUrl: './main.component.html',
+    styleUrls: ['./main.component.scss'],
+    standalone: false
 })
 export class MainComponent implements AfterViewChecked {
   @ViewChild(MatSidenav, { static: false }) sidenav?: MatSidenav

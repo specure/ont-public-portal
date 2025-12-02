@@ -9,7 +9,7 @@ import { AppComponent } from './app.component'
 import { EffectsModule } from '@ngrx/effects'
 import { APP_EFFECTS, appReducers, metaReducers } from './store'
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
-import { HttpClientModule } from '@angular/common/http'
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http'
 import { StoreModule } from '@ngrx/store'
 import { StoreDevtoolsModule } from '@ngrx/store-devtools'
 import { environment } from 'src/environments/environment'
@@ -23,7 +23,7 @@ import localeSr from '@angular/common/locales/sr'
 import localeSrLatn from '@angular/common/locales/sr-Latn'
 import localeDe from '@angular/common/locales/de'
 import { registerLocaleData } from '@angular/common'
-import * as Sentry from '@sentry/angular-ivy'
+import * as Sentry from '@sentry/angular'
 import {
   MatomoConsentMode,
   MatomoInitializationMode,
@@ -58,6 +58,7 @@ import {
   // Title,
 } from 'chart.js'
 import { LabelAfterBar } from './core/helpers/chartjs-plugin-label-after-bar'
+import { TestService } from './modules/main/modules/test/services/test.service'
 Chart.register(
   BarElement,
   BarController,
@@ -92,11 +93,11 @@ Sentry.init({
 
 @NgModule({
   declarations: [AppComponent],
+  bootstrap: [AppComponent],
   imports: [
     AppRoutingModule,
     BrowserAnimationsModule,
     BrowserModule,
-    HttpClientModule,
     RecaptchaV3Module,
     SharedModule,
     TranslocoRootModule,
@@ -155,8 +156,8 @@ Sentry.init({
       })
     ),
     provideClientHydration(),
+    provideHttpClient(withInterceptorsFromDi()),
   ],
-  bootstrap: [AppComponent],
 })
 export class AppModule {
   constructor() {

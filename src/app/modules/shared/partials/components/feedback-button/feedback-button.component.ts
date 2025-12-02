@@ -5,9 +5,10 @@ import { IAppState } from 'src/app/store'
 import { getMainState } from 'src/app/store/main/main.reducer'
 
 @Component({
-  selector: 'nt-feedback-button',
-  templateUrl: './feedback-button.component.html',
-  styleUrls: ['./feedback-button.component.scss']
+    selector: 'nt-feedback-button',
+    templateUrl: './feedback-button.component.html',
+    styleUrls: ['./feedback-button.component.scss'],
+    standalone: false
 })
 export class FeedbackButtonComponent {
   feedbackLink$ = this.store.pipe(

@@ -1,8 +1,10 @@
-<div *ngIf="page$ | async as page" class="nt-container">
+@if (page$ | async; as page) {
+<div class="nt-container">
   <article class="nt-article nt-container__col nt-container__col--text">
     <pre [innerHTML]="page | mainSafeHtml"></pre>
   </article>
-  <div *ngIf="form" class="nt-container__col nt-container__col--form">
+  @if (form) {
+  <div class="nt-container__col nt-container__col--form">
     <form [formGroup]="form" (ngSubmit)="submit()" *transloco="let t">
       <mat-form-field floatLabel="always" class="nt-form-field">
         <mat-label>{{ t('contact.form.full_name') }}</mat-label>
@@ -16,7 +18,6 @@
         />
         <mat-error>{{ t('contact.form.full_name_invalid') }}</mat-error>
       </mat-form-field>
-
       <mat-form-field floatLabel="always" class="nt-form-field">
         <mat-label>{{ t('contact.form.email') }}</mat-label>
         <input
@@ -29,12 +30,8 @@
         />
         <mat-error>{{ t('contact.form.email_invalid') }}</mat-error>
       </mat-form-field>
-
-      <mat-form-field
-        *ngIf="countries$ | async"
-        floatLabel="always"
-        class="nt-form-field"
-      >
+      @if (countries$ | async) {
+      <div class="nt-form-field">
         <mat-label>{{ t('contact.form.country') }}</mat-label>
         <mat-select
           [placeholder]="t('contact.form.country')"
@@ -48,16 +45,15 @@
               [placeholderLabel]="t('contact.form.country_search')"
             ></ngx-mat-select-search>
           </mat-option>
-          <mat-option
-            *ngFor="let country of filteredCountries$ | async"
-            [value]="country?.name.common"
-          >
+          @for (country of filteredCountries$ | async; track country) {
+          <mat-option [value]="country?.name.common">
             {{ country.flag }} {{ country.name?.common }}
           </mat-option>
+          }
         </mat-select>
         <mat-error>{{ t('contact.form.country_invalid') }}</mat-error>
-      </mat-form-field>
-
+      </div>
+      }
       <mat-form-field floatLabel="always" class="nt-form-field">
         <mat-label>{{ t('contact.form.message') }}</mat-label>
         <textarea
@@ -71,13 +67,11 @@
         ></textarea>
         <mat-error>{{ t('contact.form.message_invalid') }}</mat-error>
       </mat-form-field>
-
       <div class="nt-form-field" style="margin-bottom: 16px">
         <mat-checkbox formControlName="sendCopyToUser" name="sendCopyToUser">{{
           t('contact.form.send_me_copy')
         }}</mat-checkbox>
       </div>
-
       <div class="nt-form-field nt-form-field--checkbox">
         <mat-checkbox
           formControlName="privacyPolicyAccepted"
@@ -89,12 +83,10 @@
           ></span
         ></mat-checkbox>
       </div>
-
       <div
         class="nt-small-print"
         [innerHTML]="t('contact.form.recaptcha_privacy_policy')"
       ></div>
-
       <button
         mat-flat-button
         color="primary"
@@ -106,4 +98,6 @@
       </button>
     </form>
   </div>
+  }
 </div>
+}

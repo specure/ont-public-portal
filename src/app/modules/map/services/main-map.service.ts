@@ -6,6 +6,10 @@ import { LngLat, Map, Marker } from 'maplibre-gl'
 import { environment } from 'src/environments/environment'
 import { ELayerPrefix } from '../enums/layer-prefix.enum'
 import { IGeocodingFeature } from '../interfaces/geocoding-feature.interface'
+import { timer } from 'rxjs'
+import * as maplibregl from 'maplibre-gl'
+
+const CONTAINER_ID = 'map'
 
 @Injectable({
   providedIn: 'root',
@@ -28,6 +32,28 @@ export class MainMapService {
   }
 
   constructor() {}
+
+  addMarker(
+    mapContainer: Map,
+    coordinates: { lat: number; lng: number },
+    options?: {
+      color?: string
+      popup?: maplibregl.Popup
+      onClick?: (a: any) => void
+    }
+  ) {
+    const marker = new Marker({
+      color: options?.color,
+    }).setLngLat({ lng: coordinates.lng, lat: coordinates.lat })
+    if (options?.popup) {
+      marker.setPopup(options.popup)
+    }
+    if (options?.onClick) {
+      marker.getElement().addEventListener('click', options.onClick)
+    }
+    marker.addTo(mapContainer)
+    return marker
+  }
 
   findRenderedFeature(
     mapContainer: Map,
@@ -56,6 +82,18 @@ export class MainMapService {
     })
       .setLngLat({ lng, lat })
       .addTo(mapContainer)
+  }
+
+  getDefaultMap() {
+    const { center, zoom } = environment.map
+    return new maplibregl.Map({
+      container: CONTAINER_ID,
+      maxZoom: 15,
+      minZoom: 1,
+      style: this.style.url,
+      zoom,
+      center: center as [number, number],
+    })
   }
 
   getLayer(mapContainer: Map, state: MapState) {
@@ -92,5 +130,38 @@ export class MainMapService {
       operator = state?.operator
     }
     return operator?.replace(/\s/g, '-')?.toUpperCase() || ''
+  }
+
+  popupFromHtml(element: HTMLElement): maplibregl.Popup {
+    if (!element) {
+      return null
+    }
+    return new maplibregl.Popup({ offset: 8 }).setHTML(element.innerHTML)
+  }
+
+  setDefaultControls(map: Map) {
+    map
+      .addControl(
+        new maplibregl.NavigationControl({ showCompass: false }),
+        'bottom-right'
+      )
+      .addControl(new maplibregl.GeolocateControl({}), 'bottom-right')
+    navigator.geolocation.getCurrentPosition(
+      () => {},
+      () => {
+        timer(0).subscribe(() => {
+          const label = 'Location not available'
+          document
+            .querySelector('.maplibregl-ctrl-geolocate')
+            ?.setAttribute('disabled', 'true')
+          document
+            .querySelector('.maplibregl-ctrl-geolocate')
+            ?.setAttribute('label', label)
+          document
+            .querySelector('.maplibregl-ctrl-geolocate')
+            ?.setAttribute('title', label)
+        })
+      }
+    )
   }
 }

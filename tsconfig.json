@@ -10,11 +10,12 @@
     "declaration": false,
     "downlevelIteration": true,
     "experimentalDecorators": true,
-    "moduleResolution": "node",
+    "moduleResolution": "bundler",
     "importHelpers": true,
     "target": "ES2022",
     "module": "es2020",
     "lib": ["es2020", "dom"],
+    "resolvePackageJsonImports": true,
     "useDefineForClassFields": false
   },
   "angularCompilerOptions": {

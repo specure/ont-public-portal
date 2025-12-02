@@ -1,0 +1,29 @@
+<div class="nt-container__row" id="store-links">
+  <ng-container *transloco="let t">
+    @if (project().app_store_link) {
+    <a
+      [href]="project().app_store_link"
+      title="{{ t('test.app_store_link.title') }}"
+    >
+      <img
+        src="{{ appStoreImg }}"
+        alt="{{ t('test.app_store_link.alt') }}"
+        width="200"
+        height="59"
+      />
+    </a>
+    } @if (project().google_play_link) {
+    <a
+      [href]="project().google_play_link"
+      title="{{ t('test.google_play_link.title') }}"
+    >
+      <img
+        src="{{ googlePlayImg }}"
+        alt="{{ t('test.google_play_link.alt') }}"
+        width="200"
+        height="59"
+      />
+    </a>
+    }
+  </ng-container>
+</div>

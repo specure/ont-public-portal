@@ -1,0 +1,10 @@
+@import 'core';
+
+.nt-map {
+  height: 100%;
+  width: 100%;
+
+  @include screen-medium {
+    height: rem(300);
+  }
+}

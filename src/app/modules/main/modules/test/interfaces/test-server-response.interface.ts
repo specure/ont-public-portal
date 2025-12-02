@@ -6,10 +6,14 @@ export interface ITestServerResponse {
   email: string
   expiration: string
   id: number
+  location?: {
+    latitude: number
+    longitude: number
+  }
   name: string
   port: number
   portSsl: number
-  provider: { id: number, name: string, createdDate: string }
+  provider: { id: number; name: string; createdDate: string }
   webAddress: string
   distance: number
   serverTypeDetails: ITestServerTypeDetails[]

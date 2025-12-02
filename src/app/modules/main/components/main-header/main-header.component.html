@@ -1,7 +1,7 @@
-<ng-container [ngSwitch]="flavor$ | async">
-  <!-- RATEL flavor -->
 
-  <ng-container *ngSwitchCase="menuFlavors.RATEL">
+@switch (flavor$ | async) {
+  <!-- RATEL flavor -->
+  @case (menuFlavors.RATEL) {
     <header class="nt-header nt-header--ratel">
       <div class="nt-wrapper">
         <a [routerLink]="logoLink" class="nt-logo">
@@ -10,34 +10,37 @@
             [alt]="logoAlt"
             width="64"
             height="64"
-          />
+            />
         </a>
         <a [routerLink]="logoLink" class="nt-logo nt-logo--alt">
           <img [src]="logoSidePath$ | async" [alt]="logoAlt" />
         </a>
         <button class="nt-hamburger" (click)="sidenav.toggle()" mat-icon-button>
-          <mat-icon *ngIf="!sidenav?.opened">menu</mat-icon>
-          <mat-icon *ngIf="sidenav?.opened">close</mat-icon>
+          @if (!sidenav?.opened) {
+            <mat-icon>menu</mat-icon>
+          }
+          @if (sidenav?.opened) {
+            <mat-icon>close</mat-icon>
+          }
         </button>
       </div>
       <div class="nt-wrapper nt-wrapper--sub">
         <div class="nt-wrapper">
-          <nt-main-nav
-            *ngIf="menu$ | async as menu"
-            className="nt-header__nav"
-            [menu]="menu"
-          ></nt-main-nav>
+          @if (menu$ | async; as menu) {
+            <nt-main-nav
+              className="nt-header__nav"
+              [menu]="menu"
+            ></nt-main-nav>
+          }
           <nt-language-selector
             className="nt-header__select"
           ></nt-language-selector>
         </div>
       </div>
     </header>
-  </ng-container>
-
+  }
   <!-- Defaul flavor -->
-
-  <ng-container *ngSwitchDefault>
+  @default {
     <header class="nt-header">
       <div class="nt-wrapper">
         <a [routerLink]="logoLink" class="nt-logo">
@@ -46,21 +49,26 @@
             [alt]="logoAlt"
             width="64"
             height="64"
-          />
+            />
         </a>
-        <nt-main-nav
-          *ngIf="menu$ | async as menu"
-          className="nt-header__nav"
-          [menu]="menu"
-        ></nt-main-nav>
+        @if (menu$ | async; as menu) {
+          <nt-main-nav
+            className="nt-header__nav"
+            [menu]="menu"
+          ></nt-main-nav>
+        }
         <nt-language-selector
           className="nt-header__select"
         ></nt-language-selector>
         <button class="nt-hamburger" (click)="sidenav.toggle()" mat-icon-button>
-          <mat-icon *ngIf="!sidenav?.opened">menu</mat-icon>
-          <mat-icon *ngIf="sidenav?.opened">close</mat-icon>
+          @if (!sidenav?.opened) {
+            <mat-icon>menu</mat-icon>
+          }
+          @if (sidenav?.opened) {
+            <mat-icon>close</mat-icon>
+          }
         </button>
       </div>
     </header>
-  </ng-container>
-</ng-container>
+  }
+}

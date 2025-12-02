@@ -23,9 +23,10 @@ import { getMainState } from 'src/app/store/main/main.reducer'
 import { environment } from 'src/environments/environment'
 
 @Component({
-  selector: 'nt-sidenav',
-  templateUrl: './sidenav.component.html',
-  styleUrls: ['./sidenav.component.scss'],
+    selector: 'nt-sidenav',
+    templateUrl: './sidenav.component.html',
+    styleUrls: ['./sidenav.component.scss'],
+    standalone: false
 })
 export class SidenavComponent implements AfterViewInit, OnDestroy {
   @Input() sidenav: MatSidenav

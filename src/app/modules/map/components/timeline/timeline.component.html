@@ -1,24 +1,27 @@
-<section class="nt-timeline" *ngIf="date$ | async as date">
-  <h4 class="nt-timeline__header" *transloco="let t">
-    <span>{{ t('map.timeline.monthly_data') }}: </span>
-    <span>{{ date.fullMonthAndYear }}</span>
-  </h4>
-  <div class="nt-timeline__body">
-    <span class="nt-timeline__line"></span>
-    <section class="nt-timeline__items"
-      (mouseenter)="setFocusOnTimeline(true, $event)"
-      (mouseleave)="setFocusOnTimeline(false, $event)">
-      <li class="nt-timeline__step"
-          *ngFor="let step of steps; trackBy: trackByFn"
-          [ngClass]="{ 'nt-timeline__step--selected' : isStepSelected(step, date) }"
-          (mouseover)="hover($event, step)"
-          (mouseup)="selectItem(step)">
-        <span class="nt-timeline__tooltip"
-              [hidden]="isTooltipHidden(step)">{{step.fullMonthAndYear}}</span>
-        <span class="nt-timeline__popup" [hidden]="isPopupHidden(step)">{{step.fullMonthAndYear}}</span>
-        <span class="nt-timeline__extra">{{step.year}}</span>
-        <span class="nt-timeline__label" [class.nt-timeline__label--disabled]="step.disabled">{{step.shortMonth}}</span>
-      </li>
-    </section>
-  </div>
-</section>
+@if (date$ | async; as date) {
+  <section class="nt-timeline">
+    <h4 class="nt-timeline__header" *transloco="let t">
+      <span>{{ t('map.timeline.monthly_data') }}: </span>
+      <span>{{ date.fullMonthAndYear }}</span>
+    </h4>
+    <div class="nt-timeline__body">
+      <span class="nt-timeline__line"></span>
+      <section class="nt-timeline__items"
+        (mouseenter)="setFocusOnTimeline(true, $event)"
+        (mouseleave)="setFocusOnTimeline(false, $event)">
+        @for (step of steps; track trackByFn($index, step)) {
+          <li class="nt-timeline__step"
+            [ngClass]="{ 'nt-timeline__step--selected' : isStepSelected(step, date) }"
+            (mouseover)="hover($event, step)"
+            (mouseup)="selectItem(step)">
+            <span class="nt-timeline__tooltip"
+            [hidden]="isTooltipHidden(step)">{{step.fullMonthAndYear}}</span>
+            <span class="nt-timeline__popup" [hidden]="isPopupHidden(step)">{{step.fullMonthAndYear}}</span>
+            <span class="nt-timeline__extra">{{step.year}}</span>
+            <span class="nt-timeline__label" [class.nt-timeline__label--disabled]="step.disabled">{{step.shortMonth}}</span>
+          </li>
+        }
+      </section>
+    </div>
+  </section>
+}

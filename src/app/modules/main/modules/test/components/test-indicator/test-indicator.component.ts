@@ -5,9 +5,10 @@ import { TranslocoService } from '@ngneat/transloco'
 import { convertMs } from 'src/app/core/helpers/convert-ms'
 
 @Component({
-  selector: 'nt-test-indicator',
-  templateUrl: './test-indicator.component.html',
-  styleUrls: ['./test-indicator.component.scss'],
+    selector: 'nt-test-indicator',
+    templateUrl: './test-indicator.component.html',
+    styleUrls: ['./test-indicator.component.scss'],
+    standalone: false
 })
 export class TestIndicatorComponent {
   @Input() data: ITestItemState

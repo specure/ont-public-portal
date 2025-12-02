@@ -1,0 +1,18 @@
+<div class="nt-container__row" id="test-charts" *transloco="let t">
+  <nt-general-card title="{{ t('test.download.label') }}">
+    <nt-test-chart
+      class="nt-canvas__wrapper"
+      direction="download"
+      [style.height.px]="192"
+      [style.width.px]="chartWidth"
+    ></nt-test-chart>
+  </nt-general-card>
+  <nt-general-card title="{{ t('test.upload.label') }}">
+    <nt-test-chart
+      class="nt-canvas__wrapper"
+      direction="upload"
+      [style.height.px]="192"
+      [style.width.px]="chartWidth"
+    ></nt-test-chart>
+  </nt-general-card>
+</div>

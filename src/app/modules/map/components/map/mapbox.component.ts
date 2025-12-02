@@ -27,12 +27,11 @@ import { ELayerPrefix } from '../../enums/layer-prefix.enum'
 import { PlatformService } from 'src/app/core/services/platform.service'
 import * as maplibregl from 'maplibre-gl'
 
-const CONTAINER_ID = 'map'
-
 @Component({
-  selector: 'nt-mapbox',
-  templateUrl: './mapbox.component.html',
-  styleUrls: ['./mapbox.component.scss'],
+    selector: 'nt-mapbox',
+    templateUrl: './mapbox.component.html',
+    styleUrls: ['./mapbox.component.scss'],
+    standalone: false
 })
 export class MapboxComponent implements OnDestroy, AfterViewInit {
   @Output()
@@ -154,44 +153,10 @@ export class MapboxComponent implements OnDestroy, AfterViewInit {
     }
   }
 
-  private initControls() {
-    this.map
-      .addControl(
-        new maplibregl.NavigationControl({ showCompass: false }),
-        'bottom-right'
-      )
-      .addControl(new maplibregl.GeolocateControl({}), 'bottom-right')
-    navigator.geolocation.getCurrentPosition(
-      () => {},
-      () => {
-        timer(0).subscribe(() => {
-          const label = 'Location not available'
-          document
-            .querySelector('.maplibregl-ctrl-geolocate')
-            ?.setAttribute('disabled', 'true')
-          document
-            .querySelector('.maplibregl-ctrl-geolocate')
-            ?.setAttribute('label', label)
-          document
-            .querySelector('.maplibregl-ctrl-geolocate')
-            ?.setAttribute('title', label)
-        })
-      }
-    )
-  }
-
   private initMap() {
     this.ngZone.runOutsideAngular(() => {
-      const { center, zoom } = environment.map
-      this.map = new maplibregl.Map({
-        container: CONTAINER_ID,
-        maxZoom: 15,
-        minZoom: 1,
-        style: this.mapper.style.url,
-        zoom,
-        center: center as [number, number],
-      })
-      this.initControls()
+      this.map = this.mapper.getDefaultMap()
+      this.mapper.setDefaultControls(this.map)
     })
     this.map.on('style.load', () => {
       lastValueFrom(this.getMapState()).then((state) => {

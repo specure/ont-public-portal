@@ -32,9 +32,10 @@ import { ConfigService } from 'src/app/core/services/config.service'
 import { TranslocoService } from '@ngneat/transloco'
 
 @Component({
-  selector: 'nt-menu-bar',
-  templateUrl: './menu-bar.component.html',
-  styleUrls: ['./menu-bar.component.scss'],
+    selector: 'nt-menu-bar',
+    templateUrl: './menu-bar.component.html',
+    styleUrls: ['./menu-bar.component.scss'],
+    standalone: false
 })
 export class MenuBarComponent implements OnDestroy {
   @Output() openMenu = new EventEmitter()

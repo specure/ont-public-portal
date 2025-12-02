@@ -1,5 +1,6 @@
 <router-outlet></router-outlet>
-<ng-container *ngIf="project$ | async">
-    <nt-feedback-button></nt-feedback-button>
-</ng-container>
-<ng-container *ngIf="error$ | async"></ng-container>
+@if (project$ | async) {
+  <nt-feedback-button></nt-feedback-button>
+}
+@if (error$ | async) {
+}

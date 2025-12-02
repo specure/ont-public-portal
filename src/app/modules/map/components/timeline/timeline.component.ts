@@ -8,9 +8,10 @@ import { pluck } from 'rxjs/operators'
 import { Observable } from 'rxjs'
 
 @Component({
-  selector: 'nt-timeline',
-  templateUrl: './timeline.component.html',
-  styleUrls: ['./timeline.component.scss']
+    selector: 'nt-timeline',
+    templateUrl: './timeline.component.html',
+    styleUrls: ['./timeline.component.scss'],
+    standalone: false
 })
 export class TimelineComponent {
   @Input() steps: ITimelineStep[]

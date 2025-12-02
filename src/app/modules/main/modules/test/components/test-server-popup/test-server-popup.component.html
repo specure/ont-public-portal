@@ -1,0 +1,66 @@
+<div
+  id="server-popup-{{ server().id }}"
+  class="app-container"
+  *transloco="let t"
+>
+  @if(formattedServer(); as server) {
+  <div class="app-popup-content">
+    <table class="app-table">
+      <thead>
+        <tr class="app-tr">
+          <th class="app-th" colspan="2">
+            <h6>{{ t(server.country) }}</h6>
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="app-tr">
+          <th class="app-th">{{ t('City') }}</th>
+          <td class="app-td">{{ t(server.city) }}</td>
+        </tr>
+        <tr class="app-tr">
+          <th class="app-th">{{ t('Web address') }}</th>
+          <td class="app-td">{{ server.address }}</td>
+        </tr>
+        <tr class="app-tr">
+          <th class="app-th">{{ t('Distance') }}</th>
+          <td class="app-td">{{ server.distance }}</td>
+        </tr>
+        <tr class="app-tr">
+          <th class="app-th">{{ t('IPv6') }}</th>
+          <td class="app-td">{{ t(server.ipv6) }}</td>
+        </tr>
+        <tr class="app-tr">
+          <th class="app-th">{{ t('IPv4') }}</th>
+          <td class="app-td">{{ t(server.ipv4) }}</td>
+        </tr>
+        <tr class="app-tr">
+          <th class="app-th">{{ t('Dedicated') }}</th>
+          <td class="app-td">{{ t(server.dedicated) }}</td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="app-popup-actions">
+      <button
+        class="app-button"
+        type="reset"
+        mat-stroked-button
+        onclick="window.closePopup();return false;"
+      >
+        {{ t('Close') }}
+      </button>
+      <button
+        class="app-button"
+        type="button"
+        mat-button
+        color="primary"
+        onclick="window.startTest();return false;"
+      >
+        {{ t('Start test') }}
+      </button>
+    </div>
+  </div>
+  } @else {
+  <p>{{ t('Something went wrong') }}</p>
+  }
+</div>

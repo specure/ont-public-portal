@@ -2,9 +2,10 @@ import { Component, Inject } from '@angular/core'
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog'
 
 @Component({
-  selector: 'nt-simple-dialog',
-  templateUrl: './simple-dialog.component.html',
-  styleUrls: ['./simple-dialog.component.scss'],
+    selector: 'nt-simple-dialog',
+    templateUrl: './simple-dialog.component.html',
+    styleUrls: ['./simple-dialog.component.scss'],
+    standalone: false
 })
 export class SimpleDialogComponent {
   constructor(

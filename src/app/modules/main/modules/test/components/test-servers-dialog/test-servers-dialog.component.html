@@ -1,0 +1,79 @@
+<mat-dialog-content class="nt-container">
+  <div>
+    <dl class="nt-dl">
+      <dt class="nt-dt">{{ 'Cloud Servers' | transloco }}</dt>
+      @for (server of cloudServers(); track server.id) {
+      <dd class="nt-dd">
+        <mat-radio-group [(ngModel)]="selectedServer">
+          <mat-radio-button [value]="server"
+            >{{ server.distance | distance
+            }}{{ server.title }}</mat-radio-button
+          >
+        </mat-radio-group>
+      </dd>
+      }
+    </dl>
+    <dl class="nt-dl">
+      <dt class="nt-dt">{{ 'Local Servers' | transloco }}</dt>
+      <!--  Pristine -->
+      @if (pristine()) {
+      <dd class="nt-dd">
+        <button
+          mat-flat-button
+          type="button"
+          class="nt-button"
+          (click)="search()"
+          color="primary"
+        >
+          {{ 'Find local server' | transloco }}
+        </button>
+      </dd>
+      }
+      <!--  Searching -->
+      @else if (searching()) {
+      <dd class="nt-dd">
+        <p class="nt-searching">
+          <mat-progress-bar
+            class="nt-searching__progress"
+            mode="determinate"
+            [value]="searchProgress()"
+          ></mat-progress-bar>
+          <button mat-icon-button (click)="stopSearch()" color="primary">
+            <mat-icon>stop_circle</mat-icon>
+          </button>
+        </p>
+      </dd>
+      } @else {
+      <!-- Local Servers -->
+      @if (localServers()?.length > 0) {@for (server of localServers(); track
+      server.id) {
+      <dd class="nt-dd">
+        <mat-radio-group [(ngModel)]="selectedServer">
+          <mat-radio-button [value]="server">{{
+            server.title
+          }}</mat-radio-button>
+        </mat-radio-group>
+      </dd>
+      } }
+      <!-- No Local Servers Found -->
+      @else {
+      <dd class="nt-dd">
+        <button
+          mat-flat-button
+          type="button"
+          class="nt-button"
+          (click)="search()"
+          color="primary"
+        >
+          {{ 'Retry' | transloco }}
+        </button>
+      </dd>
+      } }
+    </dl>
+  </div>
+</mat-dialog-content>
+<mat-dialog-actions class="nt-footer" align="end">
+  <button mat-stroked-button mat-dialog-close>
+    {{ 'Close' | transloco }}
+  </button>
+</mat-dialog-actions>

@@ -1,4 +1,4 @@
-import { ActionCreator } from '@ngrx/store'
+import { Action, ActionCreator } from '@ngrx/store'
 import {
   Component,
   Input,
@@ -10,7 +10,6 @@ import {
   SimpleChanges,
 } from '@angular/core'
 import { MatSort } from '@angular/material/sort'
-import { TypedAction } from '@ngrx/store/src/models'
 
 import { arrowRotate } from 'src/app/core/animations/arrow-rotate.animation'
 import { IBasicRequest } from 'src/app/core/interfaces/basic-request.interface'
@@ -30,11 +29,12 @@ import { MatTable } from '@angular/material/table'
   templateUrl: './table.component.html',
   styleUrls: ['./table.component.scss'],
   animations: [arrowRotate, expandVertically],
+  standalone: false,
 })
 export class TableComponent implements OnInit, OnChanges {
   @Input() action: ActionCreator<
     string,
-    (props: { request: IBasicRequest }) => IBasicRequest & TypedAction<string>
+    (props: { request: IBasicRequest }) => IBasicRequest & Action<string>
   >
   @Input() columns: ITableColumn[]
   @Input() data: IBasicResponse<any>

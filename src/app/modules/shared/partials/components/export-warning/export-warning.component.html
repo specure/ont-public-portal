@@ -1,7 +1,9 @@
-<div class="nt-export-warning" *ngIf="project && !project.enable_cookie_widget">
-  <span *transloco="let t">
-    {{ t('history.pdf_warning_start')
-    }}<a (click)="print()">{{ t('test.export_as_pdf') }}</a
-    >{{ t('history.pdf_warning_end') }}
-  </span>
-</div>
+@if (project && !project.enable_cookie_widget) {
+  <div class="nt-export-warning">
+    <span *transloco="let t">
+      {{ t('history.pdf_warning_start')
+      }}<a (click)="print()">{{ t('test.export_as_pdf') }}</a
+      >{{ t('history.pdf_warning_end') }}
+    </span>
+  </div>
+}

@@ -1,6 +1,6 @@
 import { IMainMenuItem } from './main-menu-item.interface'
 import { ITranslatable } from 'src/app/core/interfaces/translatable.interface'
-import { MatomoTrackerConfiguration } from 'ngx-matomo-client/core/tracker/configuration'
+import { AutoMatomoConfiguration } from 'ngx-matomo-client/core'
 
 export interface IMainProject extends ITranslatable {
   app_store_link?: string
@@ -28,6 +28,8 @@ export interface IMainProject extends ITranslatable {
   enable_banner_to_install_app?: boolean
   require_location?: boolean
   location?: { longitude: number; latitude: number }
-  web_matomo_analytics_config?: MatomoTrackerConfiguration
+  web_matomo_analytics_config?: AutoMatomoConfiguration<'deferred'>
   measurement_retries?: number
+  enable_servers_map?: boolean
+  enable_local_servers?: boolean
 }

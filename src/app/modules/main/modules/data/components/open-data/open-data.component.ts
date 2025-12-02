@@ -12,9 +12,10 @@ import {
 import { MarkdownService } from 'ngx-markdown'
 
 @Component({
-  selector: 'nt-open-data',
-  templateUrl: './open-data.component.html',
-  styleUrls: ['./open-data.component.scss'],
+    selector: 'nt-open-data',
+    templateUrl: './open-data.component.html',
+    styleUrls: ['./open-data.component.scss'],
+    standalone: false
 })
 export class OpenDataComponent implements OnInit {
   exportType = 'monthly'

@@ -2,7 +2,7 @@ import { ActivatedRouteSnapshot, Router } from '@angular/router'
 import { Injectable } from '@angular/core'
 import { TranslocoService } from '@ngneat/transloco'
 import { ERoutes } from '../enums/routes.enum'
-import * as Sentry from '@sentry/angular-ivy'
+import * as Sentry from '@sentry/angular'
 
 @Injectable({ providedIn: 'root' })
 export class RedirectResolver {

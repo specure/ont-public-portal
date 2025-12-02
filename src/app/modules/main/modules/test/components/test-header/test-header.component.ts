@@ -15,10 +15,11 @@ interface ITestStage {
 }
 
 @Component({
-  selector: 'nt-test-header',
-  templateUrl: './test-header.component.html',
-  styleUrls: ['./test-header.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'nt-test-header',
+    templateUrl: './test-header.component.html',
+    styleUrls: ['./test-header.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class TestHeaderComponent implements OnDestroy {
   currentStage?: ETestStages

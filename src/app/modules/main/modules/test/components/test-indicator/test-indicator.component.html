@@ -4,13 +4,14 @@
     'nt-container--active': isActive,
     'nt-container--done': isDone
   }"
->
+  >
   <h4 class="nt-container__row nt-container__title">{{ label }}</h4>
   <div class="nt-container__row nt-container__counter">{{ counter }}</div>
   <div class="nt-container__row nt-container__units">{{ units }}</div>
-  <div
-    class="nt-container__progress"
-    *ngIf="!isDone"
-    [style.transform]="'translateX(' + (data?.progress ?? 0) + '%)'"
-  ></div>
+  @if (!isDone) {
+    <div
+      class="nt-container__progress"
+      [style.transform]="'translateX(' + (data?.progress ?? 0) + '%)'"
+    ></div>
+  }
 </div>

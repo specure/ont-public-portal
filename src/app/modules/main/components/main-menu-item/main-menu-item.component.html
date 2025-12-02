@@ -20,7 +20,7 @@
     (click)="menuClick.emit($event)"
     role="menuitem"
     [ntLinkRel]="item.route"
-  >
+    >
     <ng-container
       *ngTemplateOutlet="linkText; context: { $implicit: item }"
     ></ng-container>
@@ -34,7 +34,7 @@
     [href]="item.url"
     role="menuitem"
     target="_blank"
-  >
+    >
     <ng-container
       *ngTemplateOutlet="linkText; context: { $implicit: item }"
     ></ng-container>
@@ -48,7 +48,7 @@
     class="nt-menu__item {{ item.className }}"
     (click)="menuClick.emit($event)"
     role="menuitem"
-  >
+    >
     <ng-container
       *ngTemplateOutlet="linkText; context: { $implicit: item }"
     ></ng-container>
@@ -56,6 +56,8 @@
 </ng-template>
 
 <ng-template #linkText let-item>
-  <mat-icon *ngIf="item.icon">{{ item.icon }}</mat-icon>
+  @if (item.icon) {
+    <mat-icon>{{ item.icon }}</mat-icon>
+  }
   <span>{{ item | translate : 'label' }}</span>
 </ng-template>

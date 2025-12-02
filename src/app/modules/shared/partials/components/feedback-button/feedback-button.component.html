@@ -1,6 +1,6 @@
-<ng-container *ngIf="feedbackLink$ | async as feedbackLink">
-    <a [href]="feedbackLink.url" mat-flat-button class="nt-btn">
-        <mat-icon>feedback</mat-icon>
-        <span>{{ feedbackLink | translate:'label' }}</span>
-    </a>
-</ng-container>
+@if (feedbackLink$ | async; as feedbackLink) {
+  <a [href]="feedbackLink.url" mat-flat-button class="nt-btn">
+    <mat-icon>feedback</mat-icon>
+    <span>{{ feedbackLink | translate:'label' }}</span>
+  </a>
+}
