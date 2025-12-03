@@ -171,10 +171,11 @@ h1 {
   }
 
   .#{$moq__ns}indicators {
-    margin: rem(24) 0 0;
+    margin: rem(24) 0;
     width: 100%;
+
     .#{$moq__ns}container__row {
-      flex-direction: column;
+      justify-content: center;
     }
   }
 
@@ -192,6 +193,10 @@ h1 {
 
   .#{$moq__ns}indicators {
     flex-direction: column;
+
+    .#{$moq__ns}container__row {
+      flex-direction: column;
+    }
   }
 }
 

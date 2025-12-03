@@ -1,10 +1,11 @@
+/* eslint-disable @angular-eslint/prefer-inject */
 import { Component, input } from '@angular/core'
 import { IMainProject } from 'src/app/modules/main/interfaces/main-project.interface'
 import { SharedModule } from 'src/app/modules/shared/shared.module'
 import { TestState } from 'src/app/store/test/test.reducer'
 import { MatSelectChange } from '@angular/material/select'
 import { TestService } from '../../services/test.service'
-import { distinctUntilChanged, map, Observable, takeUntil, tap } from 'rxjs'
+import { distinctUntilChanged, map, Observable } from 'rxjs'
 import { select, Store } from '@ngrx/store'
 import { IAppState } from 'src/app/store'
 import { getMainState } from 'src/app/store/main/main.reducer'
@@ -31,7 +32,7 @@ export class TestNetworkInfoComponent {
     .pipe()
   selectedServer$ = this.store
     .select((state: IAppState) => state.test.selectedServer)
-    .pipe(distinctUntilChanged(), tap(console.log))
+    .pipe(distinctUntilChanged())
   shareButtons: { className: string; url: string | SafeUrl }[] = []
 
   constructor(
