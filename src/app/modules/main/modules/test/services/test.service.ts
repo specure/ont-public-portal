@@ -292,23 +292,20 @@ export class TestService {
                   longitude: location.longitude.toString(),
                 },
               })
-          return this.http
-            .get<ITestServerResponse[]>(
-              `${environment.controlServer.url}${environment.controlServer.routes.measurementServer}`,
-              {
-                params,
-                headers: this.headers,
-              }
-            )
-            .pipe(
-              map((servers) => {
-                return this.supportedServers(servers)
-              }),
-              catchError((err) => {
-                console.error('Error fetching test servers:', err)
-                return of([])
-              })
-            )
+          return this.http.get<ITestServerResponse[]>(
+            `${environment.controlServer.url}${environment.controlServer.routes.measurementServer}`,
+            {
+              params,
+              headers: this.headers,
+            }
+          )
+        }),
+        map((servers) => {
+          return this.supportedServers(servers)
+        }),
+        catchError((err) => {
+          console.error('Error fetching test servers:', err)
+          return of([])
         })
       )
       .subscribe((servers) => {

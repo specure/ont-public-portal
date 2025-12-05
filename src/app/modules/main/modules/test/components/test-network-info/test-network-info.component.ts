@@ -1,5 +1,5 @@
 /* eslint-disable @angular-eslint/prefer-inject */
-import { Component, input } from '@angular/core'
+import { Component, input, OnInit } from '@angular/core'
 import { IMainProject } from 'src/app/modules/main/interfaces/main-project.interface'
 import { SharedModule } from 'src/app/modules/shared/shared.module'
 import { TestState } from 'src/app/store/test/test.reducer'
@@ -18,7 +18,7 @@ import { DomSanitizer, SafeUrl } from '@angular/platform-browser'
   templateUrl: './test-network-info.component.html',
   styleUrl: './test-network-info.component.scss',
 })
-export class TestNetworkInfoComponent {
+export class TestNetworkInfoComponent implements OnInit {
   testState = input.required<TestState>()
   project$: Observable<IMainProject> = this.store.pipe(
     select(getMainState),
@@ -40,6 +40,18 @@ export class TestNetworkInfoComponent {
     private readonly store: Store<IAppState>,
     private readonly testService: TestService
   ) {}
+
+  ngOnInit(): void {
+    if (this.testState().info?.measurement_server_name) {
+      const existingServer = this.testState().cloudServers?.find(
+        (server) =>
+          server.name === this.testState().info?.measurement_server_name
+      )
+      if (existingServer) {
+        this.testService.setServer(existingServer)
+      }
+    }
+  }
 
   changeServer($event: MatSelectChange) {
     this.testService.setServer($event.value)
