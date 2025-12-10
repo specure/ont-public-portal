@@ -4,4 +4,6 @@ export interface ITestInfo {
   serverName: string
   time?: string
   measurement_server_name?: string
+  testUuid?: string
+  clientUuid?: string
 }

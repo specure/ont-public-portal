@@ -11,7 +11,20 @@
         {{ testState.info.serverName || '-' }}
       </p>
       } @if (project?.can_choose_server && servers$ | async; as servers) { @if
-      (selectedServer$ | async; as selectedServer) {
+      (selectedServer$ | async; as selectedServer) { @if
+      (project?.enable_local_servers) {
+      <p>
+        <button
+          mat-button
+          class="nt-server-select"
+          (click)="showServerDialog()"
+          [disabled]="testState.stage !== 'RESULT'"
+        >
+          {{ selectedServer?.title }}
+          <mat-icon iconPositionEnd>expand_more</mat-icon>
+        </button>
+      </p>
+      } @else {
       <mat-select
         class="nt-test-invite__server-select"
         (selectionChange)="changeServer($event)"
@@ -29,7 +42,7 @@
         </mat-option>
         }
       </mat-select>
-      } }
+      } } }
     </section>
     }
     <section>

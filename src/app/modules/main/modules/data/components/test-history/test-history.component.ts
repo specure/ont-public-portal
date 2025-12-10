@@ -11,20 +11,16 @@ import { IHistoryTableItem } from 'src/app/modules/main/interfaces/history-table
 import { IPaginator } from 'src/app/core/interfaces/paginator.interface'
 import { ISort } from 'src/app/core/interfaces/sort.interface'
 import { ITableColumn } from 'src/app/modules/shared/tables/interfaces/table-column.interface'
-import {
-  loadHistory,
-  storeUuidInMemory,
-  storeUuidOnDisk,
-} from 'src/app/store/history/history.action'
+import { loadHistory } from 'src/app/store/history/history.action'
 import { getMainState } from 'src/app/store/main/main.reducer'
 import { TranslatePipe } from 'src/app/modules/shared/partials/pipes/translate.pipe'
 import { convertBytes } from 'src/app/core/helpers/convert-bytes'
 import { ESpeedUnits } from 'src/app/core/enums/speed-units.enum'
 import { convertMs } from 'src/app/core/helpers/convert-ms'
 import { ERoutes } from 'src/app/core/enums/routes.enum'
-import { IMainProject } from 'src/app/modules/main/interfaces/main-project.interface'
 import { isPlatformBrowser } from '@angular/common'
 import { NTCookieService } from '@nettest/cookie-widget'
+import { TestRepoService } from '../../../test/services/test-repo.service'
 
 export const HISTORY_COLS: ITableColumn<IHistoryTableItem>[] = [
   {
@@ -79,10 +75,10 @@ export const HISTORY_COLS: ITableColumn<IHistoryTableItem>[] = [
 ]
 
 @Component({
-    selector: 'nt-test-history',
-    templateUrl: './test-history.component.html',
-    styleUrls: ['./test-history.component.scss'],
-    standalone: false
+  selector: 'nt-test-history',
+  templateUrl: './test-history.component.html',
+  styleUrls: ['./test-history.component.scss'],
+  standalone: false,
 })
 export class TestHistoryComponent implements OnDestroy {
   action = loadHistory
@@ -116,11 +112,8 @@ export class TestHistoryComponent implements OnDestroy {
     filter((s) => !!s.project),
     map((s) => {
       if (isPlatformBrowser(this.platformId)) {
-        NTCookieService.I.addEventListener(
-          'consentUpdated',
-          this.refresh(s.project)
-        )
-        this.refresh(s.project)()
+        NTCookieService.I.addEventListener('consentUpdated', this.refresh())
+        this.refresh()()
       }
       return s.project
     })
@@ -131,9 +124,10 @@ export class TestHistoryComponent implements OnDestroy {
     .pipe(map((s) => this.translate.transform(s.page, 'name')))
 
   constructor(
-    private store: Store<IAppState>,
-    private translate: TranslatePipe,
-    private transloco: TranslocoService,
+    private readonly store: Store<IAppState>,
+    private readonly repo: TestRepoService,
+    private readonly translate: TranslatePipe,
+    private readonly transloco: TranslocoService,
     @Inject(PLATFORM_ID) private platformId: object
   ) {}
 
@@ -155,23 +149,8 @@ export class TestHistoryComponent implements OnDestroy {
     globalThis.print?.()
   }
 
-  private refresh = (project: IMainProject) => async () => {
+  private refresh = () => async () => {
     this.isHistoryAllowed$.next(null)
-    const { uuid } = await firstValueFrom(this.store.select(getHistoryState))
-    if (!project?.enable_cookie_widget) {
-      this.store.dispatch(storeUuidInMemory({ uuid }))
-      this.isHistoryAllowed$.next(true)
-      return
-    }
-    let isAccepted = false
-    if (isPlatformBrowser(this.platformId)) {
-      isAccepted = await NTCookieService.I.isCookieAccepted('functional')
-    }
-    if (!isAccepted) {
-      this.store.dispatch(storeUuidInMemory({ uuid }))
-    } else {
-      this.store.dispatch(storeUuidOnDisk({ uuid }))
-    }
-    this.isHistoryAllowed$.next(isAccepted)
+    this.isHistoryAllowed$.next(await this.repo.setHistoryPermission())
   }
 }

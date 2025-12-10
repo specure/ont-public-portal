@@ -1,4 +1,5 @@
 export interface IHistoryTableItem {
+  browserName: string
   clientProvider: string
   clientUuid: string
   download: number

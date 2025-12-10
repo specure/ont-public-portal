@@ -14,4 +14,5 @@ export interface ITestServer {
   ipV4Support: boolean
   ipV6Support: boolean
   dedicated: boolean
+  isLocal?: boolean
 }

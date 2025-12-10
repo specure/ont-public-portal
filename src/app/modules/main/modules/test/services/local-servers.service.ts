@@ -41,6 +41,7 @@ export class LocalServersService {
             address: '127.0.0.1',
             port: 5005,
             name: `Local, port 5005`,
+            isLocal: true,
           })
         )
       } else {
@@ -59,6 +60,7 @@ export class LocalServersService {
                 address: '127.0.0.1',
                 port: i,
                 name: `Local, port ${i}`,
+                isLocal: true,
               })
             )
           }

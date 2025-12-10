@@ -21,6 +21,8 @@ import { isPlatformBrowser } from '@angular/common'
 import { environment } from 'src/environments/environment'
 import { MatomoTracker } from 'ngx-matomo-client'
 import { EMatomoEventCategory } from 'src/app/core/enums/matomo-events.enum'
+import { getTestState } from 'src/app/store/test/test.reducer'
+import { getHistoryState } from 'src/app/store/history/history.reducer'
 
 const DRAW_TIMEOUT = 160
 const IDLE_TIMEOUT = 30_000
@@ -34,7 +36,6 @@ export class TestVisualizationService {
   private lastStatus: string | number = -1
   private redrawLoop: any
   private rmbtTest: any
-  private testUUID: string
 
   /** Deprecated */
   static threadsFromResult(
@@ -164,10 +165,17 @@ export class TestVisualizationService {
   ) {
     this.ngZone.run(() => {
       this.store.dispatch(
-        setTestInfo({ info: { serverName, remoteIp, providerName } })
+        setTestInfo({
+          info: {
+            serverName,
+            remoteIp,
+            providerName,
+            testUuid: testUUID,
+            clientUuid: this.store.selectSignal(getHistoryState)().uuid,
+          },
+        })
       )
     })
-    this.testUUID = testUUID
   }
 
   private checkIfDone(result) {
@@ -175,7 +183,8 @@ export class TestVisualizationService {
 
     switch (status) {
       case 'END':
-        result.testUUID = this.testUUID
+        const testState = this.store.selectSignal(getTestState)()
+        result.testUUID = testState.info.testUuid
         this.stopTest()
         this.matomo.trackEvent(EMatomoEventCategory.MEASUREMENT, 'Finished')
         this.ngZone.run(() => {

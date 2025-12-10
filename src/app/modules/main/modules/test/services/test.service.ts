@@ -36,6 +36,7 @@ import {
   setCloudServers,
   setLocation,
   setMeasurementServer,
+  setTestInfo,
   visualInit,
 } from 'src/app/store/test/test.action'
 import { getMainState } from '../../../../../store/main/main.reducer'
@@ -54,7 +55,7 @@ import { ERoutes } from 'src/app/core/enums/routes.enum'
 import { TranslocoService } from '@ngneat/transloco'
 import { NTCookieService } from '@nettest/cookie-widget'
 import { IMainProject } from '../../../interfaces/main-project.interface'
-import { ISpeedCurveResponse } from '../interfaces/speed-curve-item.interface'
+import { TestRepoService } from './test-repo.service'
 
 dayjs.extend(utc)
 dayjs.extend(tz)
@@ -75,6 +76,7 @@ export class TestService {
     private http: HttpClient,
     private matomo: MatomoTracker,
     private ngZone: NgZone,
+    private repo: TestRepoService,
     private router: Router,
     private store: Store<IAppState>,
     private transloco: TranslocoService,
@@ -159,6 +161,9 @@ export class TestService {
         }
         this.ngZone.runOutsideAngular(() => {
           this.rmbtws.TestEnvironment.init(this.visualizator, null)
+          if (environment.production) {
+            this.rmbtws.log.disable()
+          }
           const config = new this.rmbtws.RMBTTestConfig(
             'en',
             environment.controlServer.url,
@@ -167,30 +172,41 @@ export class TestService {
           config.uuid = uuid
           config.timezone = dayjs.tz.guess()
           config.additionalSubmissionParameters = { network_type: 0 }
+          const local_server_settings = this.testServer.isLocal
+            ? this.getLocalServerSettings(app_version)
+            : undefined
           config.additionalRegistrationParameters = {
             uuid_permission_granted: this.isHistoryAllowed,
             app_version,
-            local_server_settings:
-              this.testServer.address == '127.0.0.1'
-                ? {
-                    test_uuid: crypto.randomUUID(),
-                    test_duration: 5,
-                    test_server_name: this.testServer.name,
-                    test_wait: 0,
-                    test_server_address: this.testServer.address,
-                    test_numthreads: 5,
-                    test_server_port: this.testServer.port,
-                    test_server_encryption: false,
-                    test_numpings: 10,
-                    app_version,
-                    platform: 'UNKNOWN',
-                    error: [],
-                  }
-                : undefined,
+            local_server_settings,
+          }
+          const commOptions = {
+            headers: this.headers,
+            register: () => {
+              if (!this.testServer.isLocal) {
+                return
+              }
+              this.store.dispatch(
+                setTestInfo({
+                  info: {
+                    serverName: this.testServer.name,
+                    providerName: '',
+                    remoteIp: '',
+                    testUuid: local_server_settings.test_uuid,
+                  },
+                })
+              )
+            },
+            submit: () => {
+              const testState = this.store.selectSignal(getTestState)()
+              if (testState.visualization && testState.info) {
+                this.repo.saveResult(testState)
+              }
+            },
           }
           const ctrl = new this.rmbtws.RMBTControlServerCommunication(
             config,
-            { headers: this.headers },
+            commOptions,
             this.testServer
           )
           const websocketTest = new this.rmbtws.RMBTTest(config, ctrl)
@@ -210,36 +226,25 @@ export class TestService {
     )
   }
 
+  private getLocalServerSettings(app_version: string) {
+    return {
+      test_uuid: crypto.randomUUID(),
+      test_duration: 5,
+      test_server_name: this.testServer.name,
+      test_wait: 0,
+      test_server_address: this.testServer.address,
+      test_numthreads: 5,
+      test_server_port: this.testServer.port,
+      test_server_encryption: false,
+      test_numpings: 10,
+      app_version,
+      platform: 'UNKNOWN',
+      error: [],
+    }
+  }
+
   stopTest = () => {
     this.rmbtws?.TestEnvironment.getTestVisualization()?.stopTest()
-  }
-
-  getHistoryList(
-    paginator: IPaginator,
-    sort: ISort,
-    uuid: string
-  ): Observable<IBasicResponse<IHistoryTableItem>> {
-    return this.http.get<IBasicResponse<IHistoryTableItem>>(
-      `${environment.controlServer.url}${environment.controlServer.routes.history}`,
-      {
-        params: new BasicHttpParams(paginator, sort, { uuid }),
-        headers: this.headers,
-      }
-    )
-  }
-
-  getTestResults(id: string): Observable<ITestResult> {
-    return this.http.get<ITestResult>(
-      `${environment.controlServer.url}${environment.controlServer.routes.result}/${id}`,
-      { headers: this.headers }
-    )
-  }
-
-  getSpeedCurve(id: string): Observable<ISpeedCurveResponse> {
-    return this.http.get<ISpeedCurveResponse>(
-      `${environment.controlServer.url}${environment.controlServer.routes.speedCurve}/${id}`,
-      { headers: this.headers }
-    )
   }
 
   getLocationFromStore(): Observable<{ longitude: number; latitude: number }> {

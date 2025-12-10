@@ -14,6 +14,7 @@ export class TestServer implements ITestServer {
   port: number
   city: string
   id: number
+  isLocal?: boolean
 
   static fromResponse(resp: ITestServerResponse) {
     const testServer = new TestServer()

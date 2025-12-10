@@ -83,17 +83,23 @@ export class TestVisualizationStateFinalResult extends TestVisualizationState {
   static withSpeedCurve(
     other: ITestVisualizationState,
     result: ITestResult,
-    speedCurve: ISpeedCurveResponse
+    speedCurve?: ISpeedCurveResponse
   ) {
     const testState = extend<ITestVisualizationState>(
       new TestVisualizationStateFinalResult(),
       other
     )
-    const { test_speed_download, test_speed_upload, ping_median } = result || {}
-    const { download: downCurve, upload: upCurve } = speedCurve.speed_curve ?? {
-      download: [],
-      upload: [],
-    }
+    const {
+      test_speed_download,
+      test_speed_upload,
+      ping_median,
+      speed_curve: localSpeedCurve,
+    } = result || {}
+    const { download: downCurve, upload: upCurve } =
+      speedCurve?.speed_curve ?? {
+        download: [],
+        upload: [],
+      }
 
     const buildChart = (curve: ISpeedCurveItem[]) => {
       const dedupedMap = new Map<number, ISpeedCurveItem>()
@@ -114,7 +120,7 @@ export class TestVisualizationStateFinalResult extends TestVisualizationState {
     }
 
     testState.download = {
-      chart: buildChart(downCurve),
+      chart: localSpeedCurve?.download ?? buildChart(downCurve),
       container: ETestStatuses.DONE,
       counter: (test_speed_download / 1000).toFixed(2),
       label: ETestLabels.DOWNLOAD,
@@ -123,7 +129,7 @@ export class TestVisualizationStateFinalResult extends TestVisualizationState {
     }
 
     testState.upload = {
-      chart: buildChart(upCurve),
+      chart: localSpeedCurve?.upload ?? buildChart(upCurve),
       container: ETestStatuses.DONE,
       counter: (test_speed_upload / 1000).toFixed(2),
       label: ETestLabels.UPLOAD,

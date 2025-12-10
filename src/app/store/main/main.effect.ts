@@ -63,6 +63,12 @@ export class MainEffects {
             return loadingSuccess()
           }),
           catchError((error: HttpErrorResponse) => {
+            console.error(
+              'Error loading page for route:',
+              route,
+              'Error:',
+              error
+            )
             this.store.dispatch(loadPageEnd({ page: null }))
             this.seoService.setPageMetadata(null, project)
             if (error.status === 404) {

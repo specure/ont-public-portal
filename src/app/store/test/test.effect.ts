@@ -22,9 +22,9 @@ import { TranslocoService } from '@ngneat/transloco'
 import { getTestState } from './test.reducer'
 import { TestVisualizationStateFinalResult } from 'src/app/modules/main/modules/test/classes/test-visualization-state-final-result.class'
 import { HttpErrorResponse } from '@angular/common/http'
-import { getMainState } from '../main/main.reducer'
 import { MainSnackbarComponent } from 'src/app/modules/main/components/main-snackbar/main-snackbar.component'
 import { MatSnackBar } from '@angular/material/snack-bar'
+import { TestRepoService } from 'src/app/modules/main/modules/test/services/test-repo.service'
 
 @Injectable()
 export class TestEffects {
@@ -64,8 +64,8 @@ export class TestEffects {
       withLatestFrom(this.store.select(getTestState)),
       switchMap(([{ id, route }, state]) => {
         return forkJoin([
-          this.testService.getTestResults(id),
-          this.testService.getSpeedCurve(id),
+          this.testRepoService.getTestResult(id),
+          this.testRepoService.getSpeedCurve(id),
         ]).pipe(
           map(([data, speedCurve]) => {
             const visualization =
@@ -78,6 +78,12 @@ export class TestEffects {
             return loadPage({ route })
           }),
           catchError((error) => {
+            console.error(
+              'Error fetching test result for id:',
+              id,
+              'Error:',
+              error
+            )
             this.router.navigate([ERoutes.TEST])
             return of(loadingError({ error }))
           })
@@ -119,6 +125,7 @@ export class TestEffects {
   constructor(
     private actions$: Actions,
     private testService: TestService,
+    private testRepoService: TestRepoService,
     private router: Router,
     private snackbar: MatSnackBar,
     private store: Store<IAppState>,

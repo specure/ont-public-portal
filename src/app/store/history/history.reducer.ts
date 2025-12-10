@@ -33,6 +33,7 @@ export class HistoryState {
     ERoutes.TEST_HISTORY
   )
   uuid: string = globalThis?.localStorage?.getItem(TEST_COOKIE) ?? uuidv4()
+  isHistoryAllowed: boolean = false
 }
 
 export const historyReducer = createReducer(
@@ -48,11 +49,11 @@ export const historyReducer = createReducer(
   on(loadHistoryEnd, (state, history): HistoryState => ({ ...state, history })),
   on(storeUuidInMemory, (state, { uuid }) => {
     globalThis?.localStorage?.removeItem(TEST_COOKIE)
-    return { ...state, uuid }
+    return { ...state, uuid, isHistoryAllowed: false }
   }),
   on(storeUuidOnDisk, (state, { uuid }) => {
     globalThis?.localStorage?.setItem(TEST_COOKIE, uuid)
-    return { ...state, uuid }
+    return { ...state, uuid, isHistoryAllowed: true }
   })
 )
 

@@ -1,4 +1,8 @@
-export interface ITestResult {
+import { getBrowserName } from 'src/app/modules/shared/util/platform'
+import { ITestResult } from '../interfaces/test-result.interface'
+import { ITestState } from '../interfaces/test-state.interface'
+
+export class TestResult implements ITestResult {
   client_language: string
   client_name: string
   client_provider: string
@@ -58,6 +62,9 @@ export interface ITestResult {
   telephony_network_sim_country: string
   test_bytes_download: number
   test_bytes_upload: number
+  test_duration_download: number
+  test_duration_upload: number
+  test_uuid: string
   test_encryption: string
   test_if_bytes_download: number
   test_if_bytes_upload: number
@@ -73,12 +80,10 @@ export interface ITestResult {
   test_token: string
   test_total_bytes_download: number
   test_total_bytes_upload: number
-  test_uuid: string
   testdl_if_bytes_download: number
   testdl_if_bytes_upload: number
   testul_if_bytes_download: number
   testul_if_bytes_upload: number
-  time: string
   timezone: string
   token: string
   type: string
@@ -86,4 +91,33 @@ export interface ITestResult {
   version_code: string
   voip_result_jitter: string
   voip_result_packet_loss: string
+  time: string
+  vpn_active: boolean
+
+  static fromTestState(testState: Partial<ITestState>): ITestResult {
+    return Object.assign(new TestResult(), {
+      test_uuid: testState.info.testUuid,
+      test_speed_download:
+        (testState.visualization.download.counter as number) * 1e3,
+      test_speed_upload:
+        (testState.visualization.upload.counter as number) * 1e3,
+      ping_median: (testState.visualization.ping.counter as number) * 1e6,
+      ip_address: testState.info.remoteIp,
+      client_name: getBrowserName(),
+      client_provider: testState.info.providerName,
+      client_uuid: testState.info.clientUuid,
+      measurement_server_name: testState.info.serverName,
+      time: new Date().toISOString(),
+      speed_curve: {
+        download: testState.visualization.download.chart,
+        upload: testState.visualization.upload.chart,
+      },
+    } as Partial<ITestResult>)
+  }
+
+  constructor(data?: Partial<ITestResult>) {
+    if (data) {
+      Object.assign(this, data)
+    }
+  }
 }

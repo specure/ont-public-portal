@@ -22,6 +22,8 @@ import { isPlatformBrowser } from '@angular/common'
 import { TestService } from './modules/main/modules/test/services/test.service'
 import { SeoService } from './core/services/seo.service'
 import pack from '../../package.json'
+import { getHistoryState } from './store/history/history.reducer'
+import { TestRepoService } from './modules/main/modules/test/services/test-repo.service'
 
 @Component({
   selector: 'nt-root',
@@ -58,6 +60,7 @@ export class AppComponent implements OnInit, OnDestroy {
     private router: Router,
     private seoService: SeoService,
     private store: Store<IAppState>,
+    private testRepo: TestRepoService,
     private testService: TestService,
     @Inject(PLATFORM_ID) private platformId: object
   ) {
@@ -73,6 +76,12 @@ export class AppComponent implements OnInit, OnDestroy {
     if (gitInfo.branch && gitInfo.hash) {
       console.log(`${gitInfo.branch}-${gitInfo.hash.slice(0, 8)}`)
     }
+
+    if (isPlatformBrowser(this.platformId)) {
+      globalThis.addEventListener('beforeunload', () => {
+        this.handlePageUnload()
+      })
+    }
   }
 
   ngOnInit(): void {
@@ -81,5 +90,12 @@ export class AppComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.navigationSub.unsubscribe()
+  }
+
+  private handlePageUnload(): void {
+    const { isHistoryAllowed } = this.store.selectSignal(getHistoryState)()
+    if (!isHistoryAllowed) {
+      this.testRepo.clearHistory()
+    }
   }
 }

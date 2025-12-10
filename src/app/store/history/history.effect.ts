@@ -13,9 +13,9 @@ import { loading, loadingError, loadingSuccess } from '../common/common.action'
 import { loadPage } from '../main/main.action'
 import { Paginator } from 'src/app/core/classes/paginator.class'
 import { Sort, DEFAULT_DIRECTION } from 'src/app/core/classes/sort.class'
-import { TestService } from '../../modules/main/modules/test/services/test.service'
 import { URLService } from '../../core/services/url.service'
 import { HISTORY_COLS } from 'src/app/modules/main/modules/data/components/test-history/test-history.component'
+import { TestRepoService } from 'src/app/modules/main/modules/test/services/test-repo.service'
 
 @Injectable()
 export class HistoryEffects {
@@ -45,7 +45,7 @@ export class HistoryEffects {
           this.loadPage()
           return of(loadingSuccess())
         }
-        return this.http.getHistoryList(paginator, sort, uuid).pipe(
+        return this.repo.getHistoryList(paginator, sort, uuid).pipe(
           map((response) => {
             this.store.dispatch(loadHistoryEnd(response))
             this.url.toSearchParams({ ...paginator, ...sort })
@@ -65,7 +65,7 @@ export class HistoryEffects {
 
   constructor(
     private actions$: Actions,
-    private http: TestService,
+    private repo: TestRepoService,
     private store: Store<IAppState>,
     private url: URLService
   ) {}

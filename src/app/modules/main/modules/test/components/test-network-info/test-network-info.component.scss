@@ -104,3 +104,10 @@ $run-again-btn-width: rem(190);
     }
   }
 }
+
+.#{$moq__ns}server-select {
+  font-size: rem(16);
+  margin-left: -8px;
+  margin-right: -8px;
+  white-space: nowrap;
+}

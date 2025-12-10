@@ -82,7 +82,7 @@
     "ngx-markdown": "^20.1.0",
     "ngx-mat-select-search": "^8.0.1",
     "ngx-matomo-client": "^8.0.0",
-    "rmbtws": "https://github.com/polylina/rmbtws.git#a0dd02d373ac355d1920c6d2e35ae814cee38a26",
+    "rmbtws": "https://github.com/polylina/rmbtws.git#987f9855590799c54b23cd597a996839b996bc06",
     "rxjs": "~7.8.1",
     "smart-app-banner": "^2.0.0",
     "ts-node": "~10.9.2",

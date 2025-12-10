@@ -11,6 +11,7 @@ import { IAppState } from 'src/app/store'
 import { getMainState } from 'src/app/store/main/main.reducer'
 import { AsyncPipe } from '@angular/common'
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser'
+import { LocalServersService } from '../../services/local-servers.service'
 
 @Component({
   selector: 'nt-test-network-info',
@@ -36,6 +37,7 @@ export class TestNetworkInfoComponent implements OnInit {
   shareButtons: { className: string; url: string | SafeUrl }[] = []
 
   constructor(
+    private readonly localServersService: LocalServersService,
     private readonly sanitizer: DomSanitizer,
     private readonly store: Store<IAppState>,
     private readonly testService: TestService
@@ -94,5 +96,9 @@ export class TestNetworkInfoComponent implements OnInit {
         ),
       },
     ]
+  }
+
+  showServerDialog() {
+    this.localServersService.openTestServersDialog()
   }
 }
