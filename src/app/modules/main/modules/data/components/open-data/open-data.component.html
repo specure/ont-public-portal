@@ -16,9 +16,7 @@
           </mat-radio-group>
           <fieldset class="nt-open-data__fieldset">
             @if (exportType === 'monthly') {
-              <label
-                class="nt-open-data__select"
-                >
+              <label class="nt-open-data__select">
                 {{ t('opendata.month') }}
                 <mat-select [(ngModel)]="month">
                   @for (month of months; track month) {
@@ -41,39 +39,36 @@
             (click)="load()"
             color="primary"
             mat-flat-button
-            >
+          >
             {{ t('opendata.download') }}
           </button>
 
           <div class="nt-open-data__footer">
             @if (content) {
-              <pre
-                [innerHtml]="content"
-              ></pre>
+              <pre [innerHtml]="content | markdown | async"></pre>
             } @else {
               <p *transloco="let t">
                 {{ t('opendata.license') }}
                 <a href="https://creativecommons.org/licenses/by/4.0/"
                   >Creative Commons Attribution 4.0 (CC BY 4.0)</a
-                  >
-                  {{ t('opendata.license.end') }}
-                </p>
-                <div class="nt-open-data__icons">
-                  <a
-                    rel="license"
-                    href="http://creativecommons.org/licenses/by/4.0/"
-                    target="_blank"
-                    ><img
+                >
+                {{ t('opendata.license.end') }}
+              </p>
+              <div class="nt-open-data__icons">
+                <a
+                  rel="license noopener"
+                  href="http://creativecommons.org/licenses/by/4.0/"
+                  target="_blank"
+                  ><img
                     alt="Creative Commons License"
                     style="border-width: 0"
                     src="https://i.creativecommons.org/l/by/4.0/88x31.png"
-                  /></a>
-                </div>
-              }
-            </div>
+                /></a>
+              </div>
+            }
           </div>
-        </article>
-      </nt-general-card>
-    </div>
-  </ng-container>
-
+        </div>
+      </article>
+    </nt-general-card>
+  </div>
+</ng-container>

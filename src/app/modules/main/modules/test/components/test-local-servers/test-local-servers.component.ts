@@ -16,7 +16,6 @@ export class TestLocalServersComponent {
   searching$ = this.store.select((state) => state.test.searchingLocalServers)
 
   search() {
-    this.service.openTestServersDialog()
     this.service.findLocalServer()
   }
 

@@ -8,6 +8,7 @@ import { TranslocoModule } from '@ngneat/transloco'
 import { PaginatorComponent } from './components/paginator/paginator.component'
 import { FeedbackButtonComponent } from './components/feedback-button/feedback-button.component'
 import { TranslatePipe } from './pipes/translate.pipe'
+import { MarkdownPipe } from './pipes/markdown.pipe'
 import { SidenavComponent } from './components/sidenav/sidenav.component'
 import { RouterModule } from '@angular/router'
 import { DistancePipe } from './pipes/distance.pipe'
@@ -25,6 +26,7 @@ import { MatIconModule } from '@angular/material/icon'
     PaginatorComponent,
     FeedbackButtonComponent,
     TranslatePipe,
+    MarkdownPipe,
     DistancePipe,
     SidenavComponent,
     LinkRelDirective,
@@ -47,6 +49,7 @@ import { MatIconModule } from '@angular/material/icon'
     PaginatorComponent,
     FeedbackButtonComponent,
     TranslatePipe,
+    MarkdownPipe,
     DistancePipe,
     MainSafeHtmlPipe,
     SidenavComponent,

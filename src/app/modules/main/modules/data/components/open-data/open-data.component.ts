@@ -12,10 +12,10 @@ import {
 import { MarkdownService } from 'ngx-markdown'
 
 @Component({
-    selector: 'nt-open-data',
-    templateUrl: './open-data.component.html',
-    styleUrls: ['./open-data.component.scss'],
-    standalone: false
+  selector: 'nt-open-data',
+  templateUrl: './open-data.component.html',
+  styleUrls: ['./open-data.component.scss'],
+  standalone: false,
 })
 export class OpenDataComponent implements OnInit {
   exportType = 'monthly'
@@ -33,17 +33,15 @@ export class OpenDataComponent implements OnInit {
         this.startYear = parseInt(dateArr[0], 10)
       }
       this.fillSelectWithYears()
-      this.content = this.markdown.parse(
-        this.translate.transform(s.page, 'content')
-      ) as string
+      this.content = this.translate.transform(s.page, 'content')
       return this.translate.transform(s.page, 'name')
-    })
+    }),
   )
 
   constructor(
     private markdown: MarkdownService,
     private store: Store<IAppState>,
-    private translate: TranslatePipe
+    private translate: TranslatePipe,
   ) {}
 
   ngOnInit(): void {
@@ -76,7 +74,7 @@ export class OpenDataComponent implements OnInit {
 
   load() {
     this.store.dispatch(
-      enqueExport({ date: this.exportType === 'monthly' ? this.month : null })
+      enqueExport({ date: this.exportType === 'monthly' ? this.month : null }),
     )
   }
 }

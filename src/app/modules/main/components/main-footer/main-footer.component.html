@@ -1,4 +1,3 @@
-
 @switch (flavor$ | async) {
   <!-- RATEL flavor -->
   @case (menuFlavors.RATEL) {
@@ -9,53 +8,57 @@
             @for (block of menu; track block) {
               <li class="nt-list__item">
                 <pre
-              [innerHtml]="
-                block
-                  | translate: 'content':'parseMarkdown'
-                  | mainSafeHtml: cookieWidgetOpener
-              "
+                  [innerHtml]="
+                    block
+                      | translate: 'content'
+                      | markdown
+                      | async
+                      | mainSafeHtml: cookieWidgetOpener
+                  "
                 ></pre>
               </li>
             }
           </ul>
           @if (project && project.copyright) {
-            <pre
-              class="nt-container nt-copyright"
-              >{{ project | translate: 'copyright' }} ({{ project.version }})</pre
+            <pre class="nt-container nt-copyright"
+              >{{ project | translate: 'copyright' }} ({{
+                project.version
+              }})</pre
+            >
+          }
+        </div>
+      }
+    </footer>
+  }
+  <!-- Default template -->
+  @default {
+    <footer class="nt-footer">
+      <div class="nt-wrapper">
+        <a
+          [href]="project?.footer_logo_link || '/'"
+          class="nt-logo"
+          target="_blank"
+        >
+          <img
+            [src]="logoPath$ | async"
+            alt="{{ logoAlt }}"
+            height="79"
+            width="253"
+          />
+        </a>
+        @if (menu$ | async; as menu) {
+          <section class="nt-container">
+            <nt-main-nav className="nt-footer__nav" [menu]="menu"></nt-main-nav>
+            @if (project && project.copyright) {
+              <pre class="nt-container nt-copyright"
+                >{{ project | translate: 'copyright' }} ({{
+                  project.version
+                }})</pre
               >
             }
-          </div>
+          </section>
         }
-      </footer>
-    }
-    <!-- Default template -->
-    @default {
-      <footer class="nt-footer">
-        <div class="nt-wrapper">
-          <a
-            [href]="project?.footer_logo_link || '/'"
-            class="nt-logo"
-            target="_blank"
-            >
-            <img
-              [src]="logoPath$ | async"
-              [alt]="logoAlt"
-              height="79"
-              width="253"
-              />
-          </a>
-          @if (menu$ | async; as menu) {
-            <section class="nt-container">
-              <nt-main-nav className="nt-footer__nav" [menu]="menu"></nt-main-nav>
-              @if (project && project.copyright) {
-                <pre
-                  class="nt-container nt-copyright"
-                  >{{ project | translate: 'copyright' }} ({{ project.version }})</pre
-                  >
-                }
-              </section>
-            }
-          </div>
-        </footer>
-      }
-    }
+      </div>
+    </footer>
+  }
+}
