@@ -12,10 +12,10 @@ import {
 } from './statistics.action'
 
 export class StatisticsState {
-  nationalTable: INationalTable
-  municipalities: IMunicipality[]
-  municipality: IMunicipality
-  filters: { [param: string]: string }
+  nationalTable: INationalTable | null | undefined
+  municipalities: IMunicipality[] | null | undefined
+  municipality: IMunicipality | null | undefined
+  filters: { [param: string]: string | string[] | undefined } | null | undefined
 }
 
 export const statisticsReducer = createReducer(
@@ -31,13 +31,13 @@ export const statisticsReducer = createReducer(
       ...state,
       nationalTable: nationalTable && NationalTable.from(nationalTable),
       municipalities,
-    })
+    }),
   ),
   on(loadMunicipality, (state) => ({ ...state, municipality: null })),
   on(loadMunicipalityEnd, (state, { municipality }) => ({
     ...state,
     municipality,
-  }))
+  })),
 )
 
 export const getStatisticsState = (state: IAppState) => state.statistics

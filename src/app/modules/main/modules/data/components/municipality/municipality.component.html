@@ -17,18 +17,16 @@
                   <span>{{ t('statistics.back') }}</span>
                 </a>
               </div>
-              <h1 class="nt-title">{{ munc | translate : 'name' }}</h1>
+              <h1 class="nt-title">{{ munc | translate: 'name' }}</h1>
             </header>
             <div class="nt-container__row">
               @if (munc.website || munc.county?.website) {
-                <dl
-                  class="nt-container__col"
-                  >
+                <dl class="nt-container__col">
                   @if (munc.website) {
                     <dt class="nt-dt">{{ t('statistics.municipality') }}</dt>
                     <dd class="nt-dd">
                       <a [href]="munc.website" target="_blank">
-                        {{ munc | translate : 'name' }}
+                        {{ munc | translate: 'name' }}
                         {{ t('statistics.website') }}
                       </a>
                     </dd>
@@ -37,7 +35,7 @@
                     <dt class="nt-dt">{{ t('statistics.county') }}</dt>
                     <dd class="nt-dd">
                       <a [href]="munc.county?.website" target="_blank">
-                        {{ munc.county | translate : 'name' }}
+                        {{ munc.county | translate: 'name' }}
                         {{ t('statistics.website') }}
                       </a>
                     </dd>
@@ -48,10 +46,11 @@
                 @if (munc.coat_of_arms) {
                   <img
                     [src]="images.coat_of_arms"
-                  [alt]="
-                    munc.coat_of_arms.alternativeText || munc.coat_of_arms.name
-                  "
-                    />
+                    alt="{{
+                      munc.coat_of_arms.alternativeText ||
+                        munc.coat_of_arms.name
+                    }}"
+                  />
                 }
               </section>
             </div>
@@ -64,7 +63,7 @@
             <div
               class="nt-container__row"
               [class.nt-container__row--vertical]="mapLayout === 'vertical'"
-              >
+            >
               <section
                 class="nt-container__col nt-container__col--map-link"
                 [ngStyle]="
@@ -72,19 +71,19 @@
                     ? {}
                     : { alignItems: 'center', justifyContent: 'center' }
                 "
-                >
+              >
                 <a [routerLink]="mapLink" (click)="setMapMunicipality(munc)">{{
                   t('statistics.go_to_map')
                 }}</a>
               </section>
               @if (munc.map_view) {
-                <section
-                  class="nt-container__col nt-container__col--map"
-                  >
+                <section class="nt-container__col nt-container__col--map">
                   <img
                     [src]="images.map_view"
-                    [alt]="munc.map_view.alternativeText || munc.map_view.name"
-                    />
+                    alt="{{
+                      munc.map_view.alternativeText || munc.map_view.name
+                    }}"
+                  />
                 </section>
               }
             </div>
@@ -96,21 +95,13 @@
       <nt-general-card appearance="full-width">
         <div class="nt-stats">
           @if (project?.enable_stats_mno_isp_switch) {
-            <section
-              class="nt-stats__filter"
-              >
-              <form [formGroup]="form">
-                <mat-radio-group formControlName="providerType">
-                  @for (providerType of providerTypes; track providerType) {
-                    <mat-radio-button
-                      [value]="providerType.value"
-                      >
-                      {{ t(providerType.label) }}
-                    </mat-radio-button>
-                  }
-                </mat-radio-group>
-              </form>
-            </section>
+            @if (filtersV2Enabled()) {
+              <nt-statistics-filters
+                (filtersChange)="loadNationalTable($event)"
+              ></nt-statistics-filters>
+            } @else {
+              <ng-container *ngTemplateOutlet="filtersV1"></ng-container>
+            }
           }
           @if (nationalTable$ | async; as nat) {
             <nt-table
@@ -120,7 +111,7 @@
               [data]="{ content: nat.statsByProvider }"
               [sort]="sort"
               [subHeaderColumns]="subHeaderColumns"
-              >
+            >
             </nt-table>
             <footer class="nt-stats__footer">
               {{ t('statistics.table.disclaimer') }}
@@ -136,3 +127,16 @@
   </ng-container>
 }
 
+<ng-template #filtersV1>
+  <section class="nt-stats__filter" *transloco="let t">
+    <form [formGroup]="form">
+      <mat-radio-group formControlName="providerType">
+        @for (providerType of providerTypes; track providerType) {
+          <mat-radio-button [value]="providerType.value">
+            {{ t(providerType.label) }}
+          </mat-radio-button>
+        }
+      </mat-radio-group>
+    </form>
+  </section>
+</ng-template>

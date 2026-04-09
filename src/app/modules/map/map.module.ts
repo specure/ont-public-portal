@@ -13,6 +13,7 @@ import { TimelineComponent } from './components/timeline/timeline.component'
 import { MobileTimelineComponent } from './components/mobile-timeline/mobile-timeline.component'
 import { NgxMapLibreGLModule } from '@maplibre/ngx-maplibre-gl'
 import { MatProgressBarModule } from '@angular/material/progress-bar'
+import { StatisticsFiltersComponent } from '../main/modules/data/components/statistics-filters/statistics-filters.component'
 
 @NgModule({
   declarations: [
@@ -33,6 +34,7 @@ import { MatProgressBarModule } from '@angular/material/progress-bar'
     MatExpansionModule,
     MatProgressBarModule,
     NgxMapLibreGLModule,
+    StatisticsFiltersComponent,
   ],
 })
 export class MapModule {}

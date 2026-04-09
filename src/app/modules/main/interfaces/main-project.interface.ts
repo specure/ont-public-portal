@@ -32,4 +32,5 @@ export interface IMainProject extends ITranslatable {
   measurement_retries?: number
   enable_servers_map?: boolean
   enable_local_servers?: boolean
+  enable_filters_v2?: boolean
 }

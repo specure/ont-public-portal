@@ -22,14 +22,22 @@ import { SeoService } from 'src/app/core/services/seo.service'
 import { Router } from '@angular/router'
 import { TranslocoService } from '@ngneat/transloco'
 import { ERoutes } from 'src/app/core/enums/routes.enum'
-import { IMainProject } from 'src/app/modules/main/interfaces/main-project.interface'
+import { environment } from 'src/environments/environment'
+
+export const DEFAULT_STATS_FILTERS = environment.map.ispStyleUrl
+  ? {
+      tech: 'all_mno',
+    }
+  : {
+      tech: 'all',
+    }
 
 @Injectable()
 export class StatisticsEffects {
   loadNationalTable$ = createEffect(() =>
     this.actions$.pipe(
       ofType<Action & { filters: { [param: string]: string } }>(
-        loadNationalTable.type
+        loadNationalTable.type,
       ),
       tap(() => this.store.dispatch(loading())),
       switchMap(({ filters }) => {
@@ -41,10 +49,10 @@ export class StatisticsEffects {
           catchError((error: HttpErrorResponse) => {
             this.store.dispatch(loadNationalTableEnd({ nationalTable: null }))
             return of(loadingError({ error }))
-          })
+          }),
         )
-      })
-    )
+      }),
+    ),
   )
 
   loadStatistics$ = createEffect(() =>
@@ -53,29 +61,37 @@ export class StatisticsEffects {
       tap(({ route }) =>
         route
           ? this.store.dispatch(loadPage({ route }))
-          : this.store.dispatch(loading())
+          : this.store.dispatch(loading()),
       ),
       switchMap(() => this.mainHttp.getOrDownloadProject()),
       switchMap((project) => {
         return forkJoin([
-          this.http.getNationalTable(),
+          this.http.getNationalTable(
+            project?.enable_filters_v2
+              ? {
+                  tech: 'all',
+                }
+              : {
+                  ...DEFAULT_STATS_FILTERS,
+                },
+          ),
           this.mainHttp.getMunicipalities(),
         ]).pipe(
           map(([nationalTable, municipalities]) => {
             this.store.dispatch(
-              loadStatisticsEnd({ nationalTable, municipalities })
+              loadStatisticsEnd({ nationalTable, municipalities }),
             )
             return loadingSuccess()
           }),
           catchError((error: HttpErrorResponse) => {
             this.store.dispatch(
-              loadStatisticsEnd({ nationalTable: null, municipalities: null })
+              loadStatisticsEnd({ nationalTable: null, municipalities: null }),
             )
             return of(loadingError({ error }))
-          })
+          }),
         )
-      })
-    )
+      }),
+    ),
   )
 
   loadMunicipality$ = createEffect(() =>
@@ -83,7 +99,7 @@ export class StatisticsEffects {
       ofType<Action & { name: string }>(loadMunicipality.type),
       tap(() => this.store.dispatch(loading())),
       switchMap(({ name }) =>
-        forkJoin([of(name), this.mainHttp.getOrDownloadProject()])
+        forkJoin([of(name), this.mainHttp.getOrDownloadProject()]),
       ),
       switchMap(([name, project]) => {
         return this.mainHttp.getMunicipality(name).pipe(
@@ -93,8 +109,13 @@ export class StatisticsEffects {
               loadNationalTable({
                 filters: {
                   code: municipality.code,
+                  ...(project?.enable_filters_v2
+                    ? {
+                        tech: 'all',
+                      }
+                    : DEFAULT_STATS_FILTERS),
                 },
-              })
+              }),
             )
             this.store.dispatch(loadMunicipalityEnd({ municipality }))
             return loadingSuccess()
@@ -110,11 +131,11 @@ export class StatisticsEffects {
               return of(loadingError({ error: null }))
             }
             return of(loadingError({ error }))
-          })
+          }),
         )
       }),
-      tap(() => this.store.dispatch(loadMenus()))
-    )
+      tap(() => this.store.dispatch(loadMenus())),
+    ),
   )
 
   constructor(
@@ -124,6 +145,6 @@ export class StatisticsEffects {
     private router: Router,
     private seoService: SeoService,
     private store: Store<IAppState>,
-    private transloco: TranslocoService
+    private transloco: TranslocoService,
   ) {}
 }

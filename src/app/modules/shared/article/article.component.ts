@@ -21,23 +21,23 @@ import { openClose } from 'src/app/core/animations/open-close.animation'
 import { TranslocoService } from '@ngneat/transloco'
 
 @Component({
-    selector: 'nt-article',
-    templateUrl: './article.component.html',
-    styleUrls: ['./article.component.scss'],
-    animations: [
-        openClose,
-        trigger('submenuAnimation', [
-            transition(':enter', [
-                style({ transform: 'translateY(-100%)', opacity: 0 }),
-                animate('200ms', style({ transform: 'translateY(0)', opacity: 1 })),
-            ]),
-            transition(':leave', [
-                style({ transform: 'translateY(0)', opacity: 1 }),
-                animate('200ms', style({ transform: 'translateY(-100%)', opacity: 0 })),
-            ]),
-        ]),
-    ],
-    standalone: false
+  selector: 'nt-article',
+  templateUrl: './article.component.html',
+  styleUrls: ['./article.component.scss'],
+  animations: [
+    openClose,
+    trigger('submenuAnimation', [
+      transition(':enter', [
+        style({ transform: 'translateY(-100%)', opacity: 0 }),
+        animate('200ms', style({ transform: 'translateY(0)', opacity: 1 })),
+      ]),
+      transition(':leave', [
+        style({ transform: 'translateY(0)', opacity: 1 }),
+        animate('200ms', style({ transform: 'translateY(-100%)', opacity: 0 })),
+      ]),
+    ]),
+  ],
+  standalone: false,
 })
 export class ArticleComponent {
   expandedTocs: number[] = []
@@ -53,7 +53,7 @@ export class ArticleComponent {
       this.title = this.translate.transform(s.page, 'name')
 
       const translatedPage = parseUnderlinedText(
-        this.translate.transform(s.page, 'content')
+        this.translate.transform(s.page, 'content'),
       )
       if (!translatedPage) {
         this.toc$.next(null)
@@ -62,7 +62,7 @@ export class ArticleComponent {
       const parsedPage = parseFigures(marked.parse(translatedPage) as string)
       this.tocIsEnabled =
         s.page.translations?.find(
-          (t) => t.language === this.transloco.getActiveLang()
+          (t) => t.language === this.transloco.getActiveLang(),
         )?.enable_table_of_contents ??
         s.page.enable_table_of_contents ??
         false
@@ -70,13 +70,13 @@ export class ArticleComponent {
         timer(0).subscribe(() => {
           const toc = this.tocService.generate(
             globalThis.location?.pathname ?? '',
-            globalThis.document?.querySelector(this.layout?.header)
+            globalThis.document?.querySelector(this.layout?.header),
           )
           this.toc$.next(toc)
         })
       }
       return parsedPage
-    })
+    }),
   )
   testStarter = 'onclick="window.startTest();return false;"'
   title: string
@@ -117,7 +117,7 @@ export class ArticleComponent {
     private store: Store<IAppState>,
     private tocService: ArticleTocService,
     private translate: TranslatePipe,
-    private transloco: TranslocoService
+    private transloco: TranslocoService,
   ) {}
 
   isTocItemActive(tocItem: IArticleTocItem) {
@@ -139,12 +139,12 @@ export class ArticleComponent {
   }
 
   @HostListener('window:resize')
-  private onResize() {
+  onResize() {
     this.positionToc()
   }
 
   @HostListener('window:scroll')
-  private onScroll() {
+  onScroll() {
     this.positionToc()
   }
 

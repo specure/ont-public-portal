@@ -10,6 +10,7 @@ import { TestHistoryComponent } from './components/test-history/test-history.com
 import { FunctionalCookieComponent } from './components/functional-cookie/functional-cookie.component'
 import { StatisticsChartComponent } from './components/statistics-chart/statistics-chart.component'
 import { MunicipalityComponent } from './components/municipality/municipality.component'
+import { StatisticsFiltersComponent } from './components/statistics-filters/statistics-filters.component'
 
 @NgModule({
   declarations: [
@@ -27,6 +28,7 @@ import { MunicipalityComponent } from './components/municipality/municipality.co
     SharedModule,
     FormsModule,
     ReactiveFormsModule,
+    StatisticsFiltersComponent,
   ],
 })
 export class DataModule {}

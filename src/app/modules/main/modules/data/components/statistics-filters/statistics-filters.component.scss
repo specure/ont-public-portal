@@ -1,0 +1,67 @@
+@import 'src/assets/styles/core';
+
+.nt-statistics-filters {
+  display: flex;
+  flex-direction: column;
+  gap: rem(16);
+  padding: rem(16) rem(20);
+
+  &__platform {
+    mat-radio-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: rem(16);
+    }
+
+    &--compact {
+      mat-radio-group {
+        flex-direction: column;
+      }
+    }
+  }
+
+  &__tech {
+    display: flex;
+    gap: rem(4);
+    align-items: center;
+  }
+}
+
+.nt-tech-button {
+  cursor: pointer;
+  color: $main__text-color;
+  height: rem(32);
+  display: inline-block;
+  width: rem(64);
+  border-radius: rem(16);
+  line-height: rem(32);
+  text-align: center;
+  font-size: rem(12);
+  transition: background-color 0.2s;
+
+  &.nt-disabled-button-background {
+    background-color: rgba(0, 32, 91, 0.05);
+  }
+
+  &.nt-all-color {
+    background-color: #4069f2;
+    color: #ffffff;
+  }
+
+  &.nt-five-g-color {
+    background-color: #6236ff;
+    color: #ffffff;
+  }
+
+  &.nt-four-g-color {
+    background-color: #44d7b6;
+  }
+
+  &.nt-three-g-color {
+    background-color: #6dd400;
+  }
+
+  &.nt-two-g-color {
+    background-color: #f7b500;
+  }
+}

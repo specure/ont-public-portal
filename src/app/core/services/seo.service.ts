@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core'
 import { Meta, Title } from '@angular/platform-browser'
 import { TranslocoService } from '@ngneat/transloco'
-import { firstValueFrom, lastValueFrom } from 'rxjs'
+import { lastValueFrom } from 'rxjs'
 import { IMainPage } from 'src/app/modules/main/interfaces/main-page.interface'
 import { IMainProject } from 'src/app/modules/main/interfaces/main-project.interface'
 import { MainHttpService } from 'src/app/modules/main/services/main-http.service'
@@ -20,7 +20,7 @@ export class SeoService {
     private metaService: Meta,
     private titleService: Title,
     private translate: TranslatePipe,
-    private transloco: TranslocoService
+    private transloco: TranslocoService,
   ) {}
 
   setDescription(description: string) {
@@ -41,9 +41,9 @@ export class SeoService {
     this.metaService.updateTag({ name: 'keywords', content: keywords })
   }
 
-  setPageMetadata(page: IMainPage, project: IMainProject = null) {
+  setPageMetadata(page: IMainPage | null, project: IMainProject | null = null) {
     this.titleService.setTitle(
-      project ? project.visible_name || project.name : environment.projectTitle
+      project ? project.visible_name || project.name : environment.projectTitle,
     )
     if (!page) {
       return
@@ -86,7 +86,7 @@ export class SeoService {
     if (!link) {
       link = document.createElement('link')
       link.setAttribute('rel', 'canonical')
-      document.querySelector('head').appendChild(link)
+      document.querySelector('head')?.appendChild(link)
     }
     link.setAttribute('href', `${location.origin}${location.pathname}`)
   }
@@ -98,7 +98,7 @@ export class SeoService {
 
     const existingLinks = document.querySelectorAll('link[rel=alternate]')
     for (const link of Array.from(existingLinks)) {
-      document.querySelector('head').removeChild(link)
+      document.querySelector('head')?.removeChild(link)
     }
 
     const urlPathParts = location.pathname.split('/')
@@ -107,7 +107,7 @@ export class SeoService {
       link.setAttribute('rel', 'alternate')
       link.setAttribute('href', `${location.origin}${urlPathParts.join('/')}`)
       link.setAttribute('hreflang', hreflang)
-      document.querySelector('head').appendChild(link)
+      document.querySelector('head')?.appendChild(link)
     }
 
     if (urlPathParts.length > 1) {
@@ -123,7 +123,7 @@ export class SeoService {
 
     document
       .querySelector('html')
-      .setAttribute('lang', this.transloco.getActiveLang())
+      ?.setAttribute('lang', this.transloco.getActiveLang())
   }
 
   setNoIndex() {
@@ -153,10 +153,10 @@ export class SeoService {
       return
     }
     const appStoreId = new RegExp(/\/id([0-9]+)/gi).exec(
-      project.app_store_link
+      project.app_store_link || '',
     )?.[1]
     const googlePlayId = new RegExp(/id=([a-z.]+)/gi).exec(
-      project.google_play_link
+      project.google_play_link || '',
     )?.[1]
     if (appStoreId) {
       this.metaService.updateTag({
@@ -173,17 +173,20 @@ export class SeoService {
     if (!globalThis.navigator) {
       return
     }
-    const SmartBanner = (await import('smart-app-banner')).default
+    const SmartBanner = (await import('smart-app-banner' as any)).default
     const closeWithoutCookies = function () {
+      // @ts-ignore
       this.hide()
+      // @ts-ignore
       if (typeof this.options.close === 'function') {
+        // @ts-ignore
         return this.options.close()
       }
     }
     SmartBanner.prototype.close = closeWithoutCookies
     SmartBanner.prototype.install = closeWithoutCookies
     const translations = this.transloco.getTranslation(
-      this.transloco.getActiveLang()
+      this.transloco.getActiveLang(),
     )
     const options: { [key: string]: any } = {
       title: translations['banner_to_install_app.app_name'],
@@ -201,8 +204,8 @@ export class SeoService {
     }
     const icon = await lastValueFrom(
       this.mainHttpService.getAssetByName(
-        `appicon.${environment.cms.projectSlug}.png`
-      )
+        `appicon.${environment.cms.projectSlug}.png`,
+      ),
     )
     if (icon) {
       options.icon = icon.url

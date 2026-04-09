@@ -27,6 +27,7 @@ import { IMunicipality } from '../../interfaces/municipality.interface'
 import { IProviderStats } from '../../interfaces/provider-stats.interface'
 import { StatisticsService } from '../../services/statistics.service'
 import { environment } from 'src/environments/environment'
+import { toSignal } from '@angular/core/rxjs-interop'
 
 export const NATIONAL_TABLE_COLS: ITableColumn<IProviderStats>[] = [
   {
@@ -64,20 +65,25 @@ export const NATIONAL_TABLE_COLS: ITableColumn<IProviderStats>[] = [
   },
 ]
 
+export type FilteredMunicipality = {
+  county: ICounty
+  municipalities: IMunicipality[]
+}
+
 @Component({
-    selector: 'nt-statistics',
-    templateUrl: './statistics.component.html',
-    styleUrls: ['./statistics.component.scss'],
-    standalone: false
+  selector: 'nt-statistics',
+  templateUrl: './statistics.component.html',
+  styleUrls: ['./statistics.component.scss'],
+  standalone: false,
 })
 export class StatisticsComponent implements OnDestroy {
   action = loadNationalTable
   columns: ITableColumn<IProviderStats>[] = []
-  filteredMunicipalities$: BehaviorSubject<
-    { county: ICounty; municipalities: IMunicipality[] }[]
-  > = new BehaviorSubject([])
+  filteredMunicipalities$ = new BehaviorSubject<FilteredMunicipality[] | null>(
+    [],
+  )
   form: UntypedFormGroup
-  municipalities: IMunicipality[]
+  municipalities: IMunicipality[] | null | undefined = []
   nationalTable$ = this.store.select(getStatisticsState).pipe(
     filter((s) => !!s.nationalTable || !!s.municipalities),
     withLatestFrom(this.store.select(getMainState)),
@@ -85,16 +91,18 @@ export class StatisticsComponent implements OnDestroy {
       const { municipalities, nationalTable } = s
       this.columns = NATIONAL_TABLE_COLS
       this.subHeaderColumns = NATIONAL_TABLE_COLS.map((col) =>
-        this.statistics.buildSubHeader(col, nationalTable)
+        this.statistics.buildSubHeader(col, nationalTable),
       )
       this.setMunicipalities(municipalities)
       this.municipalities = municipalities
       this.project = project
-      return nationalTable.allMeasurements > 0 ? nationalTable : null
-    })
+      return nationalTable && nationalTable.allMeasurements > 0
+        ? nationalTable
+        : null
+    }),
   )
   isNullOrUndefined = isNullOrUndefined
-  project: IMainProject
+  project: IMainProject | null | undefined
   providerTypes = [
     {
       value: 'mno',
@@ -115,13 +123,18 @@ export class StatisticsComponent implements OnDestroy {
     { value: '3G' },
     { value: '2G' },
   ]
+  filtersV2Enabled = toSignal(
+    this.store
+      .select(getMainState)
+      .pipe(map(({ project }) => project?.enable_filters_v2)),
+  )
 
   constructor(
     private fb: UntypedFormBuilder,
     private statistics: StatisticsService,
     private store: Store<IAppState>,
     private translate: TranslatePipe,
-    private transloco: TranslocoService
+    private transloco: TranslocoService,
   ) {
     this.form = this.fb.group({
       tech: new UntypedFormControl(this.techOptions[0].value),
@@ -132,8 +145,8 @@ export class StatisticsComponent implements OnDestroy {
         tap((providerType) => {
           this.toggleTechSelect(providerType)
           this.setOperatorColumnName(providerType)
-          this.loadNationalTable(this.form.controls.tech.value)
-        })
+          this.loadNationalTable({ tech: this.form.controls.tech.value })
+        }),
       )
       .subscribe()
   }
@@ -144,7 +157,7 @@ export class StatisticsComponent implements OnDestroy {
 
   getTechLabel(
     tech: { label?: string; value: string },
-    t: (key: string) => string
+    t: (key: string) => string,
   ) {
     if (this.form.controls.providerType.value === this.providerTypes[1].value) {
       return 'WLAN'
@@ -158,7 +171,7 @@ export class StatisticsComponent implements OnDestroy {
       return this.setMunicipalities(this.municipalities)
     }
     this.setMunicipalities(
-      this.municipalities.filter((m) => {
+      this.municipalities?.filter((m) => {
         const { county } = m
         return (
           m.name?.toLowerCase().includes(name) ||
@@ -170,27 +183,30 @@ export class StatisticsComponent implements OnDestroy {
                 ?.toLowerCase()
                 .includes(name)))
         )
-      })
+      }),
     )
   }
 
-  private loadNationalTable(tech) {
-    let country = environment.mapServer.country
-    if (
-      this.project?.enable_stats_mno_isp_switch &&
-      this.form.controls.providerType.value === this.providerTypes[1].value
-    ) {
-      country = `${country}_isp`
-    }
-    const techSet = new Set(this.techOptions.slice(1).map((opt) => opt.value))
-    if (techSet.has(tech)) {
-      this.store.dispatch(loadNationalTable({ filters: { country, tech } }))
+  loadNationalTable(filters?: { tech: string; platforms?: string[] }) {
+    let { tech, platforms } = filters || {}
+    if (!this.filtersV2Enabled()) {
+      if (tech === 'all' && environment.map.ispStyleUrl) {
+        tech =
+          this.form.controls.providerType.value === this.providerTypes[1].value
+            ? 'all_isp'
+            : 'all_mno'
+      }
+      this.store.dispatch(loadNationalTable({ filters: { tech } }))
     } else {
-      this.store.dispatch(loadNationalTable({ filters: { country } }))
+      this.store.dispatch(loadNationalTable({ filters: { tech, platforms } }))
     }
   }
 
-  private setMunicipalities(municipalities: IMunicipality[]) {
+  private setMunicipalities(municipalities?: IMunicipality[] | null) {
+    if (!municipalities) {
+      this.filteredMunicipalities$.next(null)
+      return
+    }
     const muncsByCounty: { [key: string]: IMunicipality[] } =
       municipalities?.reduce((acc, munc) => {
         if (!munc.county?.id) {
@@ -198,6 +214,7 @@ export class StatisticsComponent implements OnDestroy {
         }
         return {
           ...acc,
+          // @ts-ignore
           [munc.county.id]: [...(acc[munc.county.id] || []), munc],
         }
       }, {}) || {}
@@ -206,18 +223,18 @@ export class StatisticsComponent implements OnDestroy {
       .map((muncs) => ({
         county: muncs[0].county || muncs[0],
         municipalities: muncs.sort((a, b) =>
-          a.name.localeCompare(b.name, getDefaultLang(this.transloco))
+          a.name.localeCompare(b.name, getDefaultLang(this.transloco)),
         ),
       }))
       .sort((a, b) =>
         a.county?.name.localeCompare(
           b.county?.name,
-          getDefaultLang(this.transloco)
-        )
+          getDefaultLang(this.transloco),
+        ),
       )
 
     this.filteredMunicipalities$.next(
-      muncsByCountyArr.length ? muncsByCountyArr : null
+      muncsByCountyArr.length ? muncsByCountyArr : null,
     )
   }
 

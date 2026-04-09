@@ -9,6 +9,7 @@ import { TestEffects } from './test/test.effect'
 import { historyReducer, HistoryState } from './history/history.reducer'
 import { HistoryEffects } from './history/history.effect'
 import { mapReducer, MapState } from './map/map.reducer'
+import { MapEffects } from './map/map.effect'
 import {
   statisticsReducer,
   StatisticsState,
@@ -42,6 +43,7 @@ export const APP_EFFECTS = [
   TestEffects,
   HistoryEffects,
   StatisticsEffects,
+  MapEffects,
 ]
 
 export const appReducers: ActionReducerMap<IAppState> = {

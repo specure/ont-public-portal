@@ -1,0 +1,32 @@
+<form [formGroup]="form" *transloco="let t" class="nt-statistics-filters">
+  <div
+    class="nt-statistics-filters__platform"
+    [class.nt-statistics-filters__platform--compact]="compact"
+  >
+    <mat-radio-group formControlName="platforms">
+      @for (option of platformsOptions; track option.value) {
+        <mat-radio-button [value]="option.value">
+          {{ t(option.label) }}
+        </mat-radio-button>
+      }
+    </mat-radio-group>
+  </div>
+
+  @if (form.get('platforms')?.value === 'app_cellular') {
+    <div class="nt-statistics-filters__tech">
+      @for (tech of techOptions; track tech.value) {
+        <a
+          (click)="technologyChanged(tech.value)"
+          class="nt-tech-button"
+          [class]="
+            form.get('tech')?.value === tech.value
+              ? tech.class
+              : 'nt-disabled-button-background'
+          "
+        >
+          {{ tech.label ? t(tech.label) : tech.value }}
+        </a>
+      }
+    </div>
+  }
+</form>

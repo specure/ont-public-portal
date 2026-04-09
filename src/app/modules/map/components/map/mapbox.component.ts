@@ -8,7 +8,6 @@ import {
   Output,
   signal,
 } from '@angular/core'
-import { environment } from 'src/environments/environment'
 import { fromEvent, lastValueFrom, Observable, Subscription, timer } from 'rxjs'
 import {
   concatMap,
@@ -26,12 +25,14 @@ import { PopupService } from '../../services/popup.service'
 import { ELayerPrefix } from '../../enums/layer-prefix.enum'
 import { PlatformService } from 'src/app/core/services/platform.service'
 import * as maplibregl from 'maplibre-gl'
+import { MainHttpService } from 'src/app/modules/main/services/main-http.service'
+import { IMainProject } from 'src/app/modules/main/interfaces/main-project.interface'
 
 @Component({
-    selector: 'nt-mapbox',
-    templateUrl: './mapbox.component.html',
-    styleUrls: ['./mapbox.component.scss'],
-    standalone: false
+  selector: 'nt-mapbox',
+  templateUrl: './mapbox.component.html',
+  styleUrls: ['./mapbox.component.scss'],
+  standalone: false,
 })
 export class MapboxComponent implements OnDestroy, AfterViewInit {
   @Output()
@@ -42,7 +43,7 @@ export class MapboxComponent implements OnDestroy, AfterViewInit {
   width = globalThis.innerWidth
 
   private mapDataLoaded = new EventEmitter()
-  private map: maplibregl.Map
+  private map!: maplibregl.Map
   private mapLayersSub = this.store
     .pipe(
       select(getMapState),
@@ -50,7 +51,7 @@ export class MapboxComponent implements OnDestroy, AfterViewInit {
         operator,
         date,
         technology,
-      }))
+      })),
     )
     .subscribe((state) => {
       this.switchLayers(state)
@@ -65,10 +66,10 @@ export class MapboxComponent implements OnDestroy, AfterViewInit {
           this.styleLoaded = false
           this.map?.setStyle(state.style.url, { diff: false })
         }
-      })
+      }),
     )
     .subscribe()
-  private currentLayer: string
+  private currentLayer!: string
   private resizeSub = fromEvent(globalThis, 'resize')
     .pipe(
       debounceTime(150),
@@ -78,7 +79,7 @@ export class MapboxComponent implements OnDestroy, AfterViewInit {
         timer(0).subscribe(() => {
           this.map.resize()
         })
-      })
+      }),
     )
     .subscribe()
 
@@ -90,7 +91,7 @@ export class MapboxComponent implements OnDestroy, AfterViewInit {
       debounceTime(150),
       tap(() => globalThis.scrollTo(0, 0)),
       debounceTime(150),
-      tap(() => globalThis.scrollTo(0, 1))
+      tap(() => globalThis.scrollTo(0, 1)),
     )
     .subscribe()
 
@@ -102,11 +103,12 @@ export class MapboxComponent implements OnDestroy, AfterViewInit {
 
   constructor(
     private cdr: ChangeDetectorRef,
+    private mainhttp: MainHttpService,
     private mapper: MainMapService,
     private ngZone: NgZone,
     private platfrom: PlatformService,
     private popupper: PopupService,
-    private store: Store<IAppState>
+    private store: Store<IAppState>,
   ) {
     this.mapDataSub = this.mapDataLoaded
       .pipe(
@@ -114,7 +116,7 @@ export class MapboxComponent implements OnDestroy, AfterViewInit {
         concatMap(() => this.popupper.editPopup(this.map, this.currentLayer)),
         tap(() => {
           this.mapIsLoading.set(false)
-        })
+        }),
       )
       .subscribe()
     this.toggleBounceScroll(true)
@@ -130,16 +132,18 @@ export class MapboxComponent implements OnDestroy, AfterViewInit {
   }
 
   ngAfterViewInit() {
-    this.initMap()
-    this.afterMapInit.emit(this.map)
-    this.cdr.detectChanges()
+    this.mainhttp.getOrDownloadProject().subscribe((project) => {
+      this.initMap(project)
+      this.afterMapInit.emit(this.map)
+      this.cdr.detectChanges()
+    })
   }
 
   private toggleBounceScroll(shouldDisable: boolean) {
     const selectors = ['body', 'html']
     if (shouldDisable) {
       selectors.forEach((selector) => {
-        const el: HTMLElement = document.querySelector(selector)
+        const el: HTMLElement = document.querySelector(selector)!
         el.style.overflowY = 'hidden'
         el.style.position = 'fixed'
         el.style.height = `${globalThis.innerHeight}px`
@@ -147,15 +151,15 @@ export class MapboxComponent implements OnDestroy, AfterViewInit {
       })
     } else {
       selectors.forEach((selector) => {
-        const el: HTMLElement = document.querySelector(selector)
+        const el: HTMLElement = document.querySelector(selector)!
         el.removeAttribute('style')
       })
     }
   }
 
-  private initMap() {
+  private initMap(project: IMainProject) {
     this.ngZone.runOutsideAngular(() => {
-      this.map = this.mapper.getDefaultMap()
+      this.map = this.mapper.getDefaultMap(project?.enable_filters_v2)
       this.mapper.setDefaultControls(this.map)
     })
     this.map.on('style.load', () => {
@@ -169,7 +173,7 @@ export class MapboxComponent implements OnDestroy, AfterViewInit {
     })
     this.map.on('zoom', () => {
       lastValueFrom(this.getMapState()).then((state) =>
-        this.switchLayers(state)
+        this.switchLayers(state),
       )
     })
   }

@@ -32,10 +32,10 @@ import { ConfigService } from 'src/app/core/services/config.service'
 import { TranslocoService } from '@ngneat/transloco'
 
 @Component({
-    selector: 'nt-menu-bar',
-    templateUrl: './menu-bar.component.html',
-    styleUrls: ['./menu-bar.component.scss'],
-    standalone: false
+  selector: 'nt-menu-bar',
+  templateUrl: './menu-bar.component.html',
+  styleUrls: ['./menu-bar.component.scss'],
+  standalone: false,
 })
 export class MenuBarComponent implements OnDestroy {
   @Output() openMenu = new EventEmitter()
@@ -46,7 +46,7 @@ export class MenuBarComponent implements OnDestroy {
   isMenuOpen = false
   logoLink = `/${this.transloco.getActiveLang()}/${ERoutes.TEST}`
   logoPath$ = forkJoin([this.config.logoMap$, this.config.logoHeader$]).pipe(
-    map(([logoMap, logoHeader]) => logoMap || logoHeader)
+    map(([logoMap, logoHeader]) => logoMap || logoHeader),
   )
   map: maplibregl.Map
   text: string
@@ -55,7 +55,7 @@ export class MenuBarComponent implements OnDestroy {
   private municipality$ = this.store.select(getMapState).pipe(
     pluck('municipality'),
     first(),
-    filter((munc) => !!munc)
+    filter((munc) => !!munc),
   )
   private sub = this.geocodeRequestChanged
     .pipe(
@@ -65,7 +65,7 @@ export class MenuBarComponent implements OnDestroy {
       debounceTime(300),
       distinctUntilChanged(),
       switchMap(this.geocoder.getLocationsFromQuery),
-      tap((res) => (this.geocodeResponse = res))
+      tap((res) => (this.geocodeResponse = res)),
     )
     .subscribe()
 
@@ -75,7 +75,7 @@ export class MenuBarComponent implements OnDestroy {
     private mapper: MainMapService,
     private popupper: PopupService,
     private store: Store<IAppState>,
-    private transloco: TranslocoService
+    private transloco: TranslocoService,
   ) {}
 
   ngOnDestroy(): void {
@@ -131,7 +131,7 @@ export class MenuBarComponent implements OnDestroy {
           const location = res.filter(
             (r) =>
               r.resultType === 'locality' ||
-              r.resultType === 'administrativeArea'
+              r.resultType === 'administrativeArea',
           )[0]
           const onMapLoaded = () => {
             if (location.resultType === 'locality') {
@@ -149,18 +149,18 @@ export class MenuBarComponent implements OnDestroy {
             Math.floor(
               location.resultType === 'locality'
                 ? environment.map.countiesMaxZoom + 1
-                : environment.map.zoom
-            )
+                : environment.map.zoom,
+            ),
           )
         }),
-        catchError(() => of(null))
+        catchError(() => of(null)),
       )
       .subscribe()
   }
 
   @HostListener('keyup.esc')
   @HostListener('document:mousedown', ['$event'])
-  private resetGeocoder(evt?: MouseEvent) {
+  resetGeocoder(evt?: MouseEvent) {
     const el = evt?.target as HTMLElement
     if (el?.className === 'mapboxgl-ctrl-geocoder--suggestion-title') {
       this.flyToActiveCandidate()
@@ -176,7 +176,7 @@ export class MenuBarComponent implements OnDestroy {
   }
 
   @HostListener('keyup.arrowdown')
-  private selectCandidateDown() {
+  selectCandidateDown() {
     if (this.geocodeResponse?.length) {
       this.activeCandidate++
       if (this.activeCandidate > this.geocodeResponse?.length - 1) {
@@ -186,7 +186,7 @@ export class MenuBarComponent implements OnDestroy {
   }
 
   @HostListener('keyup.arrowup')
-  private selectCandidateUp() {
+  selectCandidateUp() {
     if (this.geocodeResponse?.length) {
       this.activeCandidate--
       if (this.activeCandidate < 0) {

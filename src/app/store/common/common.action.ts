@@ -4,7 +4,11 @@ import { NavigationStart } from '@angular/router'
 
 export const loading = createAction('[COMMON] Loading...')
 export const loadingSuccess = createAction('[COMMON] Loading [SUCCESS]')
-export const loadingError = createAction('[COMMON] Loading [ERROR]', props<{error: HttpErrorResponse}>())
+export const loadingError = createAction(
+  '[COMMON] Loading [ERROR]',
+  props<{ error: HttpErrorResponse | null }>(),
+)
 export const setNavigationEvent = createAction(
-    '[COMMON] Setting navigation event', props<{event: NavigationStart}>()
+  '[COMMON] Setting navigation event',
+  props<{ event: NavigationStart }>(),
 )

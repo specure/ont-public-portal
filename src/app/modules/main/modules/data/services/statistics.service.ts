@@ -21,7 +21,7 @@ export class StatisticsService {
 
   buildSubHeader(
     column: ITableColumn<IProviderStats>,
-    nationalTable: INationalTable
+    nationalTable?: INationalTable | null,
   ) {
     let subHeader = ''
     if (!nationalTable && column.columnDef !== 'providerName') {
@@ -32,22 +32,22 @@ export class StatisticsService {
           subHeader = 'statistics.table.all'
           break
         case 'download':
-          subHeader = convertBytes(nationalTable.averageDownload as number)
+          subHeader = convertBytes(nationalTable?.averageDownload as number)
             .to(ESpeedUnits.MBPS)
             .toLocaleString()
           break
         case 'upload':
-          subHeader = convertBytes(nationalTable.averageUpload as number)
+          subHeader = convertBytes(nationalTable?.averageUpload as number)
             .to(ESpeedUnits.MBPS)
             .toLocaleString()
           break
         case 'latency':
           subHeader = convertMs(
-            nationalTable.averageLatency as number
+            nationalTable?.averageLatency as number,
           ).toLocaleString()
           break
         case 'measurements':
-          subHeader = nationalTable.allMeasurements.toLocaleString()
+          subHeader = nationalTable?.allMeasurements.toLocaleString() ?? ''
           break
       }
     }
@@ -58,12 +58,9 @@ export class StatisticsService {
   }
 
   getNationalTable(filters?: { [param: string]: string }) {
-    return this.http.get<INationalTable>(
-      `${environment.mapServer.url}/national-table`,
-      {
-        headers: environment.controlServer.headers,
-        params: { country: environment.mapServer.country, ...filters },
-      }
-    )
+    return this.http.get<INationalTable>(`${this.apiUrl}/nationalTable`, {
+      headers: environment.controlServer.headers,
+      params: { ...filters },
+    })
   }
 }

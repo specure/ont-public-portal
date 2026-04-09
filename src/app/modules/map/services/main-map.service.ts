@@ -15,7 +15,7 @@ const CONTAINER_ID = 'map'
   providedIn: 'root',
 })
 export class MainMapService {
-  marker: Marker
+  marker: Marker | undefined
 
   get style(): IMainMapStyle {
     return {
@@ -31,6 +31,20 @@ export class MainMapService {
     }
   }
 
+  get allStyle(): IMainMapStyle {
+    return {
+      name: 'map.style.street',
+      url: environment.map.allStyleUrl,
+    }
+  }
+
+  get browserStyle(): IMainMapStyle {
+    return {
+      name: 'map.style.street',
+      url: environment.map.browserStyleUrl,
+    }
+  }
+
   constructor() {}
 
   addMarker(
@@ -40,7 +54,7 @@ export class MainMapService {
       color?: string
       popup?: maplibregl.Popup
       onClick?: (a: any) => void
-    }
+    },
   ) {
     const marker = new Marker({
       color: options?.color,
@@ -58,7 +72,7 @@ export class MainMapService {
   findRenderedFeature(
     mapContainer: Map,
     currentLayer: string,
-    coordinates: LngLat
+    coordinates: LngLat,
   ) {
     return mapContainer
       .queryRenderedFeatures(mapContainer.project(coordinates))
@@ -84,13 +98,14 @@ export class MainMapService {
       .addTo(mapContainer)
   }
 
-  getDefaultMap() {
+  getDefaultMap(filtersV2Enabled = false) {
     const { center, zoom } = environment.map
+    const style = filtersV2Enabled ? this.allStyle.url : this.style.url
     return new maplibregl.Map({
       container: CONTAINER_ID,
       maxZoom: 15,
       minZoom: 1,
-      style: this.style.url,
+      style,
       zoom,
       center: center as [number, number],
     })
@@ -124,7 +139,9 @@ export class MainMapService {
 
   getOperatorName(state: MapState) {
     let operator = Object.keys(ENetworkOperator).find(
-      (e) => ENetworkOperator[e] === state?.operator
+      (e) =>
+        ENetworkOperator[e as keyof typeof ENetworkOperator] ===
+        state?.operator,
     )
     if (!operator) {
       operator = state?.operator
@@ -132,7 +149,7 @@ export class MainMapService {
     return operator?.replace(/\s/g, '-')?.toUpperCase() || ''
   }
 
-  popupFromHtml(element: HTMLElement): maplibregl.Popup {
+  popupFromHtml(element: HTMLElement): maplibregl.Popup | null {
     if (!element) {
       return null
     }
@@ -143,7 +160,7 @@ export class MainMapService {
     map
       .addControl(
         new maplibregl.NavigationControl({ showCompass: false }),
-        'bottom-right'
+        'bottom-right',
       )
       .addControl(new maplibregl.GeolocateControl({}), 'bottom-right')
     navigator.geolocation.getCurrentPosition(
@@ -161,7 +178,7 @@ export class MainMapService {
             .querySelector('.maplibregl-ctrl-geolocate')
             ?.setAttribute('title', label)
         })
-      }
+      },
     )
   }
 }

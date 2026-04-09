@@ -3,7 +3,7 @@ import { FormBuilder, FormControl, FormGroup } from '@angular/forms'
 import { TranslocoService } from '@ngneat/transloco'
 import { select, Store } from '@ngrx/store'
 import { Subscription } from 'rxjs'
-import { map, filter, pluck, withLatestFrom, tap } from 'rxjs/operators'
+import { map, filter, pluck, withLatestFrom, tap, take } from 'rxjs/operators'
 import { Sort } from 'src/app/core/classes/sort.class'
 import { ERoutes } from 'src/app/core/enums/routes.enum'
 import { ConfigService } from 'src/app/core/services/config.service'
@@ -20,12 +20,13 @@ import { IMunicipality } from '../../interfaces/municipality.interface'
 import { IProviderStats } from '../../interfaces/provider-stats.interface'
 import { StatisticsService } from '../../services/statistics.service'
 import { NATIONAL_TABLE_COLS } from '../statistics/statistics.component'
+import { toSignal } from '@angular/core/rxjs-interop'
 
 @Component({
-    selector: 'nt-municipality',
-    templateUrl: './municipality.component.html',
-    styleUrls: ['./municipality.component.scss'],
-    standalone: false
+  selector: 'nt-municipality',
+  templateUrl: './municipality.component.html',
+  styleUrls: ['./municipality.component.scss'],
+  standalone: false,
 })
 export class MunicipalityComponent implements OnDestroy {
   action = loadNationalTable
@@ -52,7 +53,7 @@ export class MunicipalityComponent implements OnDestroy {
         }
       })
       return munc
-    })
+    }),
   )
   nationalTable$ = this.store.select(getStatisticsState).pipe(
     filter((s) => !!s.nationalTable || !!s.municipalities),
@@ -61,11 +62,11 @@ export class MunicipalityComponent implements OnDestroy {
       const { nationalTable } = s
       this.columns = NATIONAL_TABLE_COLS
       this.subHeaderColumns = NATIONAL_TABLE_COLS.map((col) =>
-        this.statistics.buildSubHeader(col, nationalTable)
+        this.statistics.buildSubHeader(col, nationalTable),
       )
       this.project = project
       return nationalTable.allMeasurements > 0 ? nationalTable : null
-    })
+    }),
   )
   project: IMainProject
   providerTypes = [
@@ -82,6 +83,11 @@ export class MunicipalityComponent implements OnDestroy {
   sort = new Sort('providerName', 'asc')
   subHeaderColumns: ITableColumn<IProviderStats>[] = []
   mapLayout = environment.municipality?.mapLayout
+  filtersV2Enabled = toSignal(
+    this.store
+      .select(getMainState)
+      .pipe(map(({ project }) => project?.enable_filters_v2)),
+  )
 
   get mapLink() {
     return `/${this.transloco.getActiveLang()}/${ERoutes.MAP}`
@@ -96,10 +102,9 @@ export class MunicipalityComponent implements OnDestroy {
   constructor(
     private config: ConfigService,
     private fb: FormBuilder,
-    private mainHttp: MainHttpService,
     private statistics: StatisticsService,
     private store: Store<IAppState>,
-    private transloco: TranslocoService
+    private transloco: TranslocoService,
   ) {
     this.form = this.fb.group({
       providerType: new FormControl(this.providerTypes[0].value),
@@ -108,15 +113,11 @@ export class MunicipalityComponent implements OnDestroy {
       .pipe(
         withLatestFrom(this.store.select(getStatisticsState)),
         tap(([tech, state]) => {
-          const country =
-            tech === this.providerTypes[0].value
-              ? environment.mapServer.country
-              : `${environment.mapServer.country}_isp`
           this.setOperatorColumnName(tech)
           this.store.dispatch(
-            loadNationalTable({ filters: { ...state.filters, country } })
+            loadNationalTable({ filters: { ...state.filters, tech } }),
           )
-        })
+        }),
       )
       .subscribe()
   }
@@ -131,8 +132,19 @@ export class MunicipalityComponent implements OnDestroy {
         municipality: munc.county
           ? `${munc.name}, ${munc.county.name}`
           : munc.name,
-      })
+      }),
     )
+  }
+
+  loadNationalTable(filters?: { tech: string; platform?: string }) {
+    this.store
+      .select(getStatisticsState)
+      .pipe(take(1))
+      .subscribe((state) => {
+        this.store.dispatch(
+          loadNationalTable({ filters: { ...state.filters, ...filters } }),
+        )
+      })
   }
 
   private setOperatorColumnName(providerType: string) {

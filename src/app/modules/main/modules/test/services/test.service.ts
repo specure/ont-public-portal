@@ -81,7 +81,7 @@ export class TestService {
     private store: Store<IAppState>,
     private transloco: TranslocoService,
     private visualizator: TestVisualizationService,
-    @Inject(PLATFORM_ID) private platformId: object
+    @Inject(PLATFORM_ID) private platformId: object,
   ) {
     if (isPlatformBrowser(this.platformId)) {
       const promise = environment.production
@@ -97,7 +97,7 @@ export class TestService {
     from(this.router.navigate([this.transloco.getActiveLang(), ERoutes.TEST]))
       .pipe(
         concatMap(() => this.triggerNextTest()),
-        tap(() => globalThis.scrollTo(0, 0))
+        tap(() => globalThis.scrollTo(0, 0)),
       )
       .subscribe()
   }
@@ -118,7 +118,7 @@ export class TestService {
       withLatestFrom(
         this.store.select(getMainState),
         this.store.select(getHistoryState).pipe(take(1)),
-        this.store.select(getTestState)
+        this.store.select(getTestState),
       ),
       take(1),
       switchMap(([isCookieAccepted, mainState, historyState, testState]) => {
@@ -139,7 +139,7 @@ export class TestService {
               measurementRetries: !!measurementRetries
                 ? measurementRetries - 1
                 : project?.measurement_retries,
-            })
+            }),
           )
           if (project?.enable_cookie_widget) {
             this.isHistoryAllowed = !!isCookieAccepted
@@ -152,7 +152,7 @@ export class TestService {
             this.store.dispatch(storeUuidInMemory({ uuid }))
           }
           return this.getUserSettings(uuid, project)
-        }
+        },
       ),
       tap(({ uuid, app_version }) => {
         console.log('Starting test with UUID:', uuid)
@@ -167,8 +167,11 @@ export class TestService {
           const config = new this.rmbtws.RMBTTestConfig(
             'en',
             environment.controlServer.url,
-            ''
+            '',
           )
+          config.controlServerRegistrationResource = 'adminTestRequest'
+          config.controlServerResultResource = 'measurementResult'
+          config.controlServerDataCollectorResource = 'requestDataCollector'
           config.uuid = uuid
           config.timezone = dayjs.tz.guess()
           config.additionalSubmissionParameters = { network_type: 0 }
@@ -179,6 +182,7 @@ export class TestService {
             uuid_permission_granted: this.isHistoryAllowed,
             app_version,
             local_server_settings,
+            measurement_server_id: this.testServer.id,
           }
           const commOptions = {
             headers: this.headers,
@@ -194,7 +198,7 @@ export class TestService {
                     remoteIp: '',
                     testUuid: local_server_settings.test_uuid,
                   },
-                })
+                }),
               )
             },
             submit: () => {
@@ -207,11 +211,11 @@ export class TestService {
           const ctrl = new this.rmbtws.RMBTControlServerCommunication(
             config,
             commOptions,
-            this.testServer
+            this.testServer,
           )
           const websocketTest = new this.rmbtws.RMBTTest(config, ctrl)
           this.rmbtws.TestEnvironment.getTestVisualization().setRMBTTest(
-            websocketTest
+            websocketTest,
           )
           websocketTest.startTest()
           this.rmbtws.TestEnvironment.getTestVisualization().startTest() // start the visualization
@@ -222,7 +226,7 @@ export class TestService {
         this.store.dispatch(loadingError({ error }))
         this.router.navigate([this.transloco.getActiveLang(), ERoutes.TEST])
         return of(null)
-      })
+      }),
     )
   }
 
@@ -259,8 +263,8 @@ export class TestService {
               of({
                 longitude: location?.longitude,
                 latitude: location?.latitude,
-              })
-            )
+              }),
+            ),
           )
         }
         return of({
@@ -268,7 +272,7 @@ export class TestService {
           latitude: test.location?.latitude,
         })
       }),
-      map((location) => location)
+      map((location) => location),
     )
   }
 
@@ -280,7 +284,7 @@ export class TestService {
             longitude: success.coords.longitude,
             latitude: success.coords.latitude,
           },
-        })
+        }),
       )
     })
   }
@@ -302,7 +306,7 @@ export class TestService {
             {
               params,
               headers: this.headers,
-            }
+            },
           )
         }),
         map((servers) => {
@@ -311,7 +315,7 @@ export class TestService {
         catchError((err) => {
           console.error('Error fetching test servers:', err)
           return of([])
-        })
+        }),
       )
       .subscribe((servers) => {
         this.store.dispatch(setCloudServers({ cloudServers: servers }))
@@ -338,7 +342,7 @@ export class TestService {
     return servers
       .reduce((acc, server) => {
         const shouldShow = server.serverTypeDetails?.some(
-          (d) => d.serverType === EServerDefinition.RMBTws
+          (d) => d.serverType === EServerDefinition.RMBTws,
         )
         if (!shouldShow) {
           return acc
@@ -355,8 +359,8 @@ export class TestService {
       switchMap(({ project }) =>
         project?.require_location
           ? of(null) // TODO implement getting from navigator
-          : of(null)
-      )
+          : of(null),
+      ),
     )
   }
 
@@ -367,7 +371,7 @@ export class TestService {
       .post<IUserSetingsResponse>(
         `${environment.controlServer.url}${environment.controlServer.routes.settings}`,
         body,
-        { headers: this.headers }
+        { headers: this.headers },
       )
       .pipe(
         tap((resp) => {
@@ -378,8 +382,8 @@ export class TestService {
         map((resp) =>
           resp.settings && resp.settings.length
             ? { ...resp.settings[0], app_version: project?.version, uuid }
-            : null
-        )
+            : null,
+        ),
       )
   }
 }
